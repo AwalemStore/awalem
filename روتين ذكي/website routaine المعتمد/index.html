@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>SmartRoutine | الروتين الذكي</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #6A4C9C;
+            --secondary: #9982bb;
+            --bg-color: #F4F4F8;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --border-light: rgba(106, 76, 156, 0.15);
+            --text-main: #2C2C2C;
+            --text-muted: #666;
+        }
+
+        body { background-color: var(--bg-color); font-family: 'Tajawal', 'Poppins', sans-serif; color: var(--text-main); margin: 0; padding: 20px 15px; display: flex; flex-direction: column; align-items: center; -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+
+        /* --- المربع المنبثق Popup --- */
+        #welcomePopup { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(5px); padding: 15px; box-sizing: border-box;}
+        .popup-content { background: white; padding: 40px; border-radius: 28px; width: 100%; max-width: 500px; text-align: center; box-shadow: 0 20px 50px rgba(0,0,0,0.2); border: 2px solid var(--primary); box-sizing: border-box;}
+
+        /* --- Hero Section --- */
+        .hero-section { text-align: center; margin-bottom: 30px; background: linear-gradient(135deg, #6A4C9C, #9982bb); color: white; padding: 40px 30px; border-radius: 30px; max-width: 900px; width: 100%; box-shadow: 0 15px 35px rgba(106, 76, 156, 0.15); box-sizing: border-box;}
+        .hero-section h1 { margin: 0 0 10px 0; font-weight: 800; font-size: 2.1rem; }
+        .hero-section h2 { margin: 0 0 15px 0; font-weight: 500; font-size: 1.25rem; color: #E8E0F5; }
+
+        .container { max-width: 900px; width: 100%; box-sizing: border-box;}
+
+        /* --- Bento Cards --- */
+        .bento-card { background: var(--glass-bg); backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px); border-radius: 28px; padding: 30px; margin-bottom: 25px; box-shadow: 0 8px 24px rgba(0,0,0,0.02); border: 1px solid rgba(255, 255, 255, 0.5); box-sizing: border-box;}
+        .section-title { color: var(--primary); font-size: 1.4rem; margin-top: 0; margin-bottom: 20px; padding-bottom: 10px; border-bottom: 2px solid var(--border-light); display: flex; align-items: center; gap: 10px; line-height: 1.4;}
+
+        /* --- Guide Section --- */
+        .guide-steps { display: flex; flex-direction: column; gap: 15px; font-size: 1.1rem; line-height: 1.6; color: #444; }
+        .guide-steps span.highlight { background: rgba(106,76,156,0.1); padding: 2px 8px; border-radius: 6px; font-weight: bold; color: var(--primary); }
+
+        /* --- Inputs & Rows --- */
+        .input-group label { display: block; font-weight: 700; color: var(--primary); margin-bottom: 10px; font-size: 1.1rem; }
+        .name-input { width: 100%; padding: 16px 18px; border-radius: 14px; border: 2px solid var(--border-light); font-family: 'Tajawal', sans-serif; font-size: 1.05rem; box-sizing: border-box; background: white; transition: 0.3s; }
+        .name-input:focus { outline: none; border-color: var(--primary); box-shadow: 0 0 0 4px rgba(106, 76, 156, 0.08); }
+        
+        input[type="date"] { text-align: right; direction: rtl; font-family: 'Tajawal', sans-serif; }
+
+        .item-row { display: flex; align-items: center; justify-content: space-between; padding: 14px 18px; background: white; border-radius: 14px; margin-bottom: 10px; border: 1px solid #EAEaea; transition: 0.2s; box-sizing: border-box;}
+        .item-row:hover { border-color: var(--secondary); transform: translateY(-1px); box-shadow: 0 3px 8px rgba(0,0,0,0.02); }
+
+        .cb-wrapper { display: flex; align-items: flex-start; gap: 14px; cursor: pointer; flex-grow: 1; width: 100%;}
+        input[type="checkbox"] { width: 22px; height: 22px; accent-color: var(--primary); cursor: pointer; margin-top: 4px; flex-shrink: 0;}
+
+        .label-content { display: flex; flex-direction: column; width: 100%; }
+        .editable-ar { font-weight: 700; font-size: 1rem; line-height: 1.4; color: var(--text-main); border-bottom: 1px dashed rgba(106, 76, 156, 0.2); outline: none; transition: 0.2s; padding: 1px 0; cursor: text; display: inline-block; word-break: break-word;}
+        .editable-ar:focus { border-bottom: 1px solid var(--primary); background: rgba(106, 76, 156, 0.03); }
+        .editable-ar:empty::before { content: attr(placeholder); color: #aaa; font-weight: 400; }
+
+        .custom-input { border: none; background: transparent; font-family: 'Tajawal', sans-serif; font-size: 1rem; color: var(--primary); width: 95%; outline: none; padding: 4px 0; font-weight: 700; border-bottom: 1px dashed var(--secondary);}
+        
+        select { font-family: 'Tajawal', 'Poppins', sans-serif; padding: 11px 14px; border-radius: 11px; border: 1px solid var(--border-light); background: #fafafa; color: var(--primary); font-weight: 700; font-size: 0.9rem; outline: none; cursor: pointer; }
+        .task-freq { display: none; min-width: 160px; margin-right: 15px;}
+
+        /* --- Buttons --- */
+        .btn-action { background: linear-gradient(135deg, #6A4C9C, #9982bb); color: white; border: none; padding: 20px 30px; font-family: 'Tajawal', sans-serif; font-size: 1.25rem; font-weight: 800; border-radius: 18px; cursor: pointer; width: 100%; box-shadow: 0 8px 18px rgba(106, 76, 156, 0.2); transition: 0.3s; box-sizing: border-box;}
+        .btn-action:hover:not(:disabled) { transform: translateY(-2px); box-shadow: 0 10px 22px rgba(106, 76, 156, 0.3); }
+        .btn-action:disabled { opacity: 0.6; cursor: not-allowed; }
+        
+        .btn-add { background: transparent; color: var(--primary); border: 2px dashed var(--secondary); padding: 13px; border-radius: 14px; font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: 1rem; cursor: pointer; width: 100%; transition: 0.3s; margin-top: 8px; box-sizing: border-box;}
+        .btn-add:hover { background: rgba(106, 76, 156, 0.04); border-color: var(--primary); }
+
+        /* --- Result & Print Styling --- */
+        #result-section { display: none; width: 100%; max-width: 900px; margin-top: 30px; box-sizing: border-box;}
+        .print-page { background: white; padding: 45px; border-radius: 28px; box-shadow: 0 10px 40px rgba(0,0,0,0.04); margin-bottom: 25px; box-sizing: border-box;}
+        
+        .welcome-banner { border: 2px solid rgba(106, 76, 156, 0.25); padding: 25px; border-radius: 22px; margin-bottom: 20px; background: #FCFBFF; box-sizing: border-box;}
+        .welcome-banner strong { color: var(--primary); font-size: 1.25rem; }
+        .msg-text { font-size: 1.05rem; line-height: 1.7; margin-top: 8px; font-weight: 500;}
+        .msg-translated { font-family: 'Poppins', sans-serif; font-size: 0.9rem; color: #555; direction: ltr; text-align: left; margin-top: 12px; line-height: 1.5;}
+
+        .work-details-banner { background: #f9f9fc; border: 1px solid var(--border-light); padding: 20px; border-radius: 18px; margin-bottom: 30px; box-sizing: border-box; }
+        .detail-row { display: flex; margin-bottom: 8px; font-size: 1.05rem; }
+        .detail-row strong { color: var(--primary); min-width: 110px; }
+
+        .print-title { color: var(--primary); font-size: 1.35rem; border-bottom: 2px solid var(--border-light); padding-bottom: 10px; margin-top: 25px; margin-bottom: 18px; font-weight: 800;}
+        
+        .rules-ul { padding-right: 18px; font-size: 1.05rem; line-height: 1.6; color: var(--text-main); }
+        .rules-ul li { margin-bottom: 16px; }
+        .rules-ul span { display: block; font-family: 'Poppins', sans-serif; font-size: 0.85rem; color: var(--text-muted); direction: ltr; text-align: left; margin-top: 4px; line-height: 1.3;}
+
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .tracker-table { width: 100%; border-collapse: collapse; margin-top: 18px; min-width: 600px; }
+        .tracker-table th { background: rgba(106, 76, 156, 0.04); color: var(--primary); padding: 13px; text-align: right; font-weight: 800; border: 1px solid #E5E5E5; font-size: 0.95rem;}
+        .tracker-table td { padding: 13px; border: 1px solid #E5E5E5; vertical-align: middle;}
+        
+        .check-boxes { display: flex; gap: 6px; direction: ltr; justify-content: flex-end; flex-wrap: wrap; }
+        .box { width: 18px; height: 18px; border: 1.5px solid #C0C0C0; border-radius: 4px; background: white; flex-shrink: 0;}
+
+        @media screen and (max-width: 768px) {
+            body { padding: 15px 10px; }
+            .hero-section { padding: 30px 20px; border-radius: 20px; }
+            .hero-section h1 { font-size: 1.7rem; }
+            .bento-card { padding: 20px; border-radius: 20px; }
+            .popup-content { padding: 25px 20px; }
+            .item-row { flex-direction: column; align-items: stretch; gap: 12px; }
+            .task-freq { margin-right: 0; width: 100%; margin-top: 5px;}
+            .btn-action { font-size: 1.1rem; padding: 16px 20px; }
+            .print-page { padding: 20px; border-radius: 20px; }
+            .detail-row { flex-direction: column; margin-bottom: 12px; }
+            .check-boxes { flex-wrap: nowrap; overflow-x: auto; padding-bottom: 5px;}
+            .box { width: 16px; height: 16px; border-width: 1px;}
+        }
+
+        @media print {
+            body { background: white; padding: 0; }
+            .no-print { display: none !important; }
+            #result-section { display: block !important; max-width: 100%; margin-top: 0;}
+            .print-page { padding: 15px; box-shadow: none; border-radius: 0; margin-bottom: 0;}
+            .page-break { page-break-after: always; }
+            .welcome-banner { padding: 18px; border-width: 1.5px; margin-bottom: 15px;}
+            .work-details-banner { padding: 15px; border-width: 1.5px; border-style: solid; margin-bottom: 15px;}
+            .msg-text, .detail-row { font-size: 12pt; line-height: 1.4;}
+            .msg-translated { font-size: 9pt; }
+            .print-title { font-size: 15pt; margin-top: 18px; margin-bottom: 12px;}
+            .rules-ul { font-size: 11pt; }
+            .rules-ul li { margin-bottom: 10px; }
+            .rules-ul span { font-size: 8pt; }
+            .table-responsive { overflow-x: visible; }
+            .tracker-table { min-width: 100%; }
+            .tracker-table th { padding: 9px; font-size: 10pt; -webkit-print-color-adjust: exact;}
+            .tracker-table td { padding: 9px; }
+            .check-boxes { flex-wrap: nowrap; }
+            .box { width: 14px; height: 14px; border: 1.5px solid #999; border-radius: 3px;}
+            tr, li, .work-details-banner { page-break-inside: avoid; }
+        }
+    </style>
+</head>
+<body>
+
+<div id="auth-screen" class="no-print" style="position: fixed; top: 0; left: 0; width: 100%; height: 100%; background-color: var(--bg-color); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 99999; font-family: 'Tajawal', sans-serif; direction: rtl; padding: 20px; box-sizing: border-box;">
+    <div style="background: rgba(255, 255, 255, 0.7); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); border-radius: 28px; padding: 40px 30px; box-shadow: 0 10px 40px rgba(106, 76, 156, 0.08); border: 1px solid rgba(255, 255, 255, 0.5); text-align: center; width: 100%; max-width: 400px; box-sizing: border-box;">
+        
+        <h2 style="font-size: 26px; font-weight: 800; background: linear-gradient(135deg, var(--primary), var(--secondary)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; margin: 0 0 10px 0;">الروتين الذكي ✿</h2>
+        <p style="font-size: 14px; color: #666; margin: 0 0 30px 0; line-height: 1.5;">أدخلي رقم الجوال المسجل في طلبك للدخول إلى منصتك</p>
+        
+        <div style="text-align: right; margin-bottom: 24px;">
+            <label style="display: block; margin-bottom: 8px; font-weight: 700; font-size: 13px; color: var(--primary); padding-right: 5px;">رقم الجوال</label>
+            <input type="tel" id="userPhone" placeholder="05XXXXXXXX" maxlength="10" autocomplete="tel" style="width: 100%; padding: 18px; border-radius: 20px; border: 1.5px solid #E1E1E7; background: rgba(255, 255, 255, 0.9); font-family: 'Poppins', sans-serif; font-size: 16px; outline: none; transition: all 0.3s ease; box-sizing: border-box; text-align: center; letter-spacing: 2px;">
+        </div>
+
+        <button onclick="handleLogin()" id="verify-btn" style="background: linear-gradient(135deg, var(--primary), var(--secondary)); color: white; border: none; width: 100%; padding: 18px; border-radius: 20px; font-family: 'Tajawal', sans-serif; font-weight: 700; font-size: 16px; cursor: pointer; box-shadow: 0 8px 20px rgba(106, 76, 156, 0.2); transition: all 0.3s ease;">تسجيل الدخول</button>
+        
+        <p id="error-msg" style="color: #d35400; font-size: 13px; margin-top: 15px; font-weight: 600; display: none; margin-bottom: 0;"></p>
+    </div>
+    
+    <div style="text-align: center; color: #888; font-size: 12px; margin-top: 25px; font-weight: 500;">
+        صنع من قبل عوالم Awalem
+    </div>
+</div>
+
+<script>
+const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxU-GFgnvbVdBCISpf4tzhN80H0CPIHvUAj_LIjaZ_yTTz6-20DWKwAbTSwd210JHhF/exec";
+
+// 1. إنشاء بصمة الجهاز بحماية (عشان ما ينهار المتصفح الخفي)
+function getDeviceId() {
+    try {
+        let deviceId = localStorage.getItem('smart_routine_device_id');
+        if (!deviceId) {
+            deviceId = 'DEV-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now();
+            localStorage.setItem('smart_routine_device_id', deviceId);
+        }
+        return deviceId;
+    } catch (e) {
+        return 'DEV-GUEST-' + Date.now();
+    }
+}
+
+// 2. معالجة الدخول الآمنة والذكية
+async function handleLogin() {
+    const btn = document.getElementById("verify-btn");
+    const errorMsg = document.getElementById("error-msg");
+    let phoneInput = document.getElementById("userPhone").value.trim();
+
+    // إعطاء إشارة للمستخدم فوراً إن الزر شغال
+    errorMsg.style.display = "none";
+    btn.innerText = "...جاري التحقق";
+    btn.style.opacity = "0.7";
+
+    // حماية الأرقام الخاطئة
+    if (!/^(05|5)\d{8}$/.test(phoneInput)) {
+        errorMsg.innerText = "يرجى إدخال رقم جوال صحيح";
+        errorMsg.style.display = "block";
+        btn.innerText = "تسجيل الدخول";
+        btn.style.opacity = "1";
+        return;
+    }
+
+    if (phoneInput.startsWith('0')) {
+        phoneInput = phoneInput.substring(1);
+    }
+
+    try {
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/x-www-form-urlencoded' },
+            body: new URLSearchParams({
+                'phone': phoneInput,
+                'deviceId': getDeviceId()
+            })
+        });
+
+        const data = await response.json();
+
+        if (data.status === "success") {
+            document.getElementById("auth-screen").style.display = "none";
+            try { localStorage.setItem("smart_routine_logged_in", "true"); } catch(e){}
+        } else {
+            errorMsg.innerText = data.message || "الرقم غير مسجل في المتجر";
+            errorMsg.style.display = "block";
+            btn.innerText = "تسجيل الدخول";
+            btn.style.opacity = "1";
+        }
+    } catch (error) {
+        errorMsg.innerText = "حدث خطأ في الاتصال، حاولي مرة أخرى.";
+        errorMsg.style.display = "block";
+        btn.innerText = "تسجيل الدخول";
+        btn.style.opacity = "1";
+    }
+}
+
+// دمج التحقق من الدخول التلقائي مع تهيئة المنصة
+document.addEventListener('DOMContentLoaded', () => {
+    try {
+        if (localStorage.getItem("smart_routine_logged_in") === "true") {
+            document.getElementById("auth-screen").style.display = "none";
+        }
+    } catch (e) {}
+    init();
+});
+</script>
+
+<div id="welcomePopup" onclick="this.style.display='none'">
+    <div class="popup-content" onclick="event.stopPropagation()">
+        <h2 style="border:none; text-align:center; padding:0; margin-bottom: 15px; color: var(--primary);">مرحباً بكِ في SmartRoutine 🌸</h2>
+        <p style="font-size: 1.05rem; line-height: 1.6; color: #444; margin-bottom: 25px;">
+            أداة ذكية لتسهيل وتنظيم مهام منزلكِ.<br>
+            <b>جديد:</b> إمكانية التعديل المباشر على النصوص، وتحديد أوقات العمل بذكاء، مع ترجمة آلية لأكثر من 12 لغة!
+        </p>
+        <button class="btn-action" style="padding:15px; border-radius:14px; width: 100%; font-size: 1.1rem;" onclick="document.getElementById('welcomePopup').style.display='none'">ابدئي بتصميم الجدول</button>
+    </div>
+</div>
+
+<div class="hero-section no-print">
+    <h1>SmartRoutine | الروتين الذكي ✨</h1>
+    <h2>منزلكِ أكثر تنظيماً، وعلاقتكِ بمساعدتكِ أكثر وضوحاً 🌸</h2>
+</div>
+
+<div class="container no-print">
+
+    <div class="bento-card" style="background: linear-gradient(to left, #ffffff, #fcfbff);">
+        <h2 class="section-title" style="border:none; margin-bottom: 15px;">💡 كيف تستخدمين المنصة؟</h2>
+        <div class="guide-steps">
+            <div><strong>1. أدخلي البيانات:</strong> حددي اسم المساعدة، أوقات العمل، ولغة الترجمة.</div>
+            <div><strong>2. اختاري وعدّلي:</strong> حددي القوانين والمهام. <span class="highlight">اضغطي على أي نص عربي لتعديله مباشرة!</span></div>
+            <div><strong>3. استخرجي الجدول:</strong> سيقوم النظام بترجمة كل شيء وترتيبه ليكون جاهزاً للطباعة.</div>
+        </div>
+    </div>
+
+    <div class="bento-card" style="display: flex; gap: 15px; flex-wrap: wrap;">
+        <div class="input-group" style="flex: 1; min-width: 220px;">
+            <label>✨ اسم المساعدة المنزلية:</label>
+            <input type="text" id="workerName" class="name-input" placeholder="مثال: جين / Jane">
+        </div>
+        <div class="input-group" style="flex: 1; min-width: 200px;">
+            <label>🌐 لغة المساعدة (للترجمة):</label>
+            <select id="workerLang" class="name-input" style="display:block; width: 100%;">
+                <option value="en">الإنجليزية (English)</option>
+                <option value="tl">الفلبينية (Tagalog)</option>
+                <option value="id">الإندونيسية (Indonesian)</option>
+                <option value="am">الأمهرية (Amharic)</option>
+                <option value="om">الأورومو (Oromo)</option>
+                <option value="sw">السواحيلية (Swahili)</option>
+                <option value="lg">اللوغندا (Luganda)</option>
+                <option value="so">الصومالية (Somali)</option>
+                <option value="bn">البنغالية (Bengali)</option>
+                <option value="hi">الهندية (Hindi)</option>
+                <option value="fr">الفرنسية (French)</option>
+                <option value="ar">العربية (بدون ترجمة)</option>
+            </select>
+        </div>
+        
+        <div class="input-group" style="flex: 2; min-width: 100%; margin-top: 10px;">
+            <label>✅ مربعات التقييم للإنجاز:</label>
+            <select id="includeCheckboxes" class="name-input" style="display:block; width: 100%;">
+                <option value="yes">نعم، أريد إضافة مربعات بجانب المهام (للمتابعة)</option>
+                <option value="no">لا، أريد الجدول للقراءة فقط (بدون مربعات تقييم)</option>
+            </select>
+            <div style="margin-top: 10px; background: rgba(106, 76, 156, 0.05); padding: 12px; border-radius: 12px; font-size: 0.95rem; color: var(--primary); font-weight: 500; border: 1px dashed var(--secondary);">
+                📌 <b>مثال (نعم):</b> المهمة ................... <span style="display:inline-flex; gap:3px; margin-right:5px; vertical-align:middle;"><span style="display:inline-block; width:12px; height:12px; border:1px solid #9982bb; border-radius:3px; background:#fff;"></span><span style="display:inline-block; width:12px; height:12px; border:1px solid #9982bb; border-radius:3px; background:#fff;"></span><span style="display:inline-block; width:12px; height:12px; border:1px solid #9982bb; border-radius:3px; background:#fff;"></span></span>
+            </div>
+        </div>
+    </div>
+
+    <div class="bento-card">
+        <h2 class="section-title">⏱️ تفاصيل العمل والجدول</h2>
+        
+        <div style="display: flex; gap: 15px; flex-wrap: wrap; margin-bottom: 20px;">
+            <div class="input-group" style="flex: 1; min-width: 220px;">
+                <label>📅 مدة الجدول:</label>
+                <select id="scheduleType" class="name-input" onchange="document.getElementById('dateInputs').style.display = this.value === 'specific' ? 'flex' : 'none'">
+                    <option value="general">جدول عام (مستمر)</option>
+                    <option value="specific">فترة محددة (من - إلى)</option>
+                </select>
+            </div>
+            
+            <div id="dateInputs" class="input-group" style="flex: 2; min-width: 280px; display: none; gap: 10px;">
+                <div style="flex:1;"><label style="font-size:0.9rem;">من تاريخ:</label><input type="date" id="startDate" class="name-input"></div>
+                <div style="flex:1;"><label style="font-size:0.9rem;">إلى تاريخ:</label><input type="date" id="endDate" class="name-input"></div>
+            </div>
+
+            <div class="input-group" style="flex: 1; min-width: 220px;">
+                <label>🌴 يوم الإجازة:</label>
+                <select id="dayOff" class="name-input">
+                    <option value="بدون إجازة / حسب الاتفاق">بدون إجازة / حسب الاتفاق</option>
+                    <option value="الجمعة">الجمعة</option>
+                    <option value="السبت">السبت</option>
+                    <option value="الأحد">الأحد</option>
+                    <option value="الاثنين">الاثنين</option>
+                    <option value="الثلاثاء">الثلاثاء</option>
+                    <option value="الأربعاء">الأربعاء</option>
+                    <option value="الخميس">الخميس</option>
+                </select>
+            </div>
+        </div>
+
+        <div class="input-group">
+            <label>⏰ أوقات العمل:</label>
+            <select id="workHoursType" class="name-input" onchange="toggleWorkHours()">
+                <option value="general">عام / حسب الاتفاق المسبق</option>
+                <option value="fixed">توقيت ثابت يومياً</option>
+                <option value="custom">مخصص (كتابة تفصيلية)</option>
+            </select>
+        </div>
+        
+        <div id="fixedHours" style="display:none; margin-top:15px; flex-wrap:wrap; gap:15px; padding: 15px; background: #fdfbff; border-radius: 14px; border: 1px dashed var(--secondary);">
+            <div class="input-group" style="flex:1; min-width:140px;"><label style="font-size:0.95rem;">يبدأ العمل:</label><input type="time" id="startTime" class="name-input"></div>
+            <div class="input-group" style="flex:1; min-width:140px;"><label style="font-size:0.95rem;">ينتهي العمل:</label><input type="time" id="endTime" class="name-input"></div>
+            <div class="input-group" style="flex:2; min-width:220px;"><label style="font-size:0.95rem;">فترة الراحة (نص):</label><input type="text" id="breakTime" class="name-input" placeholder="مثال: من 2 ظهراً إلى 4 عصراً"></div>
+        </div>
+        
+        <div id="customHours" style="display:none; margin-top:15px;">
+            <textarea id="customHoursText" class="name-input" placeholder="اكتبي نظام أوقات العمل بالتفصيل هنا... (مثال: من الأحد للخميس 8-8، والجمعة نصف يوم)" rows="3"></textarea>
+        </div>
+    </div>
+
+    <div class="bento-card">
+        <h2 class="section-title">📌 أولاً: قوانين المنزل العامة</h2>
+        <div id="general-rules-container"></div>
+        <button class="btn-add" onclick="addCustomRuleRow('general-rules-container')">+ إضافة قانون مخصص</button>
+    </div>
+
+    <div class="bento-card">
+        <h2 class="section-title">👥 ثانياً: قوانين العناية بالأطفال / كبار السن (حسب الحاجة)</h2>
+        <div id="dependent-rules-container"></div>
+        <button class="btn-add" onclick="addCustomRuleRow('dependent-rules-container')">+ إضافة قانون مخصص للعناية</button>
+    </div>
+
+    <div class="bento-card">
+        <h2 class="section-title">🍽️ ثالثاً: مهام المطبخ والمخزن</h2>
+        <div id="kitchen-container"></div>
+        <button class="btn-add" onclick="addCustomTaskRow('kitchen-container')">+ إضافة مهمة مخصصة للمطبخ</button>
+    </div>
+
+    <div class="bento-card">
+        <h2 class="section-title">🛋️ رابعاً: مهام الغرف والصالات</h2>
+        <div id="rooms-container"></div>
+        <button class="btn-add" onclick="addCustomTaskRow('rooms-container')">+ إضافة مهمة مخصصة للغرف</button>
+    </div>
+
+    <div class="bento-card">
+        <h2 class="section-title">🛁 خامساً: مهام الحمامات</h2>
+        <div id="bathrooms-container"></div>
+        <button class="btn-add" onclick="addCustomTaskRow('bathrooms-container')">+ إضافة مهمة مخصصة للحمامات</button>
+    </div>
+
+    <div class="bento-card">
+        <h2 class="section-title">🧺 سادساً: الغسيل والتنظيف العام</h2>
+        <div id="laundry-container"></div>
+        <button class="btn-add" onclick="addCustomTaskRow('laundry-container')">+ إضافة مهمة مخصصة للغسيل</button>
+    </div>
+
+    <button class="btn-action" id="generateBtn" onclick="generateSchedule()">استخراج الجدول والترجمة الآلية 📄</button>
+</div>
+
+<div id="result-section">
+    <div id="result-content"></div>
+    <div class="no-print bento-card" style="text-align:center; margin-top:20px; padding:25px; background:white;">
+        <button class="btn-action" style="background: #2C2C2C; width: auto; padding: 15px 40px; font-size: 1.1rem; border-radius:14px;" onclick="window.print()">🖨️ طباعة الجدول (كـ PDF)</button>
+    </div>
+</div>
+
+<script>
+    function toggleWorkHours() {
+        const type = document.getElementById('workHoursType').value;
+        document.getElementById('fixedHours').style.display = type === 'fixed' ? 'flex' : 'none';
+        document.getElementById('customHours').style.display = type === 'custom' ? 'block' : 'none';
+    }
+
+    const generalRules = [
+        { ar: "استخدام الجوال: يرجى ترك الجوال في الغرفة أثناء العمل، والاستمتاع باستخدامه في أوقات الراحة (يُفضل على الوضع الصامت).", en: "Mobile Phone: Please keep your phone in your room during work hours, and enjoy using it on your breaks." },
+        { ar: "الصدق والأمانة: نحن نقدر الصدق؛ لا تترددي في إخبارنا فوراً إذا انكسر أو تلف أي شيء بالخطأ، ولا داعي لإخفاء الأخطاء.", en: "Honesty: We appreciate honesty; please tell us immediately if anything breaks by mistake." },
+        { ar: "الخصوصية: خصوصيتك وخصوصيتنا مهمة؛ يرجى طرق الباب دائماً قبل الدخول، ونرجو عدم تصوير أي جزء من المنزل أو العائلة.", en: "Privacy: Always knock before entering. Strictly no photos of the house or family." },
+        { ar: "السؤال عند الشك: نحن هنا لمساعدتك؛ اسألينا دائماً قبل تشغيل أي جهاز أو استخدام منظف جديد.", en: "Ask When Unsure: Do not operate new appliances or use new cleaners without asking first." },
+        { ar: "الأمان والسلامة: لسلامتك وسلامتنا؛ يرجى عدم فتح الباب الخارجي لأي غريب بدون إذن. ويجب التأكد من إغلاق الغاز وفصل الأجهزة.", en: "Safety: Do not open the door for strangers. Ensure gas and appliances are turned off after use." },
+        { ar: "النظافة الشخصية: نقدر اهتمامك بنظافتك الشخصية اليومية وغسل اليدين باستمرار للحفاظ على صحتك.", en: "Hygiene: Maintain daily personal hygiene and wash hands frequently with soap and water." },
+        { ar: "التبليغ عن الأعطال والنواقص: إخبارنا فوراً بأي تسريب، لمبة محترقة، أو تسجيل نواقص المطبخ لنوفرها.", en: "Reporting: Immediately report leaks, burnt bulbs, or note down missing supplies." },
+        { ar: "ترشيد الاستهلاك: شكراً لتعاونك في إطفاء الأنوار والمكيفات عند الخروج من الغرف.", en: "Energy Saving: Turn off lights/AC when leaving rooms. Do not waste water." },
+        { ar: "تهوية المنزل: الحرص على فتح النوافذ بانتظام لتجديد الهواء، مع الانتباه لإغلاقها بعد فترة.", en: "Ventilation: Open windows regularly to ventilate the house, but remember to close them later." },
+        { ar: "الصحة والمرض: صحتك تهمنا جداً؛ إذا شعرتِ بأي تعب أو مرض، أخبرينا فوراً لترتاحي وتحصلي على العلاج.", en: "Health: If you feel sick, inform us immediately so you can rest and get treated." }
+    ];
+
+    const dependentRules = [
+        { ar: "الطعام: غذاء أطفالنا/كبار السن أمانة؛ يرجى تحضير وجبات طبيعية وصحية بالمنزل 100%. (يُمنع الأكل الجاهز).", en: "Food: Meals must be 100% natural, healthy, and homemade (No ready-made food)." },
+        { ar: "التعقيم: لحمايتهم، يرجى غسل وتعقيم الرضاعات أو أدوات الأكل بانتظام.", en: "Sterilization: Regularly wash and sterilize feeding bottles and eating utensils." },
+        { ar: "النظافة قبل التعامل: شكراً لغسل يديك جيداً بالصابون دائماً قبل تحضير وجباتهم أو التعامل معهم.", en: "Hygiene: Always wash hands well with soap before preparing their food or interacting with them." },
+        { ar: "أمان المحيط: إبقاء الأرضية خالية من القطع الصغيرة الخطيرة، ومسح المنطقة، وترتيب الأدوات باستمرار.", en: "Environment Safety: Keep the floor free of small dangerous items, wipe the area, and tidy items constantly." },
+        { ar: "الأدوات الحادة والخطرة: التأكد دائماً من إبعاد السكاكين والمنظفات والأكواب عن متناول أيديهم.", en: "Hazards: Always keep knives, glass cups, and cleaners away from their reach." }
+    ];
+
+    const kitchenTasks = [
+        { ar: "غسيل الأطباق والأواني بلطف وتنظيف المطبخ فوراً بعد كل وجبة.", en: "Gently wash dishes and clean the kitchen immediately after every meal." },
+        { ar: "مسح أسطح العمل (الرخام) والطاولات والفرن من الداخل والخارج، وتنظيف الشفاط.", en: "Wipe countertops, tables, oven (inside/out), and clean the exhaust fan/hood." },
+        { ar: "تنظيف وتلميع حوض الغسيل (المغسلة) ليبقى نظيفاً.", en: "Clean and polish the kitchen sink." },
+        { ar: "مسح الثلاجة والمايكروويف والأجهزة الكهربائية، والتخلص من الأطعمة التالفة بانتظام.", en: "Wipe the fridge, microwave, appliances, and discard spoiled food regularly." },
+        { ar: "مسح دواليب المطبخ من الخارج، وتفريغها لمسحها من الداخل وإعادة ترتيبها.", en: "Wipe kitchen cabinets (outside), empty to wipe inside, and reorganize." },
+        { ar: "ركن القهوة والمخزن: ترتيب وتنظيف ركن القهوة، وكنس ومسح المخزن وترتيب أرففه.", en: "Organize coffee corner; sweep, mop, and organize the pantry/weekly supplies." },
+        { ar: "ترتيب المقاضي عند شرائها ووضع كل شيء في مكانه المخصص.", en: "Organize groceries upon arrival and put everything in its designated place." },
+        { ar: "تعقيم إسفنجات المطبخ وألواح التقطيع.", en: "Sanitize kitchen sponges and cutting boards." },
+        { ar: "القمامة: تفريغ سلات المهملات وتغيير الأكياس، وغسل السلة وتعقيمها، وإخراج القمامة ليلاً.", en: "Empty trash, wash/sanitize bins, replace bags, and take trash out at night." }
+    ];
+
+    const roomTasks = [
+        { ar: "الترتيب اللطيف والمستمر للصالات وإعادة الألعاب والأشياء لأماكنها المخصصة.", en: "Continuously tidy living areas and put items back in their places." },
+        { ar: "ترتيب الأسرة، تنظيم المخدات، وتغيير الملاءات والشراشف وغسلها بانتظام.", en: "Make beds, organize pillows, and regularly change/wash bed sheets." },
+        { ar: "ترتيب دواليب الملابس، ومسح داخل الأدراج والرفوف، ومسح أعلى الخزانات.", en: "Organize wardrobes, wipe inside drawers/shelves, and wipe tops of cabinets." },
+        { ar: "كنس ومسح الأرضيات والمداخل، والكنس بعمق أسفل الكنب والأسرة وتحت السجاد.", en: "Sweep and mop floors/entrances; deep vacuum under sofas, beds, and carpets." },
+        { ar: "مسح الغبار برفق عن الأثاث، التحف، شاشات التلفزيون، والأسطح الزجاجية.", en: "Dust furniture, decor, TV screens, and glass surfaces." },
+        { ar: "مسح زجاج النوافذ (من الداخل)، وكنس مجاري الألمنيوم، وتنظيف الأبواب والمقابض.", en: "Wipe indoor windows, vacuum aluminum tracks, and clean doors/handles." },
+        { ar: "مسح مراوح السقف، الثريات، الأباجورات، وتنظيف فلاتر مكيفات الهواء.", en: "Wipe ceiling fans, chandeliers, lampshades, and clean AC filters." },
+        { ar: "تنظيف الستائر، ومسح البقع عن الجدران برفق عند ملاحظتها.", en: "Clean curtains and gently wipe any spots on the walls when noticed." }
+    ];
+
+    const bathTasks = [
+        { ar: "غسيل وتنظيف حمامات الأطفال / الضيوف جيداً وبشكل مستمر.", en: "Continuously wash and clean the bathrooms thoroughly." },
+        { ar: "تنظيف المراحيض بعمق (من الداخل والخارج)، وفرك حوض الاستحمام (البانيو).", en: "Deep clean toilets (inside/out) and scrub the bathtub." },
+        { ar: "تلميع الخلاطات، المرايا، ومسح داخل أدراج ورفوف الحمام.", en: "Polish faucets, mirrors, and wipe inside bathroom drawers/shelves." },
+        { ar: "مسح وتلميع السخان، وتنظيف مراوح الشفط والنوافذ.", en: "Wipe/polish the water heater, clean exhaust fans and windows." },
+        { ar: "تغيير وغسيل مناشف الحمام ودعاسات الأرضية.", en: "Change and wash bathroom towels and floor mats." },
+        { ar: "غسل جدران الحمامات، وإزالة الشوائب من مصارف المياه (الصفايات).", en: "Wash bathroom walls and clear drains from debris." }
+    ];
+
+    const laundryTasks = [
+        { ar: "غسيل الملابس بعناية، كيّها، وطويها في الدواليب.", en: "Wash, iron, and fold clothes into wardrobes." },
+        { ar: "الفرز والجيوب: فحص جيوب جميع الملابس قبل غسلها، وفصل الملابس البيضاء عن الملونة.", en: "Check pockets before washing; separate white clothes from colored ones." },
+        { ar: "تُغسل ملابس ومناشف الأطفال الرضع منفصلة تماماً بمنظف خاص.", en: "Wash babies' clothes/towels completely separate using baby detergent." },
+        { ar: "استخدام النشافة (Dryer) مخصص فقط لمفارش السرير، أما باقي الملابس فتُنشر لتجف طبيعياً.", en: "Use the dryer ONLY for bed sheets; hang other clothes to dry naturally." },
+        { ar: "عمل دورة تنظيف لغسالة الملابس للمحافظة عليها.", en: "Run a cleaning cycle for the washing machine to maintain it." },
+        { ar: "أدوات التنظيف: تعبئة الزجاجات الفارغة، وتنظيف المكنسة والممسحة بعد الانتهاء منها.", en: "Refill empty cleaning bottles; clean the vacuum and mop after use." },
+        { ar: "كنس أو غسيل الحوش الخارجي والأبواب الخارجية (إن وجدت).", en: "Sweep or wash the outdoor yard and exterior doors (if any)." }
+    ];
+
+    const freqOptionsHTML = `
+        <option value="daily">يومي / Daily</option>
+        <option value="twice">مرتين أسبوعياً / Twice a Week</option>
+        <option value="weekly">أسبوعي / Weekly</option>
+        <option value="monthly">شهري / Monthly</option>
+    `;
+
+    let elementIdCounter = 0;
+
+    function init() {
+        renderRules('general-rules-container', generalRules);
+        renderRules('dependent-rules-container', dependentRules);
+        renderTasks('kitchen-container', kitchenTasks);
+        renderTasks('rooms-container', roomTasks);
+        renderTasks('bathrooms-container', bathTasks);
+        renderTasks('laundry-container', laundryTasks);
+    }
+
+    function renderRules(containerId, rulesArray) {
+        const container = document.getElementById(containerId);
+        rulesArray.forEach(r => {
+            let id = elementIdCounter++;
+            container.innerHTML += `
+                <div class="item-row">
+                    <label class="cb-wrapper" style="align-items:center;">
+                        <input type="checkbox" class="rule-cb" id="cb-${id}" data-orig-ar="${r.ar}" data-orig-en="${r.en}">
+                        <div class="label-content">
+                            <div contenteditable="true" class="editable-ar" id="txt-${id}" title="اضغطي للتعديل">${r.ar}</div>
+                        </div>
+                    </label>
+                </div>
+            `;
+        });
+    }
+
+    function renderTasks(containerId, tasksArray) {
+        const container = document.getElementById(containerId);
+        tasksArray.forEach(t => {
+            let id = elementIdCounter++;
+            container.innerHTML += `
+                <div class="item-row">
+                    <label class="cb-wrapper" style="align-items:center;">
+                        <input type="checkbox" class="task-cb" id="cb-${id}" data-type="predef" data-orig-ar="${t.ar}" data-orig-en="${t.en}" onchange="toggleSelect(${id})">
+                        <div class="label-content">
+                            <div contenteditable="true" class="editable-ar" id="txt-${id}" title="اضغطي للتعديل">${t.ar}</div>
+                        </div>
+                    </label>
+                    <select id="sel-${id}" class="task-freq">${freqOptionsHTML}</select>
+                </div>
+            `;
+        });
+    }
+
+    function addCustomRuleRow(containerId) {
+        let id = elementIdCounter++;
+        const container = document.getElementById(containerId);
+        container.insertAdjacentHTML('beforeend', `
+            <div class="item-row" style="background: #FCFBFF; border: 1px dashed var(--secondary);">
+                <label class="cb-wrapper" style="align-items: center;">
+                    <input type="checkbox" class="rule-cb custom" id="cb-${id}" onchange="autoCheckRule(this, ${id})">
+                    <div class="label-content">
+                        <input type="text" id="txt-${id}" class="custom-input" placeholder="اكتبي القانون المخصص هنا..." oninput="autoCheckRule(document.getElementById('txt-${id}'), ${id})">
+                    </div>
+                </label>
+            </div>
+        `);
+    }
+
+    function addCustomTaskRow(containerId) {
+        let id = elementIdCounter++;
+        const container = document.getElementById(containerId);
+        container.insertAdjacentHTML('beforeend', `
+            <div class="item-row" style="background: #FCFBFF; border: 1px dashed var(--secondary);">
+                <label class="cb-wrapper" style="align-items: center;">
+                    <input type="checkbox" class="task-cb custom" id="cb-${id}" onchange="toggleSelect(${id})">
+                    <div class="label-content">
+                        <input type="text" id="txt-${id}" class="custom-input" placeholder="اكتب المهمة هنا وسيتم ترجمتها آلياً..." oninput="autoCheck(this, ${id})">
+                    </div>
+                </label>
+                <select id="sel-${id}" class="task-freq">${freqOptionsHTML}</select>
+            </div>
+        `);
+    }
+
+    function toggleSelect(id) {
+        const sel = document.getElementById(`sel-${id}`);
+        if(sel) sel.style.display = document.getElementById(`cb-${id}`).checked ? 'block' : 'none';
+    }
+
+    function autoCheck(inputEl, id) {
+        const cb = document.getElementById(`cb-${id}`);
+        const hasValue = inputEl.value.trim().length > 0;
+        if(cb.checked !== hasValue) {
+            cb.checked = hasValue;
+            toggleSelect(id);
+        }
+    }
+    
+    function autoCheckRule(inputEl, id) {
+        const cb = document.getElementById(`cb-${id}`);
+        const hasValue = inputEl.value.trim().length > 0;
+        cb.checked = hasValue;
+    }
+
+    function getBoxes(freq) {
+        let count = freq === 'daily' ? 7 : (freq === 'twice' ? 2 : 1);
+        return `<div class="check-boxes">` + `<div class="box"></div>`.repeat(count) + `</div>`;
+    }
+
+    async function translateText(text, targetLang) {
+        if (!text || targetLang === 'ar') return "";
+        try {
+            const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ar|${targetLang}`);
+            const data = await res.json();
+            if (data && data.responseData && data.responseData.translatedText) {
+                return data.responseData.translatedText;
+            }
+            return text; 
+        } catch (e) {
+            return "Translation Error";
+        }
+    }
+
+    async function generateSchedule() {
+        const targetLang = document.getElementById('workerLang').value;
+        const includeCheckboxes = document.getElementById('includeCheckboxes').value === 'yes';
+        const workerNameInput = document.getElementById('workerName').value.trim();
+        const workerName = workerNameInput !== "" ? workerNameInput : "عزيزتي";
+        
+        const checkedRules = document.querySelectorAll('.rule-cb:checked');
+        const checkedTasks = document.querySelectorAll('.task-cb:checked');
+        
+        let validRules = [];
+        for(let cb of checkedRules) {
+            const txtEl = document.getElementById(cb.id.replace('cb-', 'txt-'));
+            const val = txtEl.tagName === 'INPUT' ? txtEl.value.trim() : txtEl.innerText.trim();
+            if(val.length > 0) validRules.push(cb);
+        }
+
+        let validTasks = [];
+        for(let cb of checkedTasks) {
+            const txtEl = document.getElementById(cb.id.replace('cb-', 'txt-'));
+            const val = txtEl.tagName === 'INPUT' ? txtEl.value.trim() : txtEl.innerText.trim();
+            if(val.length > 0) validTasks.push(cb);
+        }
+
+        if(validRules.length === 0 && validTasks.length === 0) {
+            alert("الرجاء اختيار أو كتابة قانون واحد أو مهمة واحدة على الأقل لإنشاء الجدول.");
+            return;
+        }
+
+        const btn = document.getElementById('generateBtn');
+        btn.innerHTML = "⏳ جاري معالجة الجدول والترجمة الآلية...";
+        btn.disabled = true;
+
+        let html = '';
+        const hasTasks = validTasks.length > 0;
+
+        // تجهيز بيانات تفاصيل العمل (وإخفاء ما لم يتم تحديده)
+        const schedType = document.getElementById('scheduleType').value;
+        const sDate = document.getElementById('startDate').value;
+        const eDate = document.getElementById('endDate').value;
+        
+        const dayOffTextAr = document.getElementById('dayOff').value;
+        const whType = document.getElementById('workHoursType').value;
+
+        // المتغيرات للتحكم في الإظهار
+        let showDuration = (schedType === 'specific' && sDate && eDate);
+        let showDayOff = (dayOffTextAr !== 'بدون إجازة / حسب الاتفاق');
+        let showWorkHours = (whType !== 'general');
+
+        let durationTextAr = showDuration ? `من ${sDate} إلى ${eDate}` : "";
+        let hoursTextAr = "";
+        
+        if (whType === 'fixed') {
+            const st = document.getElementById('startTime').value || '--:--';
+            const et = document.getElementById('endTime').value || '--:--';
+            const bt = document.getElementById('breakTime').value || 'غير محدد';
+            hoursTextAr = `يبدأ ${st}، وينتهي ${et} (الراحة: ${bt})`;
+        } else if (whType === 'custom') {
+            hoursTextAr = document.getElementById('customHoursText').value.trim() || "غير محدد";
+        }
+
+        let welcomeAr = `نحن سعداء جداً بوجودك معنا ونقدر مجهودك. تم تصميم هذا الجدول خصيصاً من أجلكِ، لتسهيل عملكِ وتوضيح مهامك بكل بساطة لتكوني مرتاحة ولنقلل من التوجيهات المتكررة. نتمنى لكِ وقتاً سعيداً معنا!`;
+        
+        // تجميع تفاصيل العمل المخصصة فقط لترجمتها
+        let plainDetailsToTranslate = [];
+        if(showDuration) plainDetailsToTranslate.push(`مدة الجدول: ${durationTextAr}`);
+        if(showDayOff) plainDetailsToTranslate.push(`يوم الإجازة: ${dayOffTextAr}`);
+        if(showWorkHours) plainDetailsToTranslate.push(`أوقات العمل: ${hoursTextAr}`);
+        let detailsStringAr = plainDetailsToTranslate.join(" | ");
+        
+        let welcomeTranslated = "";
+        let detailsTranslated = "";
+        
+        if(targetLang !== 'ar') {
+            welcomeTranslated = await translateText(welcomeAr, targetLang);
+            if(detailsStringAr) detailsTranslated = await translateText(detailsStringAr, targetLang);
+        }
+
+        if(validRules.length > 0) {
+            html += `<div class="print-page ${hasTasks ? 'page-break' : ''}" id="page-rules">`;
+            
+            html += `
+                <div class="welcome-banner">
+                    <strong>مرحباً بكِ في منزلنا يا ${workerName} 🌸</strong>
+                    <div class="msg-text">${welcomeAr}</div>
+                    ${targetLang !== 'ar' ? `<div class="msg-translated" dir="ltr">${welcomeTranslated}</div>` : ''}
+                </div>
+            `;
+
+            // إظهار قسم تفاصيل العمل فقط إذا تم تخصيص أحد الخيارات
+            if(showDuration || showDayOff || showWorkHours) {
+                html += `
+                    <div class="work-details-banner">
+                        <div style="font-weight:800; color:var(--primary); margin-bottom:12px; font-size:1.15rem;">⏱️ تفاصيل العمل والجدول / Work & Schedule Details:</div>
+                `;
+                if(showDuration) html += `<div class="detail-row"><strong>📅 مدة الجدول:</strong> <span>${durationTextAr}</span></div>`;
+                if(showDayOff) html += `<div class="detail-row"><strong>🌴 الإجازة:</strong> <span>${dayOffTextAr}</span></div>`;
+                if(showWorkHours) html += `<div class="detail-row"><strong>⏰ أوقات العمل:</strong> <span>${hoursTextAr}</span></div>`;
+                
+                if(targetLang !== 'ar' && detailsTranslated) {
+                    html += `<div class="msg-translated" style="margin-top:15px; border-top:1px dashed #ccc; padding-top:10px;" dir="ltr">${detailsTranslated}</div>`;
+                }
+                html += `</div>`;
+            }
+
+            html += `<div class="print-title">📌 قوانين المنزل الأساسية / House Rules</div>`;
+            html += `<ul class="rules-ul">`;
+            
+            for(let cb of validRules) {
+                let id = cb.id.replace('cb-', '');
+                let txtEl = document.getElementById(`txt-${id}`);
+                let currentAr = txtEl.tagName === 'INPUT' ? txtEl.value.trim() : txtEl.innerText.trim();
+                let enText = "";
+                
+                if(!cb.classList.contains('custom') && targetLang === 'en' && currentAr === cb.dataset.origAr) {
+                    enText = cb.dataset.origEn;
+                } else if(targetLang !== 'ar') {
+                    enText = await translateText(currentAr, targetLang);
+                }
+
+                html += `<li><b>${currentAr}</b>${targetLang !== 'ar' ? `<span dir="ltr">${enText}</span>` : ''}</li>`;
+            }
+            html += `</ul></div>`;
+        }
+
+        if(hasTasks) {
+            html += `<div class="print-page" id="page-tracker">`;
+            html += `<div class="print-title">🗓️ جدول توزيع المهام / Tasks Schedule</div>`;
+            
+            let sortedTasks = { daily: "", twice: "", weekly: "", monthly: "" };
+            let freqTitles = { daily: "يومي / Daily", twice: "مرتين في الأسبوع / Twice a Week", weekly: "أسبوعي / Weekly", monthly: "شهري / Monthly" };
+
+            for(let cb of validTasks) {
+                let id = cb.id.replace('cb-', '');
+                let freqId = document.getElementById(`sel-${id}`).value;
+                let txtEl = document.getElementById(`txt-${id}`);
+                let currentAr = txtEl.tagName === 'INPUT' ? txtEl.value.trim() : txtEl.innerText.trim();
+                let enText = "";
+                
+                if(!cb.classList.contains('custom') && targetLang === 'en' && currentAr === cb.dataset.origAr) {
+                    enText = cb.dataset.origEn;
+                } else if(targetLang !== 'ar') {
+                    enText = await translateText(currentAr, targetLang);
+                }
+
+                sortedTasks[freqId] += `
+                    <tr>
+                        <td>
+                            <div class="label-ar">✓ ${currentAr}</div>
+                            ${targetLang !== 'ar' ? `<div class="label-en" style="display:block" dir="ltr">${enText}</div>` : ''}
+                        </td>
+                        ${includeCheckboxes ? `<td style="width: 160px; text-align: left;">${getBoxes(freqId)}</td>` : ''}
+                    </tr>
+                `;
+            }
+
+            ["daily", "twice", "weekly", "monthly"].forEach(f => {
+                if(sortedTasks[f]) {
+                    html += `
+                        <h3 style="color: var(--primary); margin-top: 25px;">${freqTitles[f]}</h3>
+                        <div class="table-responsive">
+                            <table class="tracker-table">
+                                <tr>
+                                    <th>المهمة / Task</th>
+                                    ${includeCheckboxes ? `<th>التقييم / Check</th>` : ''}
+                                </tr>
+                                ${sortedTasks[f]}
+                            </table>
+                        </div>
+                    `;
+                }
+            });
+            
+            if(includeCheckboxes){
+                html += `<div style="text-align:center; color:#888; font-size:0.9rem; margin-top:20px;">يرجى وضع علامة (✓) في المربع عند إنجاز المهمة / Please check the box when the task is done.</div>`;
+            }
+            html += `</div>`;
+        }
+
+        document.getElementById('result-content').innerHTML = html;
+        document.getElementById('result-section').style.display = 'block';
+        document.getElementById('result-section').scrollIntoView({behavior:'smooth'});
+        
+        btn.innerHTML = "استخراج الجدول والترجمة الآلية 📄";
+        btn.disabled = false;
+    }
+</script>
+
+<div class="no-print" style="text-align: center; color: #888; font-size: 13px; margin-top: 40px; margin-bottom: 20px; font-weight: 500;">
+    صنع من قبل عوالم Awalem
+</div>
+
+</body>
+</html>

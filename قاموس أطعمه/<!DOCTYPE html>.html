@@ -1,0 +1,774 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>القاموس الذكي للمطبخ (250 كلمة) | عوالم Awalem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Tajawal:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <style>
+        :root {
+            /* باليتة الألوان الأصلية المعتمدة للقاموس العام */
+            --pink-mist: #F7DAE7;
+            --bubblegum: #E2B4C1;
+            --cherry-soda: #D38C9D;
+            --ruby-petals: #A55166;
+            
+            --bg-color: #FBF5F7;           
+            --text-dark: #1d1d1f;
+            --error-color: #ff3b30;
+            --success-color: #34c759;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background-color: var(--bg-color);
+            font-family: 'Tajawal', 'Poppins', sans-serif;
+            color: var(--text-dark);
+            overflow-x: hidden;
+            width: 100vw;
+            padding: 20px 10px;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .bento-container {
+            max-width: 850px;
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .bento-card {
+            background: rgba(255, 255, 255, 0.9);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid rgba(226, 180, 193, 0.3);
+            border-radius: 28px;
+            padding: 25px 20px;
+            box-shadow: 0 4px 24px rgba(165, 81, 102, 0.05);
+            width: 100%;
+            text-align: center;
+        }
+
+        /* ---------------- واجهة تسجيل الدخول ---------------- */
+        #loginView { margin-top: 10vh; max-width: 450px; margin-left: auto; margin-right: auto; display: block; }
+        .input-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; text-align: right; }
+        .input-group label { font-size: 0.9rem; font-weight: 600; color: var(--ruby-petals); }
+        input[type="tel"] { width: 100%; padding: 16px 20px; border-radius: 20px; border: 1px solid rgba(165, 81, 102, 0.3); font-family: 'Poppins', sans-serif; font-size: 1.1rem; color: var(--text-dark); outline: none; transition: 0.3s; text-align: left; direction: ltr; }
+        input[type="tel"]:focus { border-color: var(--ruby-petals); box-shadow: 0 0 0 4px rgba(247, 218, 231, 0.5); }
+        .msg-box { margin-top: 15px; font-size: 0.9rem; font-weight: 600; border-radius: 12px; padding: 12px; display: none; }
+        .msg-box.error { display: block; background: rgba(255, 59, 48, 0.1); color: var(--error-color); }
+        .msg-box.success { display: block; background: rgba(52, 199, 89, 0.1); color: var(--success-color); }
+        .loader { border: 3px solid rgba(165, 81, 102, 0.2); border-top: 3px solid var(--ruby-petals); border-radius: 50%; width: 20px; height: 20px; animation: spin 1s linear infinite; display: none; margin: 0 auto; }
+        @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+        /* ---------------- واجهة القاموس ---------------- */
+        .hero-banner { background: linear-gradient(135deg, var(--ruby-petals), var(--cherry-soda)); border: none; color: white; padding: 35px 20px; }
+        .hero-banner h1 { font-size: 1.6rem; font-weight: 700; margin-bottom: 10px; line-height: 1.4; color: white;}
+        .hero-banner p { font-size: 0.95rem; color: rgba(255, 255, 255, 0.9); line-height: 1.6; font-weight: 500; }
+        .badge { display: inline-block; background: rgba(247, 218, 231, 0.9); padding: 8px 16px; border-radius: 20px; font-size: 0.85rem; margin-bottom: 12px; font-weight: 700; color: var(--ruby-petals); box-shadow: 0 4px 12px rgba(0,0,0,0.1);}
+        
+        .intro-section { display: flex; flex-direction: column; gap: 12px; text-align: right; }
+        .intro-section h2 { font-size: 1.1rem; color: var(--ruby-petals); margin-bottom: 5px; font-weight: 700;}
+        .intro-steps { font-size: 0.95rem; line-height: 1.8; margin-bottom: 10px; padding-right: 20px; }
+        
+        .scientific-tip { 
+            background: linear-gradient(to left, rgba(247, 218, 231, 0.4), transparent);
+            border-right: 4px solid var(--ruby-petals); 
+            padding: 15px; 
+            border-radius: 12px; 
+            font-size: 0.9rem; 
+            line-height: 1.6; 
+            color: #4a4a4a; 
+            text-align: right;
+            margin-top: 5px;
+        }
+        
+        .actions-area { display: flex; gap: 10px; flex-wrap: wrap; align-items: center;}
+        select { flex: 1; min-width: 180px; padding: 14px 15px; border-radius: 16px; border: 1px solid rgba(165, 81, 102, 0.3); font-family: 'Tajawal', sans-serif; font-size: 0.95rem; outline: none; color: var(--ruby-petals); font-weight: 600; cursor: pointer; }
+        button { padding: 14px 20px; border-radius: 16px; font-family: 'Tajawal', sans-serif; font-size: 0.95rem; font-weight: 700; border: 1px solid rgba(165, 81, 102, 0.2); background: linear-gradient(135deg, var(--ruby-petals), var(--cherry-soda)); color: white; cursor: pointer; transition: transform 0.2s, box-shadow 0.2s; width: 100%; display: flex; justify-content: center; align-items: center; gap: 8px; box-shadow: 0 4px 15px rgba(165, 81, 102, 0.15);}
+        button:active { transform: scale(0.97); }
+        .btn-print { flex: 1; min-width: 120px; }
+
+        .word-bank-section { text-align: right;}
+        .word-bank-section h3 { font-size: 1.1rem; color: var(--ruby-petals); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;}
+        .btn-select-all { width: auto; background: var(--pink-mist); border: none; color: var(--ruby-petals); padding: 8px 15px; font-size: 0.85rem; border-radius: 12px; font-weight: 600; box-shadow: none; }
+        .category-group { margin-bottom: 25px; }
+        .category-group h4 { font-size: 0.95rem; color: var(--ruby-petals); margin-bottom: 12px; border-bottom: 1px solid rgba(226, 180, 193, 0.4); padding-bottom: 8px; font-weight: 700;}
+        .tags-container { display: flex; flex-wrap: wrap; gap: 10px; }
+        
+        .word-tag { 
+            background: white; border: 1px solid var(--bubblegum); padding: 10px 18px; border-radius: 20px; 
+            font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease; color: #4a4a4a;
+            user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+        }
+        .word-tag.active { 
+            background: linear-gradient(135deg, var(--pink-mist), var(--bubblegum)); color: var(--ruby-petals); 
+            border-color: var(--cherry-soda); box-shadow: 0 4px 12px rgba(165, 81, 102, 0.15); font-weight: 700; transform: translateY(-2px);
+        }
+
+        /* تنسيق الكلمات المحفوظة (المؤرشفة) */
+        .learned-tag {
+            background: #F0F0F0; border: 1px dashed #CCC; color: #888; padding: 10px 18px; border-radius: 20px; 
+            font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: all 0.2s ease;
+            user-select: none; -webkit-user-select: none; -webkit-touch-callout: none;
+        }
+
+        /* ---------------- تصميم الجدول المعتمد ---------------- */
+        table { width: 100%; table-layout: fixed; border-collapse: collapse; margin-top: 10px; border: none; }
+        th, td { 
+            padding: 14px 10px; border-bottom: 1px solid rgba(226, 180, 193, 0.4); 
+            border-left: none; border-right: none; border-top: none;
+            word-wrap: break-word; font-size: 0.95rem; vertical-align: middle; 
+        }
+        th { color: var(--ruby-petals); font-weight: 700; font-size: 0.9rem; padding-bottom: 15px; background: transparent; border-bottom: 2px solid var(--cherry-soda); }
+        
+        th:nth-child(1), td:nth-child(1) { text-align: right; width: 30%; }
+        th:nth-child(2), td:nth-child(2) { text-align: center; width: 40%; font-family: 'Poppins', sans-serif;}
+        th:nth-child(3), td:nth-child(3) { text-align: left; width: 30%; font-family: 'Poppins', sans-serif;}
+        
+        .eng-pron { display: block; color: #4a4a4a; direction: ltr; font-weight: 500;}
+        
+        .category-row td { 
+            background-color: rgba(247, 218, 231, 0.4) !important; 
+            color: var(--ruby-petals) !important; text-align: center !important; 
+            font-weight: 700; padding: 12px; font-size: 0.9rem !important; border-radius: 8px;
+        }
+        
+        .empty-state { text-align: center; color: #86868b; padding: 30px; border: none; font-weight: 500;}
+        .footer { text-align: center; font-size: 0.95rem; color: #86868b; margin-top: auto; padding-top: 30px; font-family: 'Tajawal', sans-serif; font-weight: 600; width: 100%;}
+        
+        /* ---------------- إعدادات الطباعة الأنيقة ---------------- */
+        @media print {
+            @page { margin: 1.2cm; size: A4 portrait; }
+            body { background: white !important; color: #1d1d1f !important; padding: 0 !important; margin: 0 !important; }
+            .bento-container { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; gap: 0 !important; }
+            .bento-card { border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; background: white !important; filter: none !important;}
+            .hero-banner, .intro-section, .controls-header, .word-bank-section, .btn-print, .footer, #loginView, #learnedVaultCard { display: none !important; }
+            #dictionaryView { display: block !important; width: 100% !important; }
+            
+            table { width: 100% !important; border-collapse: collapse !important; border: none !important; }
+            thead { display: table-header-group; } 
+            tr { page-break-inside: avoid; } 
+            
+            th, td { border-bottom: 1px solid rgba(211, 140, 157, 0.3) !important; padding: 12px 10px !important; color: #1d1d1f !important; font-size: 13px !important; }
+            th { color: #A55166 !important; border-bottom: 2px solid #A55166 !important; }
+            
+            .category-row td { 
+                background-color: #FDF4F7 !important; color: #A55166 !important; 
+                -webkit-print-color-adjust: exact; print-color-adjust: exact;
+                font-weight: 700 !important; text-align: center !important; font-size: 12px !important; padding: 8px !important;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <script>
+        window.onerror = function(msg, url, line) {
+            alert("عذراً، يوجد خطأ أثناء نسخ الكود. تأكدي من نسخه بالكامل من البداية للنهاية.\nالخطأ: " + msg);
+        };
+    </script>
+
+    <div class="bento-container" id="appContainer">
+        
+        <div id="loginView" class="bento-card">
+            <div style="margin-bottom: 30px;">
+                <h1 style="color: var(--ruby-petals); font-size: 1.8rem; margin-bottom: 10px;">القاموس الذكي<br><span style="font-size: 1.2rem; opacity: 0.85;">(للمطبخ والوجبات)</span></h1>
+                <p style="color: var(--text-dark); opacity: 0.8; font-weight: 500;">الرجاء إدخال رقم جوالك للوصول إلى منصتك.</p>
+            </div>
+            <div class="input-group">
+                <label>رقم الجوال</label>
+                <input type="tel" id="phone" placeholder="05XXXXXXXX" autocomplete="tel">
+            </div>
+            <button onclick="handleLogin()" id="loginBtn">
+                <span id="btnText">دخول المنصة</span>
+                <div class="loader" id="btnLoader"></div>
+            </button>
+            <div id="statusMessage" class="msg-box"></div>
+        </div>
+
+        <div id="dictionaryView" style="display: none; width: 100%;">
+            <div class="bento-card hero-banner" style="margin-bottom: 15px;">
+                <div class="badge">الأكبر والأشمل 🚀 | 250 كلمة وصنف</div>
+                <h1>القاموس الذكي للمطبخ والوجبات<br><span style="font-size: 1.2rem;">(دليل العاملات) ✨</span></h1>
+                <p>صممنا هذا القاموس المتخصص ليضم 250 كلمة تشمل أهم المقادير، الأطباق، وتوجيهات المطبخ بـ 11 لغة مختلفة، لتسهيل تدريب مساعدتك المنزلية باحترافية.</p>
+            </div>
+
+            <div class="bento-card intro-section" style="margin-bottom: 15px;">
+                <h2>💡 كيف تستخدمين المنصة؟</h2>
+                <ol class="intro-steps">
+                    <li>حددي لغة العاملة من القائمة بالأسفل.</li>
+                    <li>اختاري المكونات والوجبات بالضغط عليها لإضافتها للجدول.</li>
+                    <li><strong>أرشيف الحفظ:</strong> <span style="color:var(--ruby-petals); font-weight:700;">اضغطي مطولاً (أو انقري بالزر الأيمن)</span> على أي كلمة أتقنتها العاملة، وسوف تختفي وتنتقل لأسفل الجدول ككلمة محفوظة.</li>
+                </ol>
+                <div class="scientific-tip">
+                    🧠 <strong>نصيحة علمية:</strong> لضمان الحفظ وتجنب تشتيت العاملة، يُنصح باختيار <strong>من 5 إلى 10 كلمات أسبوعياً</strong> فقط في الجدول. خياراتك تُحفظ هنا تلقائياً.
+                </div>
+            </div>
+
+            <div class="bento-card controls-header" style="margin-bottom: 15px;">
+                <div class="actions-area">
+                    <select id="languageSelect" onchange="renderTable()">
+                        <option value="en">الإنجليزية (English)</option>
+                        <option value="ph">الفلبينية (Tagalog)</option>
+                        <option value="id">الإندونيسية (Indonesian)</option>
+                        <option value="am">الأمهرية (Amharic)</option>
+                        <option value="or">الأورومو (Oromo)</option>
+                        <option value="sw">السواحلية (Swahili)</option>
+                        <option value="lg">اللوغندا (Luganda)</option>
+                        <option value="so">الصومالية (Somali)</option>
+                        <option value="bn">البنغالية (Bengali)</option>
+                        <option value="hi">الهندية (Hindi)</option>
+                        <option value="fr">الفرنسية (French)</option>
+                    </select>
+                    <button class="btn-print" onclick="window.print()">🖨️ طباعة الجدول</button>
+                </div>
+            </div>
+
+            <div class="bento-card word-bank-section" style="margin-bottom: 15px;">
+                <h3>بنك الأطعمة والمقادير <button class="btn-select-all" onclick="toggleAll()">إلغاء التحديد</button></h3>
+                <div id="wordBankContainer"></div>
+            </div>
+
+            <div class="bento-card" style="margin-bottom: 15px;">
+                <table id="dictionaryTable">
+                    <thead id="tableHead"></thead>
+                    <tbody id="tableBody"></tbody>
+                </table>
+                <div style="margin-top: 25px; display: flex; justify-content: center;">
+                    <button class="btn-print" style="max-width: 280px;" onclick="window.print()">🖨️ طباعة الجدول للمطبخ</button>
+                </div>
+            </div>
+
+            <div class="bento-card" id="learnedVaultCard" style="margin-bottom: 15px; display: none;">
+                <h3 style="color: #86868b; font-size: 1.1rem; text-align: right; margin-bottom: 10px;">أرشيف الكلمات المحفوظة ✅</h3>
+                <p style="text-align: right; font-size: 0.9rem; color: #a0a0a0; margin-bottom: 15px;">الكلمات التي أتقنتها العاملة. (اضغطي مطولاً على أي كلمة لإعادتها لبنك الكلمات).</p>
+                <div id="learnedBankContainer" class="tags-container"></div>
+            </div>
+        </div>
+
+        <div class="footer">صنع من قبل عوالم Awalem</div>
+    </div>
+
+    <script>
+        // ================== [ 1. إعدادات تسجيل الدخول والربط ] ==================
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbywgjpXRddsBCAcQJgi6yVM38dOUuDn6L63jNkClSPonHgE3Ks3_-wnHowVspUTva0/exec";
+        
+        function getOrCreateDeviceId() {
+            let id = localStorage.getItem('awalem_food_device_id');
+            if (!id) { id = 'AW-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now(); localStorage.setItem('awalem_food_device_id', id); }
+            return id;
+        }
+
+        function cleanPhoneNumberStr(phoneStr) {
+            if(!phoneStr) return "";
+            let cleaned = phoneStr.replace(/[\s\-\(\)\+]/g, '');
+            if (cleaned.startsWith('00966')) cleaned = cleaned.substring(5);
+            if (cleaned.startsWith('966')) cleaned = cleaned.substring(3);
+            if (cleaned.startsWith('0')) cleaned = cleaned.substring(1);
+            return cleaned;
+        }
+
+        window.onload = () => {
+            if(localStorage.getItem('awalem_food_logged_in') === 'true') {
+                document.getElementById('loginView').style.display = 'none';
+                document.getElementById('dictionaryView').style.display = 'block';
+                initDictionary();
+            }
+        };
+
+        async function handleLogin() {
+            const rawPhone = document.getElementById('phone').value;
+            const phone = cleanPhoneNumberStr(rawPhone);
+            const msg = document.getElementById('statusMessage');
+            const btnText = document.getElementById('btnText');
+            const loader = document.getElementById('btnLoader');
+            const btn = document.getElementById('loginBtn');
+
+            msg.className = 'msg-box'; msg.innerText = '';
+            if (!phone || phone.length < 8) { msg.innerText = 'الرجاء إدخال رقم الجوال بشكل صحيح.'; msg.className = 'msg-box error'; return; }
+
+            btnText.style.display = 'none'; loader.style.display = 'block'; btn.disabled = true;
+
+            try {
+                const res = await fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}&deviceId=${encodeURIComponent(getOrCreateDeviceId())}`);
+                const data = await res.json();
+                
+                if (data.success || data.status === 'success') {
+                    msg.innerText = data.message || 'تم الدخول بنجاح!'; msg.className = 'msg-box success';
+                    localStorage.setItem('awalem_food_logged_in', 'true');
+                    setTimeout(() => {
+                        document.getElementById('loginView').style.display = 'none';
+                        document.getElementById('dictionaryView').style.display = 'block';
+                        initDictionary();
+                    }, 1000);
+                } else {
+                    msg.innerText = data.message || 'الرقم غير مسجل، أو مسجل بجهاز آخر.'; msg.className = 'msg-box error';
+                }
+            } catch (err) {
+                msg.innerText = 'خطأ في الاتصال، حاولي مجدداً.'; msg.className = 'msg-box error';
+            } finally {
+                btnText.style.display = 'block'; loader.style.display = 'none'; btn.disabled = false;
+            }
+        }
+
+        // ================== [ 2. قاعدة بيانات المطبخ - 250 كلمة بالضبط مع الترجمات ] ==================
+        
+        const wordT = { en:"Word", ph:"Salita", id:"Kata", am:"ቃል", or:"Jechoota", sw:"Neno", lg:"Ekigambo", so:"Eray", bn:"শব্দ", hi:"शब्द", fr:"Mot" };
+        const pronT = { en:"Pronunciation", ph:"Pagbigkas", id:"Pelafalan", am:"አጠራር", or:"Sagaleessa", sw:"Matamshi", lg:"Enjatula", so:"Dhawaaqa", bn:"উচ্চারণ", hi:"उच्चारण", fr:"Prononciation" };
+        const meaningT = { en:"Meaning", ph:"Kahulugan", id:"Arti", am:"ትርጉም", or:"Hiika", sw:"Maana", lg:"Amakulu", so:"Macnaha", bn:"অর্থ", hi:"अर्थ", fr:"Signification" };
+        
+        const fullDictionary = [
+            {
+                category: "🥦 الخضروات (40 كلمة)",
+                transCat: { en:"Vegetables", ph:"Gulay", id:"Sayuran", am:"አትክልቶች", or:"Kuduraa", sw:"Mboga", lg:"Enva", so:"Khudaar", bn:"সবজি", hi:"सब्जियां", fr:"Légumes" },
+                words: [
+                    { id:1, ar:"بصل", pr:"Basal", t:{en:"Onion",ph:"Sibuyas",id:"Bawang merah",am:"ቀይ ሽንኩርት",or:"Qullubbii",sw:"Kitunguu",lg:"Obutungulu",so:"Basal",bn:"পেঁয়াজ",hi:"प्याज",fr:"Oignon"} },
+                    { id:2, ar:"ثوم", pr:"Thoum", t:{en:"Garlic",ph:"Bawang",id:"Bawang putih",am:"ነጭ ሽንኩርት",or:"Qullubbii adii",sw:"Kitunguu saumu",lg:"Katunguluumu",so:"Toon",bn:"রসুন",hi:"लहसुन",fr:"Ail"} },
+                    { id:3, ar:"طماطم", pr:"Tamatim", t:{en:"Tomato",ph:"Kamatis",id:"Tomat",am:"ቲማቲም",or:"Timaatimii",sw:"Nyanya",lg:"Enyaanya",so:"Yaanyo",bn:"টমেটো",hi:"टमाटर",fr:"Tomate"} },
+                    { id:4, ar:"بطاطس", pr:"Batatis", t:{en:"Potato",ph:"Patatas",id:"Kentang",am:"ድንች",or:"Dinnicha",sw:"Kiazi",lg:"Obumonde",so:"Baradho",bn:"আলু",hi:"आलू",fr:"Pomme de terre"} },
+                    { id:5, ar:"خيار", pr:"Khiyar", t:{en:"Cucumber",ph:"Pipino",id:"Mentimun",am:"ኪያር",or:"Kukkumbarii",sw:"Tango",lg:"Kkikamba",so:"Qajaar",bn:"শসা",hi:"खीरा",fr:"Concombre"} },
+                    { id:6, ar:"جزر", pr:"Jazar", t:{en:"Carrot",ph:"Karot",id:"Wortel",am:"ካሮት",or:"Kaarotii",sw:"Karoti",lg:"Kkaloti",so:"Dabacas",bn:"গাজর",hi:"गाजर",fr:"Carotte"} },
+                    { id:7, ar:"خس", pr:"Khass", t:{en:"Lettuce",ph:"Letsugas",id:"Selada",am:"ሰላጣ",or:"Salaaxaa",sw:"Saladi",lg:"Saladi",so:"Salaar",bn:"লেটুস",hi:"सलाद",fr:"Laitue"} },
+                    { id:8, ar:"كوسة", pr:"Kousa", t:{en:"Zucchini",ph:"Zucchini",id:"Zukini",am:"ዙኩኒ",or:"Zukkinii",sw:"Zukini",lg:"Zukkini",so:"Bocor",bn:"ধুন্দুল",hi:"तोरई",fr:"Courgette"} },
+                    { id:9, ar:"باذنجان", pr:"Bathinjan", t:{en:"Eggplant",ph:"Talong",id:"Terong",am:"እንቁላል ፍሬ",or:"Baajinjanii",sw:"Biringanya",lg:"Bbiringanya",so:"Baadijaan",bn:"বেগুন",hi:"बैंगन",fr:"Aubergine"} },
+                    { id:10, ar:"ليمون", pr:"Laymoon", t:{en:"Lemon",ph:"Limon",id:"Lemon",am:"ሎሚ",or:"Loomii",sw:"Ndimu",lg:"Nniimu",so:"Liin",bn:"লেবু",hi:"नींबू",fr:"Citron"} },
+                    { id:11, ar:"بقدونس", pr:"Bagdounis", t:{en:"Parsley",ph:"Parsley",id:"Peterseli",am:"ፓርስሌይ",or:"Parsilii",sw:"Giligilani",lg:"Ppasule",so:"Bakduunis",bn:"পার্সলে",hi:"अजमोद",fr:"Persil"} },
+                    { id:12, ar:"كزبرة", pr:"Kuzbarah", t:{en:"Coriander",ph:"Kulantro",id:"Ketumbar",am:"ድንብላል",or:"Dimbilaala",sw:"Giligilani",lg:"Kkoti",so:"Kabsar",bn:"ধনেপাতা",hi:"धनिया",fr:"Coriandre"} },
+                    { id:13, ar:"نعناع", pr:"Na'na", t:{en:"Mint",ph:"Minta",id:"Daun mint",am:"አዝሙድ",or:"Miintii",sw:"Mnanaa",lg:"Minti",so:"Nacnaac",bn:"পুদিনা",hi:"पुदीना",fr:"Menthe"} },
+                    { id:14, ar:"فليفلة", pr:"Filaiflah", t:{en:"Bell Pepper",ph:"Sili",id:"Paprika",am:"ቃሪያ",or:"Qoocaa",sw:"Pilipili hoho",lg:"Kaamulali",so:"Basbaas macaan",bn:"ক্যাপসিকাম",hi:"शिमला मिर्च",fr:"Poivron"} },
+                    { id:15, ar:"فلفل", pr:"Filfil", t:{en:"Chili Pepper",ph:"Siling labuyo",id:"Cabai",am:"ሚጥሚጣ",or:"Qoocaa gubaa",sw:"Pilipili kali",lg:"Kaamulali",so:"Basbaas kulul",bn:"কাঁচামরিচ",hi:"हरी मिर्च",fr:"Piment"} },
+                    { id:16, ar:"بامية", pr:"Bamyah", t:{en:"Okra",ph:"Okra",id:"Okra",am:"ባሚያ",or:"Baamiyaa",sw:"Bamia",lg:"Bbamia",so:"Baamiyo",bn:"ঢেঁড়স",hi:"भिंडी",fr:"Gombo"} },
+                    { id:17, ar:"ملفوف", pr:"Malfoof", t:{en:"Cabbage",ph:"Repolyo",id:"Kubis",am:"ጎመን",or:"Raafuu",sw:"Kabeji",lg:"Kkabejji",so:"Kaabaj",bn:"বাঁধাকপি",hi:"पत्ता गोभी",fr:"Chou"} },
+                    { id:18, ar:"قرنبيط", pr:"Garnabeet", t:{en:"Cauliflower",ph:"Koliplor",id:"Kembang kol",am:"የአበባ ጎመን",or:"Koollii",sw:"Kolifulawa",lg:"Kkolifulawa",so:"Bokool",bn:"ফুলকপি",hi:"फूलगोभी",fr:"Chou-fleur"} },
+                    { id:19, ar:"بروكلي", pr:"Broccoli", t:{en:"Broccoli",ph:"Brokoli",id:"Brokoli",am:"ብሮኮሊ",or:"Birookolii",sw:"Brokoli",lg:"Bbulokoli",so:"Burokoli",bn:"ব্রোকলি",hi:"ब्रोकोली",fr:"Brocoli"} },
+                    { id:20, ar:"سبانخ", pr:"Sabanekh", t:{en:"Spinach",ph:"Espinaka",id:"Bayam",am:"ስፒናች",or:"Ispinaachii",sw:"Mchicha",lg:"Sipinaci",so:"Isbaandhees",bn:"পালং শাক",hi:"पालक",fr:"Épinards"} },
+                    { id:21, ar:"جرجير", pr:"Jarjeer", t:{en:"Arugula",ph:"Rukula",id:"Arugula",am:"ሮኬት",or:"Arugula",sw:"Ruketi",lg:"Arugula",so:"Arugula",bn:"রকেট পাতা",hi:"अरुगुला",fr:"Roquette"} },
+                    { id:22, ar:"شبت", pr:"Shibit", t:{en:"Dill",ph:"Dill",id:"Adas sowa",am:"ዲል",or:"Dill",sw:"Dili",lg:"Dill",so:"Dill",bn:"শুলফা",hi:"सोया",fr:"Aneth"} },
+                    { id:23, ar:"كراث", pr:"Kurrath", t:{en:"Leek",ph:"Leek",id:"Daun bawang",am:"ሊክ",or:"Leek",sw:"Liki",lg:"Liiki",so:"Leek",bn:"লিক",hi:"लीक",fr:"Poireau"} },
+                    { id:24, ar:"بقل", pr:"Bagil", t:{en:"Green onion",ph:"Sibuyas na mura",id:"Daun bawang",am:"አረንጓዴ ሽንኩርት",or:"Qullubbii magariisa",sw:"Kitunguu maji",lg:"Obutungulu obubisi",so:"Basal cagaaran",bn:"পেঁয়াজ পাতা",hi:"हरा प्याज",fr:"Oignon vert"} },
+                    { id:25, ar:"فجل", pr:"Fijil", t:{en:"Radish",ph:"Labanos",id:"Lobak",am:"ቀይ ስር",or:"Raadishii",sw:"Figiri",lg:"Laadisi",so:"Raddish",bn:"মুলা",hi:"मूली",fr:"Radis"} },
+                    { id:26, ar:"زنجبيل", pr:"Zanjabeel", t:{en:"Ginger",ph:"Luya",id:"Jahe",am:"ዝንጅብል",or:"Jinjibila",sw:"Tangawizi",lg:"Ntangawuzi",so:"Sanjabiil",bn:"আদা",hi:"अदरक",fr:"Gingembre"} },
+                    { id:27, ar:"قرع", pr:"Gara'", t:{en:"Pumpkin",ph:"Kalabasa",id:"Labu",am:"ዱባ",or:"Dubbaa",sw:"Boga",lg:"Wujju",so:"Bocor",bn:"কুমড়া",hi:"कद्दू",fr:"Citrouille"} },
+                    { id:28, ar:"فاصوليا", pr:"Fasoolya", t:{en:"Green beans",ph:"Sitaw",id:"Buncis",am:"አረንጓዴ ባቄላ",or:"Baaqelaa",sw:"Maharagwe",lg:"Ebijanjaalo",so:"Faasuuliye",bn:"শিম",hi:"बीन्स",fr:"Haricots verts"} },
+                    { id:29, ar:"بازلاء", pr:"Bazilla", t:{en:"Peas",ph:"Gisantes",id:"Kacang polong",am:"አተር",or:"Atera",sw:"Njegere",lg:"Kawaali",so:"Digir",bn:"মটরশুটি",hi:"मटर",fr:"Petits pois"} },
+                    { id:30, ar:"ذرة", pr:"Thurah", t:{en:"Corn",ph:"Mais",id:"Jagung",am:"በቆሎ",or:"Boqqolloo",sw:"Mahindi",lg:"Kasooli",so:"Galey",bn:"ভুট্টা",hi:"मक्का",fr:"Maïs"} },
+                    { id:31, ar:"شمندر", pr:"Shamandar", t:{en:"Beetroot",ph:"Remolatsa",id:"Bit",am:"ቀይ ስር",or:"Diimtuu",sw:"Biti",lg:"Bbiti",so:"Xidid cas",bn:"বিটরুট",hi:"चुकंदर",fr:"Betterave"} },
+                    { id:32, ar:"لفت", pr:"Lift", t:{en:"Turnip",ph:"Singkamas",id:"Lobak",am:"ተርኒፕ",or:"Turnipii",sw:"Tanipu",lg:"Ttanipu",so:"Dabacas",bn:"শালগম",hi:"शलगम",fr:"Navet"} },
+                    { id:33, ar:"فطر", pr:"Fitar", t:{en:"Mushroom",ph:"Kabute",id:"Jamur",am:"እንጉዳይ",or:"Inguudaayii",sw:"Uyoga",lg:"Bbutiko",so:"Mushroom",bn:"মাশরুম",hi:"मशरूम",fr:"Champignon"} },
+                    { id:34, ar:"يبرق", pr:"Yabrag", t:{en:"Grape leaves",ph:"Dahon ng ubas",id:"Daun anggur",am:"የወይን ቅጠል",or:"Baala wayinii",sw:"Majani ya zabibu",lg:"Amakoola ga zzabibu",so:"Caleen canab",bn:"আঙুর পাতা",hi:"अंगूर के पत्ते",fr:"Feuilles de vigne"} },
+                    { id:35, ar:"زيتون", pr:"Zaytoon", t:{en:"Olive",ph:"Oliba",id:"Zaitun",am:"ወይራ",or:"Ejersa",sw:"Mzeituni",lg:"Zeyituni",so:"Saytuun",bn:"জলপাই",hi:"जैतून",fr:"Olive"} },
+                    { id:36, ar:"كرفس", pr:"Karafs", t:{en:"Celery",ph:"Kintsay",id:"Seledri",am:"ሴለሪ",or:"Selerii",sw:"Seleri",lg:"Sseleri",so:"Kareefs",bn:"সেলেরি",hi:"अजमोदा",fr:"Céleri"} },
+                    { id:37, ar:"زعتر", pr:"Za'atar", t:{en:"Thyme",ph:"Thyme",id:"Timi",am:"ቲም",or:"Thyme",sw:"Taimu",lg:"Taimu",so:"Zactar",bn:"থাইম",hi:"थाइम",fr:"Thym"} },
+                    { id:38, ar:"روزماري", pr:"Rosemary", t:{en:"Rosemary",ph:"Rosemary",id:"Rosemary",am:"ሮዝሜሪ",or:"Roosmeerii",sw:"Rozimari",lg:"Lozimaale",so:"Rosemary",bn:"রোজমেরি",hi:"रोज़मेरी",fr:"Romarin"} },
+                    { id:39, ar:"حبق", pr:"Habaq", t:{en:"Basil",ph:"Basil",id:"Kemangi",am:"ባሲል",or:"Baasilii",sw:"Basili",lg:"Bbasili",so:"Reyxan",bn:"তুলসী",hi:"तुलसी",fr:"Basilic"} },
+                    { id:40, ar:"هليون", pr:"Halyoon", t:{en:"Asparagus",ph:"Asparagus",id:"Asparagus",am:"አስፓራጉስ",or:"Asparaagasii",sw:"Asparagasi",lg:"Asparagasi",so:"Asparagus",bn:"অ্যাসপারাগাস",hi:"शतावरी",fr:"Asperges"} }
+                ]
+            },
+            {
+                category: "🍎 الفواكه (30 كلمة)",
+                transCat: { en:"Fruits", ph:"Prutas", id:"Buah-buahan", am:"ፍራፍሬዎች", or:"Fuduraa", sw:"Matunda", lg:"Ebibala", so:"Miraha", bn:"ফল", hi:"फल", fr:"Fruits" },
+                words: [
+                    { id:41, ar:"تفاح", pr:"Tuffah", t:{en:"Apple",ph:"Mansanas",id:"Apel",am:"ፖም",or:"Aappilii",sw:"Tofaa",lg:"Kkapa",so:"Tufaax",bn:"আপেল",hi:"सेब",fr:"Pomme"} },
+                    { id:42, ar:"موز", pr:"Mouz", t:{en:"Banana",ph:"Saging",id:"Pisang",am:"ሙዝ",or:"Muzii",sw:"Ndizi",lg:"Menvu",so:"Moos",bn:"কলা",hi:"केला",fr:"Banane"} },
+                    { id:43, ar:"برتقال", pr:"Burtuqal", t:{en:"Orange",ph:"Kahel",id:"Jeruk",am:"ብርቱካን",or:"Burtukaana",sw:"Chungwa",lg:"Mucungwa",so:"Liin",bn:"কমলা",hi:"संतरा",fr:"Orange"} },
+                    { id:44, ar:"عنب", pr:"Enab", t:{en:"Grapes",ph:"Ubas",id:"Anggur",am:"ወይን",or:"Wayinii",sw:"Zabibu",lg:"Zzabibu",so:"Canab",bn:"আঙুর",hi:"अंगूर",fr:"Raisin"} },
+                    { id:45, ar:"بطيخ", pr:"Batteekh", t:{en:"Watermelon",ph:"Pakwan",id:"Semangka",am:"ሀብሐብ",or:"Bataakhii",sw:"Tikiti maji",lg:"Wootamelo",so:"Xabxab",bn:"তরমুজ",hi:"तरबूज",fr:"Pastèque"} },
+                    { id:46, ar:"رمان", pr:"Rumman", t:{en:"Pomegranate",ph:"Granada",id:"Delima",am:"ሮማን",or:"Rumaanii",sw:"Komamanga",lg:"Kkomamanga",so:"Rumaan",bn:"ডালিম",hi:"अनार",fr:"Grenade"} },
+                    { id:47, ar:"فراولة", pr:"Farawlah", t:{en:"Strawberry",ph:"Istroberi",id:"Stroberi",am:"እንጆሪ",or:"Istirooberii",sw:"Stroberi",lg:"Situlooberi",so:"Faraawle",bn:"স্ট্রবেরি",hi:"स्ट्रॉबेरी",fr:"Fraise"} },
+                    { id:48, ar:"تمر", pr:"Tamar", t:{en:"Dates",ph:"Dates",id:"Kurma",am:"ቴምር",or:"Timira",sw:"Tende",lg:"Entende",so:"Timir",bn:"খেজুর",hi:"खजूर",fr:"Dattes"} },
+                    { id:49, ar:"مانجو", pr:"Mango", t:{en:"Mango",ph:"Mangga",id:"Mangga",am:"ማንጎ",or:"Maangoo",sw:"Embe",lg:"Miyembe",so:"Cambo",bn:"আম",hi:"आम",fr:"Mangue"} },
+                    { id:50, ar:"أناناس", pr:"Ananas", t:{en:"Pineapple",ph:"Pinya",id:"Nanas",am:"አናናስ",or:"Aanaanaasii",sw:"Nanasi",lg:"Ennanasi",so:"Canaanaas",bn:"আনারস",hi:"अनानास",fr:"Ananas"} },
+                    { id:51, ar:"كيوي", pr:"Kiwi", t:{en:"Kiwi",ph:"Kiwi",id:"Kiwi",am:"ኪዊ",or:"Kiwii",sw:"Kiwi",lg:"Kiwi",so:"Kiwi",bn:"কিউই",hi:"कीवी",fr:"Kiwi"} },
+                    { id:52, ar:"كمثرى", pr:"Kummathra", t:{en:"Pear",ph:"Peras",id:"Pir",am:"ፒር",or:"Piir",sw:"Pea",lg:"Pea",so:"Pears",bn:"নাশপাতি",hi:"नाशपाती",fr:"Poire"} },
+                    { id:53, ar:"خوخ", pr:"Khoukh", t:{en:"Peach",ph:"Milokoton",id:"Persik",am:"ፒች",or:"Piichii",sw:"Pichi",lg:"Ppiici",so:"Khox",bn:"পীচ",hi:"आड़ू",fr:"Pêche"} },
+                    { id:54, ar:"مشمش", pr:"Mishmish", t:{en:"Apricot",ph:"Aprikot",id:"Aprikot",am:"አፕሪኮት",or:"Aprikootii",sw:"Aprikoti",lg:"Apulikoti",so:"Mishmish",bn:"এপ্রিকট",hi:"खुबानी",fr:"Abricot"} },
+                    { id:55, ar:"برقوق", pr:"Bargoug", t:{en:"Plum",ph:"Plum",id:"Prem",am:"ፕለም",or:"Pulamii",sw:"Piramu",lg:"Ppulaamu",so:"Buraquuq",bn:"আলूबোখারা",hi:"आलूबुखारा",fr:"Prune"} },
+                    { id:56, ar:"كرز", pr:"Karaz", t:{en:"Cherry",ph:"Seresa",id:"Ceri",am:"ቼሪ",or:"Cheerii",sw:"Cheri",lg:"Cceri",so:"Jeeri",bn:"চেরি",hi:"चेरी",fr:"Cerise"} },
+                    { id:57, ar:"توت", pr:"Toot", t:{en:"Berries",ph:"Berries",id:"Beri",am:"ቤሪ",or:"Beerii",sw:"Beri",lg:"Bberi",so:"Toot",bn:"বেরি",hi:"जामुन",fr:"Baies"} },
+                    { id:58, ar:"تين", pr:"Teen", t:{en:"Fig",ph:"Igos",id:"Ara",am:"በለስ",or:"Harbuu",sw:"Tini",lg:"Ttini",so:"Tin",bn:"ডুমুর",hi:"अंजीर",fr:"Figue"} },
+                    { id:59, ar:"يوسفي", pr:"Yousifi", t:{en:"Tangerine",ph:"Tangerine",id:"Jeruk keprok",am:"ማንዳሪን",or:"Mandaariin",sw:"Tangerini",lg:"Tangerini",so:"Liin dhanaan",bn:"ট্যানজারিন",hi:"कीनू",fr:"Mandarine"} },
+                    { id:60, ar:"جريبفروت", pr:"Grapefruit", t:{en:"Grapefruit",ph:"Kahel",id:"Jeruk bali",am:"ግሬፕ ፍሩት",or:"Gireep firuut",sw:"Zabibu",lg:"Gireepufuluutu",so:"Gireeb furuut",bn:"জাম্বুরা",hi:"चकोतरा",fr:"Pamplemousse"} },
+                    { id:61, ar:"شمام", pr:"Shammam", t:{en:"Melon",ph:"Melon",id:"Melon",am:"ሜሎን",or:"Meloonyii",sw:"Melon",lg:"Melo",so:"Xabxab",bn:"বাঙ্গি",hi:"खरबूजा",fr:"Melon"} },
+                    { id:62, ar:"بابايا", pr:"Papaya", t:{en:"Papaya",ph:"Papaya",id:"Pepaya",am:"ፓፓያ",or:"Paappaayyaa",sw:"Papai",lg:"Paapaali",so:"Babaay",bn:"পেঁপে",hi:"पपीता",fr:"Papaye"} },
+                    { id:63, ar:"جوافة", pr:"Guava", t:{en:"Guava",ph:"Bayabas",id:"Jambu biji",am:"ዘይቱን",or:"Zayituunii",sw:"Mpera",lg:"Ppeera",so:"Seytuun",bn:"পেয়ারা",hi:"अमरूद",fr:"Goyave"} },
+                    { id:64, ar:"سفرجل", pr:"Safarjal", t:{en:"Quince",ph:"Quince",id:"Kwins",am:"ኩዊንስ",or:"Quince",sw:"Kwinsi",lg:"Kwinsi",so:"Safarjal",bn:"কুইন্স",hi:"श्रीफल",fr:"Coing"} },
+                    { id:65, ar:"كاكا", pr:"Kaka", t:{en:"Persimmon",ph:"Persimmon",id:"Kesemek",am:"ፐርሲሞን",or:"Persimmon",sw:"Persimon",lg:"Ppasimoni",so:"Kaaka",bn:"পার্সিমন",hi:"ख़ुरमा",fr:"Kaki"} },
+                    { id:66, ar:"نارجيل", pr:"Nargil", t:{en:"Coconut",ph:"Buko",id:"Kelapa",am:"ኮኮናት",or:"Kookoonaatii",sw:"Nazi",lg:"Nnazi",so:"Qumbaha",bn:"নারকেল",hi:"नारियल",fr:"Noix de coco"} },
+                    { id:67, ar:"أفوكادو", pr:"Avocado", t:{en:"Avocado",ph:"Abukado",id:"Alpukat",am:"አቮካዶ",or:"Avokaadoo",sw:"Parachichi",lg:"Ovakkado",so:"Afakaadho",bn:"অ্যাভোকাডো",hi:"एवोकैडो",fr:"Avocat"} },
+                    { id:68, ar:"بنزهير", pr:"Banzaheer", t:{en:"Lime",ph:"Dayap",id:"Jeruk nipis",am:"ሎሚ",or:"Loomii magariisa",sw:"Ndimu",lg:"Nniimu",so:"Liin cagaaran",bn:"পাতিলেবু",hi:"नींबू",fr:"Citron vert"} },
+                    { id:69, ar:"عنبية", pr:"Inabiyah", t:{en:"Blueberry",ph:"Blueberry",id:"Bluberi",am:"ብሉቤሪ",or:"Biluubeerii",sw:"Bluberi",lg:"Bbuluberi",so:"Tufaax buluug",bn:"ব্লুবেরি",hi:"ब्लूबेरी",fr:"Myrtille"} },
+                    { id:70, ar:"عليق", pr:"Ollaiq", t:{en:"Blackberry",ph:"Blackberry",id:"Blackberry",am:"ብላክቤሪ",or:"Bilaakbeerii",sw:"Blakiberi",lg:"Bbulakiberi",so:"Blackberry",bn:"ব্ল্যাকবেরি",hi:"ब्लैकबेरी",fr:"Mûre"} }
+                ]
+            },
+            {
+                category: "🥩 اللحوم والدواجن (20 كلمة)",
+                transCat: { en:"Meats & Poultry", ph:"Karne", id:"Daging", am:"ስጋ", or:"Foon", sw:"Nyama", lg:"Enyama", so:"Hilibka", bn:"মাংস", hi:"मांस", fr:"Viandes" },
+                words: [
+                    { id:71, ar:"دجاج", pr:"Dajaj", t:{en:"Chicken",ph:"Manok",id:"Ayam",am:"ዶሮ",or:"Lukkuu",sw:"Kuku",lg:"Enkoko",so:"Digaag",bn:"মুরগি",hi:"मुर्गी",fr:"Poulet"} },
+                    { id:72, ar:"غنم", pr:"Ghanam", t:{en:"Lamb",ph:"Tupa",id:"Domba",am:"የበግ ስጋ",or:"Foon hoolaa",sw:"Kondoo",lg:"Endiga",so:"Ari",bn:"খাসি",hi:"मटन",fr:"Agneau"} },
+                    { id:73, ar:"بقر", pr:"Bagar", t:{en:"Beef",ph:"Baka",id:"Sapi",am:"የበሬ ስጋ",or:"Foon sangaa",sw:"Ng'ombe",lg:"Ente",so:"Lo'",bn:"গরু",hi:"बीफ",fr:"Bœuf"} },
+                    { id:74, ar:"حاشي", pr:"Hashi", t:{en:"Camel",ph:"Kamelyo",id:"Unta",am:"የግመል ስጋ",or:"Foon gaalaa",sw:"Ngamia",lg:"Engamira",so:"Geel",bn:"উট",hi:"ऊंट",fr:"Chameau"} },
+                    { id:75, ar:"مفروم", pr:"Mafroom", t:{en:"Minced",ph:"Giniling",id:"Cincang",am:"የተፈጨ",or:"Foon daakame",sw:"Kusaga",lg:"Ensaange",so:"Shiidan",bn:"কিমা",hi:"कीमा",fr:"Hachée"} },
+                    { id:76, ar:"سمك", pr:"Samak", t:{en:"Fish",ph:"Isda",id:"Ikan",am:"ዓሳ",or:"Qurxummii",sw:"Samaki",lg:"Ebyennyanja",so:"Kalluun",bn:"মাছ",hi:"मछली",fr:"Poisson"} },
+                    { id:77, ar:"روبيان", pr:"Robyan", t:{en:"Shrimp",ph:"Hipon",id:"Udang",am:"ሽሪምፕ",or:"Shiriimpii",sw:"Uduvi",lg:"Ebyennyanja ebisanikira",so:"Oon",bn:"চিংড়ি",hi:"झींगा",fr:"Crevette"} },
+                    { id:78, ar:"بيض", pr:"Baidh", t:{en:"Egg",ph:"Itlog",id:"Telur",am:"እንቁላል",or:"Hanqaaquu",sw:"Yai",lg:"Eggi",so:"Ukun",bn:"ডিম",hi:"अंडा",fr:"Œuf"} },
+                    { id:79, ar:"كبدة", pr:"Kibdah", t:{en:"Liver",ph:"Atay",id:"Hati",am:"ጉበት",or:"Tiru",sw:"Ini",lg:"Ekibumba",so:"Beer",bn:"কলিজা",hi:"जिगर",fr:"Foie"} },
+                    { id:80, ar:"كرشة", pr:"Karshah", t:{en:"Tripe",ph:"Tuwalya",id:"Babat",am:"ጨጓራ",or:"Garaacha",sw:"Utumbo",lg:"Ebyenda",so:"Calool",bn:"ভুঁড়ি",hi:"ट्राइप",fr:"Tripes"} },
+                    { id:81, ar:"مخ", pr:"Mokh", t:{en:"Brain",ph:"Utak",id:"Otak",am:"አንጎል",or:"Sammuu",sw:"Ubongo",lg:"Bwongo",so:"Maskax",bn:"মগজ",hi:"दिमाग",fr:"Cerveau"} },
+                    { id:82, ar:"نقانق", pr:"Naganig", t:{en:"Sausage",ph:"Sosej",id:"Sosis",am:"ቋሊማ",or:"Soseejii",sw:"Soseji",lg:"Ssoseji",so:"Soseej",bn:"সসেজ",hi:"सॉसेज",fr:"Saucisse"} },
+                    { id:83, ar:"مرتديلا", pr:"Mortadella", t:{en:"Mortadella",ph:"Mortadella",id:"Mortadella",am:"ሞርታዴላ",or:"Mortadella",sw:"Mortadela",lg:"Mortadela",so:"Mortadella",bn:"মর্টাডেলা",hi:"मोर्टाडेला",fr:"Mortadelle"} },
+                    { id:84, ar:"فيليه", pr:"Fillet", t:{en:"Fillet",ph:"Fillet",id:"Fillet",am:"ፊሌት",or:"Fillet",sw:"Filet",lg:"Filleti",so:"File",bn:"ফিলে",hi:"पट्टिका",fr:"Filet"} },
+                    { id:85, ar:"أجنحة", pr:"Ajnihah", t:{en:"Wings",ph:"Pakpak",id:"Sayap",am:"ክንፍ",or:"Koochoo",sw:"Mabawa",lg:"Ebiwaawa",so:"Baal",bn:"ডানা",hi:"विंग्स",fr:"Ailes"} },
+                    { id:86, ar:"أفخاذ", pr:"Afkhadh", t:{en:"Thighs",ph:"Hita",id:"Paha",am:"ታፋ",or:"Sarba",sw:"Mapaja",lg:"Ettundwe",so:"Gacmo",bn:"উরু",hi:"जांघ",fr:"Cuisses"} },
+                    { id:87, ar:"صدور", pr:"Sudoor", t:{en:"Breasts",ph:"Pitso",id:"Dada",am:"ደረት",or:"Qoma",sw:"Kifua",lg:"Ekifuba",so:"Xabad",bn:"বুকের মাংস",hi:"ब्रेस्ट",fr:"Blancs"} },
+                    { id:88, ar:"ريش", pr:"Reeyash", t:{en:"Chops/Ribs",ph:"Tadyang",id:"Iga",am:"የጎድን አጥንት",or:"Lafee cinaachaa",sw:"Mbavu",lg:"Embavu",so:"Féero",bn:"পাঁজর",hi:"पसलियां",fr:"Côtelettes"} },
+                    { id:89, ar:"هبرة", pr:"Habrah", t:{en:"Boneless meat",ph:"Walang buto",id:"Tanpa tulang",am:"ያለ አጥንት",or:"Foon lafee malee",sw:"Bila mfupa",lg:"Enyama etalimu magumba",so:"Hilib lafo la'aan",bn:"হাড়বিহীন",hi:"बिना हड्डी",fr:"Sans os"} },
+                    { id:90, ar:"تونة", pr:"Tuna", t:{en:"Tuna",ph:"Tuna",id:"Tuna",am:"ቱና",or:"Tuunaa",sw:"Tuna",lg:"Ttuna",so:"Toona",bn:"টুনা",hi:"टूना",fr:"Thon"} }
+                ]
+            },
+            {
+                category: "🍚 البقالة والمؤن (40 كلمة)",
+                transCat: { en:"Grains & Pantry", ph:"Butil at Panustos", id:"Biji-bijian & Dapur", am:"እህሎች እና ጓዳ", or:"Midhaan", sw:"Nafaka", lg:"Emmere", so:"Qudaarta", bn:"দানা শস্য", hi:"अनाज", fr:"Céréales et Garde-manger" },
+                words: [
+                    { id:91, ar:"رز", pr:"Ruz", t:{en:"Rice",ph:"Kanin",id:"Nasi",am:"ሩዝ",or:"Ruuzii",sw:"Mchele",lg:"Omupunga",so:"Bariis",bn:"ভাত",hi:"चावल",fr:"Riz"} },
+                    { id:92, ar:"مكرونة", pr:"Makaronah", t:{en:"Pasta",ph:"Pasta",id:"Pasta",am:"ፓስታ",or:"Paastaa",sw:"Pasta",lg:"Pasita",so:"Baasto",bn:"পাস্তা",hi:"पास्ता",fr:"Pâtes"} },
+                    { id:93, ar:"زيت", pr:"Zait", t:{en:"Oil",ph:"Mantika",id:"Minyak",am:"ዘይት",or:"Zayitii",sw:"Mafuta",lg:"Buto",so:"Saliid",bn:"তেল",hi:"तेल",fr:"Huile"} },
+                    { id:94, ar:"زيت زيتون", pr:"Zait Zaytoon", t:{en:"Olive oil",ph:"Langis ng oliba",id:"Minyak zaitun",am:"የወይራ ዘይት",or:"Zayitii ejersaa",sw:"Mafuta ya mzeituni",lg:"Buto wa zeyituni",so:"Saliid saytuun",bn:"অলিভ অয়েল",hi:"जैतून का तेल",fr:"Huile d'olive"} },
+                    { id:95, ar:"ملح", pr:"Milh", t:{en:"Salt",ph:"Asin",id:"Garam",am:"ጨው",or:"Soogidda",sw:"Chumvi",lg:"Omunnyo",so:"Cusbo",bn:"লবণ",hi:"नमक",fr:"Sel"} },
+                    { id:96, ar:"سكر", pr:"Sukkar", t:{en:"Sugar",ph:"Asukal",id:"Gula",am:"ስኳር",or:"Sukkara",sw:"Sukari",lg:"Ssukaali",so:"Sokor",bn:"চিনি",hi:"चीनी",fr:"Sucre"} },
+                    { id:97, ar:"دقيق", pr:"Dageeg", t:{en:"Flour",ph:"Harina",id:"Tepung",am:"ዱቄት",or:"Daakuu",sw:"Unga",lg:"Obuwunga",so:"Bur",bn:"ময়দা",hi:"आटा",fr:"Farine"} },
+                    { id:98, ar:"صلصة", pr:"Salsah", t:{en:"Tomato paste",ph:"Tomato paste",id:"Pasta tomat",am:"የቲማቲም ድልህ",or:"Salsaa",sw:"Nyanya ya kopo",lg:"Binyaanya",so:"Salsay",bn:"টমেটো পেস্ট",hi:"टमाटर का पेस्ट",fr:"Pâte de tomate"} },
+                    { id:99, ar:"عدس", pr:"Adas", t:{en:"Lentils",ph:"Lentils",id:"Kacang miju",am:"ምስር",or:"Misira",sw:"Dengu",lg:"Ebijanjaalo",so:"Cadas",bn:"মসুর ডাল",hi:"मसूर",fr:"Lentilles"} },
+                    { id:100, ar:"حمص", pr:"Hummus", t:{en:"Chickpeas",ph:"Garbanzos",id:"Kacang arab",am:"ሽምብራ",or:"Shumburaa",sw:"Dengu",lg:"Ebijanjaalo",so:"Xummus",bn:"ছোলা",hi:"काबुली चना",fr:"Pois chiches"} },
+                    { id:101, ar:"فول", pr:"Fool", t:{en:"Fava beans",ph:"Fava beans",id:"Kacang fava",am:"ባቄላ",or:"Baaqelaa",sw:"Maharagwe",lg:"Ebijanjaalo",so:"Fuul",bn:"মটরশুটি",hi:"फवा बीन्स",fr:"Fèves"} },
+                    { id:102, ar:"شوفان", pr:"Shofan", t:{en:"Oats",ph:"Oats",id:"Havermut",am:"አጃ",or:"Ajaa",sw:"Oti",lg:"Ooti",so:"Shuufo",bn:"ওটস",hi:"ओट्स",fr:"Avoine"} },
+                    { id:103, ar:"برغل", pr:"Burghul", t:{en:"Bulgur",ph:"Bulgur",id:"Bulgur",am:"ቡልጉር",or:"Bulgur",sw:"Bugul",lg:"Bulgur",so:"Burqul",bn:"বুলগুর",hi:"दलिया",fr:"Boulgour"} },
+                    { id:104, ar:"سميد", pr:"Smeed", t:{en:"Semolina",ph:"Semolina",id:"Semolina",am:"ሰሞሊና",or:"Samiida",sw:"Semolina",lg:"Semolina",so:"Samiid",bn:"সুজি",hi:"सूजी",fr:"Semoule"} },
+                    { id:105, ar:"خميرة", pr:"Khameerah", t:{en:"Yeast",ph:"Lebadura",id:"Ragi",am:"እርሾ",or:"Irshoo",sw:"Hamira",lg:"Hamira",so:"Khamiir",bn:"ইস্ট",hi:"खमीर",fr:"Levure"} },
+                    { id:106, ar:"بيكنج", pr:"Baking", t:{en:"Baking powder",ph:"Baking powder",id:"Baking powder",am:"ቤኪንግ ፓውደር",or:"Beeking paawuder",sw:"Baking poda",lg:"Baking pauda",so:"Beking bowdar",bn:"বেকিং পাউডার",hi:"बेकिंग पाउडर",fr:"Levure chimique"} },
+                    { id:107, ar:"فانيليا", pr:"Vanilla", t:{en:"Vanilla",ph:"Vanilla",id:"Vanila",am:"ቫኒላ",or:"Vaaniillaa",sw:"Vanila",lg:"Vvanila",so:"Faaniiliyo",bn:"ভ্যানিলা",hi:"वैनिला",fr:"Vanille"} },
+                    { id:108, ar:"خل", pr:"Khall", t:{en:"Vinegar",ph:"Suka",id:"Cuka",am:"ኮምጣጤ",or:"Koomxaaxxee",sw:"Siki",lg:"Siki",so:"Khal",bn:"ভিনেগার",hi:"सिरका",fr:"Vinaigre"} },
+                    { id:109, ar:"مايونيز", pr:"Mayonnaise", t:{en:"Mayonnaise",ph:"Mayonnaise",id:"Mayones",am:"ማዮኔዝ",or:"Maayoneez",sw:"Mayonesi",lg:"Mayonezi",so:"Mayonees",bn:"মেয়োনিজ",hi:"मेयोनेज़",fr:"Mayonnaise"} },
+                    { id:110, ar:"كاتشب", pr:"Ketchup", t:{en:"Ketchup",ph:"Ketchup",id:"Saus tomat",am:"ኬትችፕ",or:"Ketchup",sw:"Ketchup",lg:"Ketchup",so:"Ketchup",bn:"কেচাপ",hi:"केचप",fr:"Ketchup"} },
+                    { id:111, ar:"خردل", pr:"Khardal", t:{en:"Mustard",ph:"Mustard",id:"Mustar",am:"ሰናፍጭ",or:"Sanafica",sw:"Haradali",lg:"Haradali",so:"Khardal",bn:"সরিষা",hi:"सरसों",fr:"Moutarde"} },
+                    { id:112, ar:"شطة", pr:"Shattah", t:{en:"Hot sauce",ph:"Hot sauce",id:"Saus sambal",am:"የሚያቃጥል ሶስ",or:"Soosii ho'aa",sw:"Sosi ya pilipili",lg:"Sosi wa kaamulali",so:"Shiddo",bn:"হট সস",hi:"हॉट सॉस",fr:"Sauce piquante"} },
+                    { id:113, ar:"عسل", pr:"Asal", t:{en:"Honey",ph:"Pulot",id:"Madu",am:"ማር",or:"Damma",sw:"Asali",lg:"Omubisi gw'enjuki",so:"Malab",bn:"মধু",hi:"शहद",fr:"Miel"} },
+                    { id:114, ar:"مربى", pr:"Murabba", t:{en:"Jam",ph:"Jam",id:"Selai",am:"ማርማላታ",or:"Marmaalaataa",sw:"Jamu",lg:"Jjamu",so:"Muraabo",bn:"জ্যাম",hi:"जैम",fr:"Confiture"} },
+                    { id:115, ar:"طحينة", pr:"Taheenah", t:{en:"Tahini",ph:"Tahini",id:"Tahini",am:"ታሂኒ",or:"Tahiinii",sw:"Tahini",lg:"Tahini",so:"Daxiin",bn:"তাহিনি",hi:"तहिनी",fr:"Tahini"} },
+                    { id:116, ar:"دبس", pr:"Dibs", t:{en:"Molasses",ph:"Molasses",id:"Molase",am:"ሞላሰስ",or:"Molasses",sw:"Molasi",lg:"Molasi",so:"Dibs",bn:"গুড়",hi:"गुड़",fr:"Mélasse"} },
+                    { id:117, ar:"مكسرات", pr:"Muksarrat", t:{en:"Nuts",ph:"Nuts",id:"Kacang",am:"ለውዝ",or:"Ocholoonyii",sw:"Karanga",lg:"Ebinyebwa",so:"Lowsk",bn:"বাদাম",hi:"मेवे",fr:"Noix"} },
+                    { id:118, ar:"لوز", pr:"Looz", t:{en:"Almond",ph:"Almond",id:"Almond",am:"አልሞንድ",or:"Almondii",sw:"Lozi",lg:"Llozi",so:"Yicib",bn:"কাঠবাদাম",hi:"बादाम",fr:"Amande"} },
+                    { id:119, ar:"جوز", pr:"Jooz", t:{en:"Walnut",ph:"Walnut",id:"Kenari",am:"ዋልነት",or:"Walnatii",sw:"Walnati",lg:"Walnati",so:"Jaws",bn:"আখরোট",hi:"अखरोट",fr:"Noix"} },
+                    { id:120, ar:"فستق", pr:"Fustug", t:{en:"Pistachio",ph:"Pistachio",id:"Pistachio",am:"ፒስታቺዮ",or:"Pistaachiyoo",sw:"Pistachio",lg:"Pistachio",so:"Fisdaq",bn:"পেস্তা",hi:"पिस्ता",fr:"Pistache"} },
+                    { id:121, ar:"كاجو", pr:"Caju", t:{en:"Cashew",ph:"Kasoy",id:"Mete",am:"ካሼው",or:"Kaashiyuu",sw:"Korosho",lg:"Kkolosho",so:"Kaaju",bn:"কাজু",hi:"काजू",fr:"Noix de cajou"} },
+                    { id:122, ar:"صنوبر", pr:"Sanoobar", t:{en:"Pine nut",ph:"Pine nut",id:"Kacang pinus",am:"የጥድ ለውዝ",or:"Pine nut",sw:"Paini",lg:"Paini",so:"Sanoobar",bn:"পাইন বাদাম",hi:"चिलगोजा",fr:"Pignons"} },
+                    { id:123, ar:"زبيب", pr:"Zabeeb", t:{en:"Raisin",ph:"Pasas",id:"Kismis",am:"ዘቢብ",or:"Zabiiba",sw:"Zabibu kavu",lg:"Zzabibu",so:"Sabiib",bn:"কিশমিশ",hi:"किशमिश",fr:"Raisins secs"} },
+                    { id:124, ar:"شعيرية", pr:"Sha'eriyah", t:{en:"Vermicelli",ph:"Vermicelli",id:"Bihun",am:"ቨርሚሴሊ",or:"Vermicelli",sw:"Tambi",lg:"Tambi",so:"Shaqriyo",bn:"সেমাই",hi:"सेवई",fr:"Vermicelles"} },
+                    { id:125, ar:"بقسماط", pr:"Bugsumat", t:{en:"Breadcrumbs",ph:"Breadcrumbs",id:"Tepung roti",am:"የዳቦ ፍርፋሪ",or:"Caccabaa daabboo",sw:"Makombo",lg:"Obukunkumuka",so:"Rooti tumay",bn:"ব্রেডক্রাম্বস",hi:"ब्रेडक्रंब",fr:"Chapelure"} },
+                    { id:126, ar:"نشا", pr:"Nasha", t:{en:"Cornstarch",ph:"Cornstarch",id:"Maizena",am:"ስታርች",or:"Istaarchii",sw:"Wanga",lg:"Wanga",so:"Nasha",bn:"কর্নস্টার্চ",hi:"कॉर्नस्टार्च",fr:"Fécule"} },
+                    { id:127, ar:"كاكاو", pr:"Cacao", t:{en:"Cocoa",ph:"Kakaw",id:"Kakao",am:"ካካዎ",or:"Kaakawoo",sw:"Kakao",lg:"Kkakao",so:"Kookoo",bn:"কোকো",hi:"कोको",fr:"Cacao"} },
+                    { id:128, ar:"مجفف", pr:"Mujaffaf", t:{en:"Dried",ph:"Tuyong",id:"Kering",am:"የደረቀ",or:"Gogaa",sw:"Kavu",lg:"Enkalu",so:"Qallalan",bn:"শুকনো",hi:"सूखा",fr:"Séché"} },
+                    { id:129, ar:"سوداني", pr:"Sodani", t:{en:"Peanut butter",ph:"Peanut butter",id:"Selai kacang",am:"የኦቾሎኒ ቅቤ",or:"Dhadhaa ocholoonyii",sw:"Siagi ya karanga",lg:"Bata w'ebinyebwa",so:"Subag lowska",bn:"পিনাট বাটার",hi:"पीनट बटर",fr:"Beurre de cacahuète"} },
+                    { id:130, ar:"أسود", pr:"Aswad", t:{en:"Black honey",ph:"Itim na pulot",id:"Madu hitam",am:"ጥቁር ማር",or:"Damma gurraacha",sw:"Asali nyeusi",lg:"Omubisi omudugavu",so:"Malab madow",bn:"কালো মধু",hi:"काला शहद",fr:"Miel noir"} }
+                ]
+            },
+            {
+                category: "🧂 البهارات والمطحونات (30 كلمة)",
+                transCat: { en:"Spices", ph:"Pampalasa", id:"Rempah-rempah", am:"ቅመሞች", or:"Mi'eessituu", sw:"Viungo", lg:"Ebirungo", so:"Xawaash", bn:"মশলা", hi:"मसाले", fr:"Épices" },
+                words: [
+                    { id:131, ar:"بهارات", pr:"Buharat", t:{en:"Spices",ph:"Spices",id:"Bumbu",am:"ቅመሞች",or:"Mi'eessituu",sw:"Viungo",lg:"Ebirungo",so:"Xawaash",bn:"মশলা",hi:"मसाले",fr:"Épices"} },
+                    { id:132, ar:"أسود", pr:"Aswad", t:{en:"Black pepper",ph:"Paminta",id:"Lada hitam",am:"ቁንዶ በርበሬ",or:"Qoocaa gurraacha",sw:"Pilipili manga",lg:"Kaamulali omudugavu",so:"Basbaas madow",bn:"গোলমরিচ",hi:"काली मिर्च",fr:"Poivre noir"} },
+                    { id:133, ar:"كمون", pr:"Kammoon", t:{en:"Cumin",ph:"Kumin",id:"Jintan",am:"ከሙን",or:"Kammuuna",sw:"Bizari",lg:"Kkamun",so:"Kamuun",bn:"জিরা",hi:"जीरा",fr:"Cumin"} },
+                    { id:134, ar:"كركم", pr:"Kurkum", t:{en:"Turmeric",ph:"Luyang dilaw",id:"Kunyit",am:"እርድ",or:"Kurkumii",sw:"Manjano",lg:"Mmanjano",so:"Huruud",bn:"হলুদ",hi:"हल्दी",fr:"Curcuma"} },
+                    { id:135, ar:"هيل", pr:"Hail", t:{en:"Cardamom",ph:"Kardamono",id:"Kapulaga",am:"ካርዳሞም",or:"Heela",sw:"Iliki",lg:"Iriki",so:"Xeedh",bn:"এলাচ",hi:"इलायची",fr:"Cardamome"} },
+                    { id:136, ar:"قرفة", pr:"Garfah", t:{en:"Cinnamon",ph:"Kanela",id:"Kayu manis",am:"ቀረፋ",or:"Qarafaa",sw:"Mdalasini",lg:"Mudalasini",so:"Qorfe",bn:"দারুচিনি",hi:"दालचीनी",fr:"Cannelle"} },
+                    { id:137, ar:"قرنفل", pr:"Gurunful", t:{en:"Cloves",ph:"Clavo",id:"Cengkeh",am:"ቅርንፉድ",or:"Qurunfula",sw:"Karafuu",lg:"Kkalafuu",so:"Dhegayare",bn:"লবঙ্গ",hi:"लौंग",fr:"Clous de girofle"} },
+                    { id:138, ar:"لومي", pr:"Loomi", t:{en:"Dried lime",ph:"Tuyong limon",id:"Jeruk nipis kering",am:"የደረቀ ሎሚ",or:"Loomii gogaa",sw:"Ndimu kavu",lg:"Nniimu enkalu",so:"Liin qallalan",bn:"শুকনো লেবু",hi:"सूखा नींबू",fr:"Citron séché"} },
+                    { id:139, ar:"زعفران", pr:"Za'faran", t:{en:"Saffron",ph:"Saffron",id:"Kuma-kuma",am:"ሳፍሮን",or:"Zafaraana",sw:"Zafarani",lg:"Zzafalani",so:"Zafcaan",bn:"জাফরান",hi:"केसर",fr:"Safran"} },
+                    { id:140, ar:"بابريكا", pr:"Paprika", t:{en:"Paprika",ph:"Paprika",id:"Paprika",am:"ፓፕሪካ",or:"Paaprikaa",sw:"Paprika",lg:"Ppapulika",so:"Babrika",bn:"পাপরিকা",hi:"लाल शिमला मिर्च",fr:"Paprika"} },
+                    { id:141, ar:"كزبرة", pr:"Kuzbarah", t:{en:"Dry coriander",ph:"Tuyong kulantro",id:"Ketumbar kering",am:"የደረቀ ድንብላል",or:"Dimbilaala gogaa",sw:"Giligilani kavu",lg:"Kkoti enkalu",so:"Kabsar qallalan",bn:"শুকনো ধনে",hi:"सूखा धनिया",fr:"Coriandre séchée"} },
+                    { id:142, ar:"زنجبيل", pr:"Zanjabeel", t:{en:"Ground ginger",ph:"Giniling na luya",id:"Jahe bubuk",am:"የተፈጨ ዝንጅብል",or:"Jinjibila daakame",sw:"Tangawizi ya unga",lg:"Ntangawuzi ey'obuwunga",so:"Sanjabiil shiidan",bn:"আদার গুঁড়ো",hi:"अदरक पाउडर",fr:"Gingembre moulu"} },
+                    { id:143, ar:"ثوم", pr:"Thoum", t:{en:"Garlic powder",ph:"Garlic powder",id:"Bubuk bawang putih",am:"የነጭ ሽንኩርት ዱቄት",or:"Qullubbii adii daakuu",sw:"Unga wa kitunguu saumu",lg:"Obuwunga bwa katunguluumu",so:"Toon budo ah",bn:"রসুনের গুঁড়ো",hi:"लहसुन पाउडर",fr:"Ail en poudre"} },
+                    { id:144, ar:"بصل", pr:"Basal", t:{en:"Onion powder",ph:"Onion powder",id:"Bubuk bawang merah",am:"የሽንኩርት ዱቄት",or:"Qullubbii daakuu",sw:"Unga wa kitunguu",lg:"Obuwunga bw'obutungulu",so:"Basal budo ah",bn:"পেঁয়াজের গুঁড়ো",hi:"प्याज पाउडर",fr:"Oignon en poudre"} },
+                    { id:145, ar:"غار", pr:"Ghar", t:{en:"Bay leaves",ph:"Bay leaves",id:"Daun salam",am:"የባህር ዛፍ ቅጠል",or:"Baala qarafaa",sw:"Majani ya bei",lg:"Amakoola ga bei",so:"Caleen bay",bn:"তেজপাতা",hi:"तेज पत्ता",fr:"Feuilles de laurier"} },
+                    { id:146, ar:"شمر", pr:"Shamar", t:{en:"Fennel",ph:"Fennel",id:"Adas",am:"ፌኔል",or:"Shamar",sw:"Fennel",lg:"Fennel",so:"Shamar",bn:"মৌরি",hi:"सौंफ",fr:"Fenouil"} },
+                    { id:147, ar:"يانسون", pr:"Yansoon", t:{en:"Anise",ph:"Anise",id:"Adas manis",am:"አኒስ",or:"Aaniis",sw:"Anisi",lg:"Anisi",so:"Yaansoon",bn:"মৌরি",hi:"चक्र फूल",fr:"Anis"} },
+                    { id:148, ar:"حلبة", pr:"Hulbah", t:{en:"Fenugreek",ph:"Fenugreek",id:"Kelabat",am:"አብሽ",or:"Sunqoo",sw:"Uatu",lg:"Hulba",so:"Xulbad",bn:"মেথি",hi:"मेथी",fr:"Fenugrec"} },
+                    { id:149, ar:"سماق", pr:"Summaq", t:{en:"Sumac",ph:"Sumac",id:"Sumac",am:"ሱማክ",or:"Sumaak",sw:"Sumac",lg:"Sumac",so:"Summaq",bn:"সুমাক",hi:"सुमेक",fr:"Sumac"} },
+                    { id:150, ar:"مبشور", pr:"Mabshoor", t:{en:"Nutmeg",ph:"Nutmeg",id:"Pala",am:"ነትሜግ",or:"Nutmeg",sw:"Kungumanga",lg:"Kkungumanga",so:"Jawska tiib",bn:"জায়ফল",hi:"जायफल",fr:"Noix de muscade"} },
+                    { id:151, ar:"مستكة", pr:"Mistika", t:{en:"Mastic",ph:"Mastic",id:"Mastic",am:"ማስቲክ",or:"Mastic",sw:"Masitiki",lg:"Masitiki",so:"Mastiq",bn:"মাস্টিক",hi:"मस्तकी",fr:"Mastic"} },
+                    { id:152, ar:"سوداء", pr:"Sawda", t:{en:"Black seed",ph:"Black seed",id:"Jintan hitam",am:"ጥቁር አዝሙድ",or:"Abasuudaa",sw:"Habbat soda",lg:"Habbat soda",so:"Xabad sowda",bn:"কালোজিরা",hi:"कलौंजी",fr:"Nigelle"} },
+                    { id:153, ar:"سمسم", pr:"Simsim", t:{en:"Sesame",ph:"Sesame",id:"Wijen",am:"ሰሊጥ",or:"Saliiq",sw:"Ufuta",lg:"Entungo",so:"Sinsin",bn:"তিল",hi:"तिल",fr:"Sésame"} },
+                    { id:154, ar:"زعتر", pr:"Za'atar", t:{en:"Thyme",ph:"Thyme",id:"Timi",am:"ቲም",or:"Za'atar",sw:"Taimu",lg:"Taimu",so:"Zactar",bn:"গুঁড়ো থাইম",hi:"थाइम",fr:"Thym"} },
+                    { id:155, ar:"كاري", pr:"Curry", t:{en:"Curry powder",ph:"Curry",id:"Kari",am:"ካሪ",or:"Karii",sw:"Kari",lg:"Kkari",so:"Kaari",bn:"কারি",hi:"करी",fr:"Curry"} },
+                    { id:156, ar:"ماجي", pr:"Maggi", t:{en:"Stock cube",ph:"Pampalasa",id:"Kaldu blok",am:"ማጂ",or:"Maajii",sw:"Mchemsho",lg:"Maggi",so:"Maaji",bn:"ম্যাগি",hi:"मैगी",fr:"Bouillon"} },
+                    { id:157, ar:"ليمون", pr:"Laymoon", t:{en:"Citric acid",ph:"Citric acid",id:"Asam sitrat",am:"ሲትሪክ አሲድ",or:"Asiidii loomii",sw:"Asidi ya limao",lg:"Asidi wa nniimu",so:"Cusbo liin",bn:"সাইট্রিক এসিড",hi:"नींबू का नमक",fr:"Acide citrique"} },
+                    { id:158, ar:"شيا", pr:"Chia", t:{en:"Chia seeds",ph:"Chia seeds",id:"Biji chia",am:"ቺያ",or:"Chia",sw:"Mbegu za chia",lg:"Ensigo za chia",so:"Miraha chia",bn:"চিয়া বীজ",hi:"चिया बीज",fr:"Graines de chia"} },
+                    { id:159, ar:"كتان", pr:"Kittan", t:{en:"Flaxseed",ph:"Flaxseed",id:"Biji rami",am:"ተልባ",or:"Talbaa",sw:"Mbegu za kitani",lg:"Ensigo za kitani",so:"Miraha flax",bn:"তিসি",hi:"अलसी",fr:"Graines de lin"} },
+                    { id:160, ar:"كراوية", pr:"Karawya", t:{en:"Caraway",ph:"Caraway",id:"Jintan",am:"ካራዌይ",or:"Caraway",sw:"Caraway",lg:"Caraway",so:"Kaaraway",bn:"ক্যারাওয়ে",hi:"अजमोद",fr:"Carvi"} }
+                ]
+            },
+            {
+                category: "🥛 الألبان والأجبان (15 كلمة)",
+                transCat: { en:"Dairy", ph:"Pagawaan ng gatas", id:"Produk susu", am:"የወተት ተዋጽኦዎች", or:"Aannan", sw:"Maziwa", lg:"Ebyamata", so:"Caanaha", bn:"দুগ্ধজাত", hi:"डेयरी", fr:"Produits laitiers" },
+                words: [
+                    { id:161, ar:"حليب", pr:"Halib", t:{en:"Milk",ph:"Gatas",id:"Susu",am:"ወተት",or:"Aannan",sw:"Maziwa",lg:"Amata",so:"Caano",bn:"দুধ",hi:"दूध",fr:"Lait"} },
+                    { id:162, ar:"لبن", pr:"Laban", t:{en:"Buttermilk",ph:"Laban",id:"Laban",am:"ለበን",or:"Aannan ititaa",sw:"Maziwa ya kuganda",lg:"Amata amakalu",so:"Caano fadhi",bn:"বাটারমিল্ক",hi:"छाछ",fr:"Lait fermenté"} },
+                    { id:163, ar:"زبادي", pr:"Zabadi", t:{en:"Yogurt",ph:"Yogurt",id:"Yoghurt",am:"እርጎ",or:"Itituu",sw:"Mtindi",lg:"Yogati",so:"Caano garoor",bn:"দই",hi:"दही",fr:"Yaourt"} },
+                    { id:164, ar:"جبن", pr:"Jubun", t:{en:"Cheese",ph:"Keso",id:"Keju",am:"አይብ",or:"Aayibii",sw:"Jibini",lg:"Chiizi",so:"Jiis",bn:"পনির",hi:"पनीर",fr:"Fromage"} },
+                    { id:165, ar:"زبدة", pr:"Zubdah", t:{en:"Butter",ph:"Mantikilya",id:"Mentega",am:"ቅቤ",or:"Dhadhaa",sw:"Siagi",lg:"Bata",so:"Subag",bn:"মাখন",hi:"मक्खन",fr:"Beurre"} },
+                    { id:166, ar:"قشطة", pr:"Gishtah", t:{en:"Cream",ph:"Krema",id:"Krim",am:"ክሬም",or:"Kiriimii",sw:"Krimu",lg:"Kkiriimu",so:"Laben",bn:"ক্রিম",hi:"मलाई",fr:"Crème"} },
+                    { id:167, ar:"كاسات", pr:"Kasat", t:{en:"Cream cheese",ph:"Cream cheese",id:"Keju krim",am:"ክሬም አይብ",or:"Aayibii kiriimii",sw:"Jibini ya krimu",lg:"Chiizi wa kiriimu",so:"Jiis kareem",bn:"ক্রিম চিজ",hi:"क्रीम चीज़",fr:"Fromage à tartiner"} },
+                    { id:168, ar:"شيدر", pr:"Cheddar", t:{en:"Cheddar",ph:"Cheddar",id:"Keju cheddar",am:"ቼዳር",or:"Cheddar",sw:"Cheddar",lg:"Cheddar",so:"Jiis cheddar",bn:"চেডার পনির",hi:"चेडर चीज़",fr:"Cheddar"} },
+                    { id:169, ar:"موزاريلا", pr:"Mozzarella", t:{en:"Mozzarella",ph:"Mozzarella",id:"Keju mozzarella",am:"ሞዛሬላ",or:"Mozzarella",sw:"Mozzarella",lg:"Mozzarella",so:"Jiis mozzarella",bn:"মোজারেলা",hi:"मोज़ेरेला",fr:"Mozzarella"} },
+                    { id:170, ar:"عكاوي", pr:"Akkawi", t:{en:"Salty cheese",ph:"Maalat na keso",id:"Keju asin",am:"ጨዋማ አይብ",or:"Aayibii soogidda",sw:"Jibini yenye chumvi",lg:"Chiizi ow'omunnyo",so:"Jiis dhanaan",bn:"লবণাক্ত পনির",hi:"नमकीन चीज़",fr:"Fromage salé"} },
+                    { id:171, ar:"فيتا", pr:"Feta", t:{en:"Feta cheese",ph:"Feta",id:"Keju feta",am:"ፌታ",or:"Feta",sw:"Feta",lg:"Feta",so:"Jiis feta",bn:"ফেটা পনির",hi:"फेटा चीज़",fr:"Feta"} },
+                    { id:172, ar:"شرائح", pr:"Shara'ih", t:{en:"Sliced cheese",ph:"Sliced cheese",id:"Keju lembaran",am:"የተቆረጠ አይብ",or:"Aayibii murame",sw:"Jibini ya vipande",lg:"Chiizi ow'ebipande",so:"Jiis la jaray",bn:"কাটা পনির",hi:"स्लाइस्ड चीज़",fr:"Fromage en tranches"} },
+                    { id:173, ar:"كريمة", pr:"Kareemah", t:{en:"Cooking cream",ph:"Cooking cream",id:"Krim masak",am:"የማብሰያ ክሬም",or:"Kiriimii nyaataa",sw:"Krimu ya kupika",lg:"Kkiriimu ey'okufumba",so:"Kareemka karinta",bn:"রান্নার ক্রিম",hi:"कुकिंग क्रीम",fr:"Crème liquide"} },
+                    { id:174, ar:"خفق", pr:"Khafq", t:{en:"Whipping cream",ph:"Whipping cream",id:"Krim kocok",am:"የመግረፍ ክሬም",or:"Kiriimii rukkutame",sw:"Krimu ya kupigia",lg:"Kkiriimu ey'okukuba",so:"Kareem la tumo",bn:"হুইপিং ক্রিম",hi:"व्हिपिंग क्रीम",fr:"Crème fouettée"} },
+                    { id:175, ar:"نستله", pr:"Nestle", t:{en:"Condensed milk",ph:"Condensed milk",id:"Susu kental",am:"የተቀነባበረ ወተት",or:"Aannan furdaa",sw:"Maziwa mazito",lg:"Amata amakwafu",so:"Caano macaan",bn:"কনডেন্সড মিল্ক",hi:"गाढ़ा दूध",fr:"Lait concentré"} }
+                ]
+            },
+            {
+                category: "☕ المشروبات (15 كلمة)",
+                transCat: { en:"Drinks", ph:"Inumin", id:"Minuman", am:"መጠጦች", or:"Dhugaatii", sw:"Vinywaji", lg:"Ebyokunywa", so:"Cabbitaan", bn:"পানীয়", hi:"पेय", fr:"Boissons" },
+                words: [
+                    { id:176, ar:"ماء", pr:"Ma'", t:{en:"Water",ph:"Tubig",id:"Air",am:"ውሃ",or:"Bishaan",sw:"Maji",lg:"Amazzi",so:"Biyo",bn:"জল",hi:"पानी",fr:"Eau"} },
+                    { id:177, ar:"عصير", pr:"Aseer", t:{en:"Juice",ph:"Katas",id:"Jus",am:"ጭማቂ",or:"Cunqoo",sw:"Juisi",lg:"Omubisi",so:"Casiir",bn:"রস",hi:"जूस",fr:"Jus"} },
+                    { id:178, ar:"قهوة", pr:"Gahwa", t:{en:"Arabic Coffee",ph:"Kapeng Arabo",id:"Kopi Arab",am:"የአረብ ቡና",or:"Buna Arabii",sw:"Kahawa",lg:"Kaawa",so:"Qaxwe Carabi",bn:"আরবি কফি",hi:"कॉफ़ी",fr:"Café arabe"} },
+                    { id:179, ar:"شاي", pr:"Shai", t:{en:"Tea",ph:"Tsaa",id:"Teh",am:"ሻይ",or:"Shaayii",sw:"Chai",lg:"Cayi",so:"Shaah",bn:"চা",hi:"चाय",fr:"Thé"} },
+                    { id:180, ar:"تركية", pr:"Turkiyah", t:{en:"Turkish Coffee",ph:"Turkish coffee",id:"Kopi Turki",am:"የቱርክ ቡና",or:"Buna Turkii",sw:"Kahawa ya Kituruki",lg:"Kaawa wa Kituruki",so:"Qaxwe Turki",bn:"তুর্কি কফি",hi:"तुर्की कॉफी",fr:"Café turc"} },
+                    { id:181, ar:"نسكافيه", pr:"Nescafe", t:{en:"Instant coffee",ph:"Kape",id:"Kopi instan",am:"ፈጣን ቡና",or:"Buna dafatee",sw:"Kahawa ya haraka",lg:"Kaawa w'amangu",so:"Qaxwe degdeg",bn:"ইন্সট্যান্ট কফি",hi:"तत्काल कॉफी",fr:"Café instantané"} },
+                    { id:182, ar:"أخضر", pr:"Akhdhar", t:{en:"Green tea",ph:"Green tea",id:"Teh hijau",am:"አረንጓዴ ሻይ",or:"Shaayii magariisa",sw:"Chai ya kijani",lg:"Cayi omubisi",so:"Shaah cagaaran",bn:"সবুজ চা",hi:"हरी चाय",fr:"Thé vert"} },
+                    { id:183, ar:"غازيات", pr:"Ghaziyat", t:{en:"Soft drink",ph:"Soft drink",id:"Minuman bersoda",am:"ለስላሳ መጠጥ",or:"Dhugaatii lallaafaa",sw:"Soda",lg:"Sooda",so:"Cabitaan gaas",bn:"কোমল পানীয়",hi:"शीतल पेय",fr:"Boisson gazeuse"} },
+                    { id:184, ar:"برتقال", pr:"Burtuqal", t:{en:"Orange juice",ph:"Orange juice",id:"Jus jeruk",am:"የብርቱካን ጭማቂ",or:"Cunqoo burtukaanaa",sw:"Juisi ya chungwa",lg:"Omubisi gwa mucungwa",so:"Casiir liin",bn:"কমলার রস",hi:"संतरे का रस",fr:"Jus d'orange"} },
+                    { id:185, ar:"تفاح", pr:"Tuffah", t:{en:"Apple juice",ph:"Apple juice",id:"Jus apel",am:"የፖም ጭማቂ",or:"Cunqoo aappilii",sw:"Juisi ya tofaa",lg:"Omubisi gwa kkapa",so:"Casiir tufaax",bn:"আপেলের রস",hi:"सेब का रस",fr:"Jus de pomme"} },
+                    { id:186, ar:"كاكاو", pr:"Cacao", t:{en:"Hot cocoa",ph:"Mainit na kakaw",id:"Kakao hangat",am:"ሞቅ ያለ ካካዎ",or:"Kaakawoo ho'aa",sw:"Kakao moto",lg:"Kkakao ebbugumu",so:"Kookoo diiran",bn:"গরম কোকো",hi:"गर्म कोको",fr:"Cacao chaud"} },
+                    { id:187, ar:"موكا", pr:"Mocha", t:{en:"Mocha",ph:"Mocha",id:"Moka",am:"ሞካ",or:"Mookaa",sw:"Moka",lg:"Moka",so:"Mookaa",bn:"মোকা",hi:"मोका",fr:"Moka"} },
+                    { id:188, ar:"بابونج", pr:"Baboonaj", t:{en:"Chamomile",ph:"Chamomile",id:"Kamomil",am:"ካሞሜል",or:"Chamomile",sw:"Mchaichai",lg:"Chamomile",so:"Baboonaj",bn:"ক্যামোমিল",hi:"कैमोमाइल",fr:"Camomille"} },
+                    { id:189, ar:"كركديه", pr:"Karkadeh", t:{en:"Hibiscus",ph:"Hibiscus",id:"Rosela",am:"ሂቢስከስ",or:"Hibiscus",sw:"Hibiskasi",lg:"Hibiskasi",so:"Karkadeh",bn:"জবা",hi:"गुड़हल",fr:"Hibiscus"} },
+                    { id:190, ar:"سحلب", pr:"Sahlab", t:{en:"Sahlab",ph:"Sahlab",id:"Sahlab",am:"ሳህላብ",or:"Sahlab",sw:"Sahlab",lg:"Sahlab",so:"Sahlab",bn:"সাহলাব",hi:"साहलब",fr:"Sahlab"} }
+                ]
+            },
+            {
+                category: "🍳 الأطباق السعودية والشعبية (25 كلمة)",
+                transCat: { en:"Saudi Dishes", ph:"Pagkaing Saudi", id:"Masakan Saudi", am:"የሳውዲ ምግቦች", or:"Nyaata Sawudii", sw:"Chakula cha Saudia", lg:"Emmere y'eSaudi", so:"Cunto Sacuudi", bn:"সৌদি খাবার", hi:"सऊदी व्यंजन", fr:"Plats saoudiens" },
+                words: [
+                    { id:191, ar:"كبسة", pr:"Kabsa", t:{en:"Kabsa",ph:"Kabsa",id:"Kabsa",am:"ካብሳ",or:"Kabsaa",sw:"Kabsa",lg:"Kabsa",so:"Kabsa",bn:"কাবসা",hi:"कब्सा",fr:"Kabsa"} },
+                    { id:192, ar:"مندي", pr:"Mandi", t:{en:"Mandi",ph:"Mandi",id:"Mandi",am:"ማንዲ",or:"Mandii",sw:"Mandi",lg:"Mandi",so:"Mandi",bn:"মান্দি",hi:"मंडी",fr:"Mandi"} },
+                    { id:193, ar:"مضغوط", pr:"Madhghout", t:{en:"Madhghout",ph:"Madhghout",id:"Madhghout",am:"ማድጉጥ",or:"Madguux",sw:"Madhghout",lg:"Madhghout",so:"Madhghout",bn:"মাদগুত",hi:"मदगूत",fr:"Madhghout"} },
+                    { id:194, ar:"جريش", pr:"Jareesh", t:{en:"Jareesh",ph:"Jareesh",id:"Jareesh",am:"ጃሪሽ",or:"Jariish",sw:"Jareesh",lg:"Jareesh",so:"Jariish",bn:"জারিশ",hi:"जरीश",fr:"Jareesh"} },
+                    { id:195, ar:"قرصان", pr:"Gursan", t:{en:"Gursan",ph:"Gursan",id:"Gursan",am:"ጉርሳን",or:"Qursaan",sw:"Gursan",lg:"Gursan",so:"Qursaan",bn:"গুরসান",hi:"गुरसान",fr:"Gursan"} },
+                    { id:196, ar:"مرقوق", pr:"Margoug", t:{en:"Margoug",ph:"Margoug",id:"Margoug",am:"ማርጉግ",or:"Marquuq",sw:"Margoug",lg:"Margoug",so:"Marquuq",bn:"মারগৌগ",hi:"मरगौग",fr:"Margoug"} },
+                    { id:197, ar:"سليق", pr:"Saleeg", t:{en:"Saleeg",ph:"Saleeg",id:"Saleeg",am:"ሳሊግ",or:"Saliig",sw:"Saleeg",lg:"Saleeg",so:"Saliiq",bn:"সালিগ",hi:"सलीग",fr:"Saleeg"} },
+                    { id:198, ar:"عصيدة", pr:"Aseedah", t:{en:"Aseedah",ph:"Aseedah",id:"Aseedah",am:"አሲዳ",or:"Caccabsa",sw:"Ugali",lg:"Aseeda",so:"Casiido",bn:"আসিদাহ",hi:"असीदा",fr:"Aseedah"} },
+                    { id:199, ar:"مطبق", pr:"Mutabbaq", t:{en:"Mutabbaq",ph:"Mutabbaq",id:"Martabak",am:"ሙጣባቅ",or:"Muxabbaq",sw:"Mutabbaq",lg:"Mutabbaq",so:"Murdabak",bn:"মুতাব্বাক",hi:"मुतब्बक",fr:"Mutabbaq"} },
+                    { id:200, ar:"معصوب", pr:"Ma'soub", t:{en:"Masoub",ph:"Masoub",id:"Masoub",am:"ማዕሱብ",or:"Macsuub",sw:"Masoub",lg:"Masoub",so:"Macsuub",bn:"মাসুব",hi:"मासूब",fr:"Masoub"} },
+                    { id:201, ar:"شوفان", pr:"Shofan", t:{en:"Oat Soup",ph:"Oat Soup",id:"Sup Oat",am:"የአጃ ሾርባ",or:"Shoorbaa shofaan",sw:"Supu ya oti",lg:"Ssupu wa ooti",so:"Maraq shuufo",bn:"ওটস স্যুপ",hi:"ओट्स सूप",fr:"Soupe d'avoine"} },
+                    { id:202, ar:"سمبوسة", pr:"Samboosah", t:{en:"Samosa",ph:"Samosa",id:"Samosa",am:"ሳምቡሳ",or:"Sambuusaa",sw:"Sambusa",lg:"Sammusa",so:"Sambuuso",bn:"সিঙ্গারা",hi:"समोसा",fr:"Samoussa"} },
+                    { id:203, ar:"مثلوثة", pr:"Mathloothah", t:{en:"Mathloothah",ph:"Mathloothah",id:"Mathloothah",am:"ማትሉታ",or:"Mathloothah",sw:"Mathloothah",lg:"Mathloothah",so:"Mathloothah",bn:"মাথলুথা",hi:"मथलौथा",fr:"Mathloothah"} },
+                    { id:204, ar:"حنيذ", pr:"Haneeth", t:{en:"Haneeth",ph:"Haneeth",id:"Haneeth",am:"ሃኒት",or:"Haneeth",sw:"Haneeth",lg:"Haneeth",so:"Xaniid",bn:"হানিদ",hi:"हनीथ",fr:"Haneeth"} },
+                    { id:205, ar:"مدفون", pr:"Madfoon", t:{en:"Madfoon",ph:"Madfoon",id:"Madfoon",am:"ማድፉን",or:"Madfuun",sw:"Madfoon",lg:"Madfoon",so:"Madfuun",bn:"মাদফুন",hi:"मदफून",fr:"Madfoon"} },
+                    { id:206, ar:"مظبي", pr:"Madhbi", t:{en:"Madhbi",ph:"Madhbi",id:"Madhbi",am:"ማድቢ",or:"Madbii",sw:"Madhbi",lg:"Madhbi",so:"Madbi",bn:"মাদবি",hi:"मदबी",fr:"Madhbi"} },
+                    { id:207, ar:"زربيان", pr:"Zurbiyan", t:{en:"Zurbiyan",ph:"Zurbiyan",id:"Zurbiyan",am:"ዙርቢያን",or:"Zurbiyaan",sw:"Zurbiyan",lg:"Zurbiyan",so:"Zurbiyaan",bn:"জুবিয়ান",hi:"ज़ुरबियन",fr:"Zurbiyan"} },
+                    { id:208, ar:"مقلوبة", pr:"Magloobah", t:{en:"Maqluba",ph:"Maqluba",id:"Maqluba",am:"ማቅሉባ",or:"Maqluubaa",sw:"Maqluba",lg:"Maqluba",so:"Maqluuba",bn:"মাকলুবা",hi:"मक्लूबा",fr:"Maqluba"} },
+                    { id:209, ar:"صالونة", pr:"Saloona", t:{en:"Saloona",ph:"Saloona",id:"Saloona",am:"ሳሎና",or:"Saaloonaa",sw:"Saloona",lg:"Saloona",so:"Saaloona",bn:"সালুনা",hi:"सलूना",fr:"Saloona"} },
+                    { id:210, ar:"إيدام", pr:"Eedam", t:{en:"Eedam",ph:"Eedam",id:"Eedam",am:"ኢዳም",or:"Eedaam",sw:"Eedam",lg:"Eedam",so:"Iidaam",bn:"ইদাম",hi:"ईदम",fr:"Eedam"} },
+                    { id:211, ar:"لقيمات", pr:"Lugeimat", t:{en:"Luqaimat",ph:"Luqaimat",id:"Luqaimat",am:"ሉካይማት",or:"Luqaimaat",sw:"Luqaimat",lg:"Luqaimat",so:"Luqaimaat",bn:"লুকাইমাত",hi:"लुकैमात",fr:"Luqaimat"} },
+                    { id:212, ar:"مصابيب", pr:"Masabeeb", t:{en:"Masabeeb",ph:"Masabeeb",id:"Masabeeb",am:"ማሳቢብ",or:"Masaabiib",sw:"Masabeeb",lg:"Masabeeb",so:"Masaabiib",bn:"মাসাবিব",hi:"मसाबीब",fr:"Masabeeb"} },
+                    { id:213, ar:"حنيني", pr:"Haneeni", t:{en:"Haneeni",ph:"Haneeni",id:"Haneeni",am:"ሃኒኒ",or:"Haneenii",sw:"Haneeni",lg:"Haneeni",so:"Xaniini",bn:"হানিনি",hi:"हनीनी",fr:"Haneeni"} },
+                    { id:214, ar:"قشد", pr:"Gishd", t:{en:"Gishd",ph:"Gishd",id:"Gishd",am:"ጊሽድ",or:"Qishd",sw:"Gishd",lg:"Gishd",so:"Qishd",bn:"কিশদ",hi:"किशद",fr:"Gishd"} },
+                    { id:215, ar:"عريكة", pr:"Areekah", t:{en:"Areekah",ph:"Areekah",id:"Areekah",am:"አሪካ",or:"Areekah",sw:"Areekah",lg:"Areekah",so:"Cariika",bn:"আরিকা",hi:"अरीका",fr:"Areekah"} }
+                ]
+            },
+            {
+                category: "🍽️ أفعال وتوجيهات الطبخ (35 كلمة)",
+                transCat: { en:"Cooking Actions", ph:"Pagluluto", id:"Memasak", am:"የማብሰል ድርጊቶች", or:"Gochaa Nyaata", sw:"Vitendo vya Kupika", lg:"Okufumba", so:"Falalka Cunto Karinta", bn:"রান্নার কাজ", hi:"खाना पकाने के कार्य", fr:"Actions de cuisine" },
+                words: [
+                    { id:216, ar:"اطبخي", pr:"Utbukhi", t:{en:"Cook",ph:"Magluto",id:"Masak",am:"አብስዪ",or:"Bilcheessi",sw:"Pika",lg:"Fumba",so:"Kari",bn:"রান্না কর",hi:"पकाओ",fr:"Cuisiner"} },
+                    { id:217, ar:"قطعي", pr:"Gatti'i", t:{en:"Cut",ph:"Hiwain",id:"Potong",am:"ቁረጪ",or:"Muri",sw:"Kata",lg:"Sala",so:"Jar",bn:"কাটো",hi:"काटो",fr:"Couper"} },
+                    { id:218, ar:"اغسلي", pr:"Ighsili", t:{en:"Wash",ph:"Hugasan",id:"Cuci",am:"እጠቢ",or:"Dhiqi",sw:"Osha",lg:"Oza",so:"Dhaq",bn:"ধোও",hi:"धोओ",fr:"Laver"} },
+                    { id:219, ar:"اقلي", pr:"Igli", t:{en:"Fry",ph:"Prituhin",id:"Goreng",am:"ጠብሺ",or:"Waadi",sw:"Kaanga",lg:"Siika",so:"Shiil",bn:"ভাজো",hi:"तलो",fr:"Frire"} },
+                    { id:220, ar:"اسلقي", pr:"Isligi", t:{en:"Boil",ph:"Pakuluin",id:"Rebus",am:"ቀቅዪ",or:"Affeeli",sw:"Chemsha",lg:"Fumbisa mazzi",so:"Karkari",bn:"সেদ্ধ কর",hi:"उबालो",fr:"Bouillir"} },
+                    { id:221, ar:"حركي", pr:"Harriki", t:{en:"Stir",ph:"Haluin",id:"Aduk",am:"አማስዪ",or:"Raasi",sw:"Koroga",lg:"Ttabula",so:"Walaaq",bn:"নাড়ো",hi:"चलाओ",fr:"Remuer"} },
+                    { id:222, ar:"قشري", pr:"Gashiri", t:{en:"Peel",ph:"Balatan",id:"Kupas",am:"ላጭ",or:"Qola irraa baasi",sw:"Menya",lg:"Waata",so:"Fiiq",bn:"ছিলকা ফেলো",hi:"छीलो",fr:"Éplucher"} },
+                    { id:223, ar:"غطي", pr:"Ghatti", t:{en:"Cover",ph:"Takpan",id:"Tutup",am:"ክደኚ",or:"Cufi",sw:"Funika",lg:"Bikka",so:"Dabool",bn:"ঢাকো",hi:"ढको",fr:"Couvrir"} },
+                    { id:224, ar:"أطفئي", pr:"Atfi'i", t:{en:"Turn off",ph:"Patayin",id:"Matikan",am:"አጥፊ",or:"Dhaamsi",sw:"Zima",lg:"Gyaako",so:"Dami",bn:"নিভাও",hi:"बंद करो",fr:"Éteindre"} },
+                    { id:225, ar:"شغلي", pr:"Shaghili", t:{en:"Turn on",ph:"Buhayin",id:"Nyalakan",am:"አብሪ",or:"Bani",sw:"Washa",lg:"Tekaako",so:"Daar",bn:"চালু কর",hi:"चालू करो",fr:"Allumer"} },
+                    { id:226, ar:"قصي", pr:"Gussi", t:{en:"Scissor",ph:"Gupitin",id:"Gunting",am:"ቁረጥ",or:"Kuti",sw:"Kata",lg:"Sala",so:"Jar",bn:"কাটুন",hi:"काटो",fr:"Couper aux ciseaux"} },
+                    { id:227, ar:"ابشري", pr:"Ubshuri", t:{en:"Grate",ph:"Kudkurin",id:"Parut",am:"ፍቅፍቅ",or:"Ciri",sw:"Kuna",lg:"Kuuna",so:"Xoq",bn:"কুঁচান",hi:"कद्दूकस करो",fr:"Râper"} },
+                    { id:228, ar:"اعجني", pr:"I'jini", t:{en:"Knead",ph:"Masahin",id:"Uleni",am:"አቡኪ",or:"Buka'i",sw:"Kanda",lg:"Kanda",so:"Cajiin",bn:"মাখুন",hi:"गूंथना",fr:"Pétrir"} },
+                    { id:229, ar:"افردي", pr:"Ifridi", t:{en:"Roll out",ph:"Irolyo",id:"Gulung",am:"ዘርጊ",or:"Diriirsi",sw:"Sukuma",lg:"Gaziya",so:"Fidi",bn:"বেলুন",hi:"बेलना",fr:"Étaler"} },
+                    { id:230, ar:"اخبزي", pr:"Ukhbuzi", t:{en:"Bake",ph:"Ibake",id:"Panggang",am:"ጋግሪ",or:"Tolchi",sw:"Oka",lg:"Fumba",so:"Dub",bn:"সেঁকা",hi:"बेक करो",fr:"Cuire au four"} },
+                    { id:231, ar:"اشوي", pr:"Ishwi", t:{en:"Grill",ph:"Ihawin",id:"Bakar",am:"ጠብሺ",or:"Waadi",sw:"Choma",lg:"Yokya",so:"Dab",bn:"গ্রিল কর",hi:"ग्रिल करो",fr:"Griller"} },
+                    { id:232, ar:"حمي", pr:"Hammi", t:{en:"Heat up",ph:"Initin",id:"Panaskan",am:"አሙቂ",or:"Ho'isi",sw:"Pasha moto",lg:"Bbugumya",so:"Diiri",bn:"গরম কর",hi:"गरम करो",fr:"Chauffer"} },
+                    { id:233, ar:"صبي", pr:"Subbi", t:{en:"Pour",ph:"Ibuhos",id:"Tuang",am:"አፍስሽ",or:"Naqii",sw:"Mimina",lg:"Fuka",so:"Shub",bn:"ঢালো",hi:"डालो",fr:"Verser"} },
+                    { id:234, ar:"صفي", pr:"Saffi", t:{en:"Strain",ph:"Salain",id:"Saring",am:"አጥሊ",or:"Gingilchi",sw:"Chuja",lg:"Sengeja",so:"Miiq",bn:"ছাঁকো",hi:"छानो",fr:"Égoutter"} },
+                    { id:235, ar:"تبلي", pr:"Tabbili", t:{en:"Marinate",ph:"Ibabad",id:"Bumbui",am:"አዘጋጂ",or:"Mi'eessi",sw:"Reka",lg:"Tabula",so:"Dhadhami",bn:"মেরিনেট কর",hi:"मैरिनेट करो",fr:"Mariner"} },
+                    { id:236, ar:"ذوبي", pr:"Thawwibi", t:{en:"Melt",ph:"Tunawin",id:"Lelehkan",am:"አቅልጪ",or:"Baaksi",sw:"Yeyusha",lg:"Nnyulula",so:"Dhalli",bn:"গলাও",hi:"पिघलाओ",fr:"Faire fondre"} },
+                    { id:237, ar:"اخلطي", pr:"Ikhliti", t:{en:"Mix",ph:"Haluin",id:"Campur",am:"ቀላቅዪ",or:"Maki",sw:"Changanya",lg:"Tabula",so:"Isku qas",bn:"মেশাও",hi:"मिलाओ",fr:"Mélanger"} },
+                    { id:238, ar:"افرمي", pr:"Ifrimi", t:{en:"Mince",ph:"Tadtarin",id:"Cincang",am:"ክተፊ",or:"Daaki",sw:"Saga",lg:"Ssa",so:"Shiid",bn:"কিমা কর",hi:"कीमा बनाओ",fr:"Hacher"} },
+                    { id:239, ar:"نظفي", pr:"Nadhifi", t:{en:"Clean",ph:"Linisin",id:"Bersihkan",am:"አፅጂ",or:"Qulqulleessi",sw:"Safisha",lg:"Longoosa",so:"Nadiifi",bn:"পরিষ্কার কর",hi:"साफ करो",fr:"Nettoyer"} },
+                    { id:240, ar:"امسحي", pr:"Imsahi", t:{en:"Wipe",ph:"Punasan",id:"Lap",am:"ወልውዪ",or:"Haqi",sw:"Futa",lg:"Siimula",so:"Tirtir",bn:"মোছো",hi:"पोंछो",fr:"Essuyer"} },
+                    { id:241, ar:"رتبي", pr:"Rattibi", t:{en:"Organize",ph:"Ayusin",id:"Rapikan",am:"አስተካክዪ",or:"Qopheessi",sw:"Panga",lg:"Teekateeka",so:"Nidaami",bn:"গোছাও",hi:"व्यवस्थित करो",fr:"Ranger"} },
+                    { id:242, ar:"ملحي", pr:"Mallihi", t:{en:"Add salt",ph:"Lagyan ng asin",id:"Tambah garam",am:"ጨው አድርጊ",or:"Soogidda naqi",sw:"Weka chumvi",lg:"Teeka omunnyo",so:"Cusbo",bn:"লবণ দাও",hi:"नमक डालो",fr:"Saler"} },
+                    { id:243, ar:"زيدي", pr:"Zeedi", t:{en:"Add more",ph:"Dagdagan",id:"Tambah",am:"ጨምሪ",or:"Dabali",sw:"Ongeza",lg:"Yongera",so:"Ku dar",bn:"আরও দাও",hi:"और डालो",fr:"Ajouter"} },
+                    { id:244, ar:"قصري", pr:"Gassiri", t:{en:"Lower heat",ph:"Hinaan",id:"Kecilkan",am:"ቀንስ",or:"Xiqqeessi",sw:"Punguza",lg:"Kendeza",so:"Gaabi",bn:"কমাও",hi:"कम करो",fr:"Baisser"} },
+                    { id:245, ar:"طولي", pr:"Tawwili", t:{en:"High heat",ph:"Lakasan",id:"Besarkan",am:"ጨምሪ",or:"Guddisi",sw:"Ongeza moto",lg:"Yongera",so:"Badiya",bn:"বাড়াও",hi:"तेज करो",fr:"Augmenter"} },
+                    { id:246, ar:"دقايق", pr:"Dagayig", t:{en:"Minutes",ph:"Minuto",id:"Menit",am:"ደቂቃዎች",or:"Daqiiqaa",sw:"Dakika",lg:"Ddakiika",so:"Daqiiqado",bn:"মিনিট",hi:"मिनट",fr:"Minutes"} },
+                    { id:247, ar:"ساعة", pr:"Sa'ah", t:{en:"Hour",ph:"Oras",id:"Jam",am:"ሰዓት",or:"Sa'aatii",sw:"Saa",lg:"Ssaawa",so:"Saacad",bn:"ঘণ্টا",hi:"घंटा",fr:"Heure"} },
+                    { id:248, ar:"جاهز", pr:"Jahez", t:{en:"Ready",ph:"Handa na",id:"Siap",am:"ዝግጁ",or:"Qophiidha",sw:"Tayari",lg:"Kiwede",so:"Diyaar",bn:"প্রস্তুত",hi:"तैयार",fr:"Prêt"} },
+                    { id:249, ar:"حار", pr:"Haar", t:{en:"Hot",ph:"Mainit",id:"Panas",am:"ትኩስ",or:"Ho'aa",sw:"Moto",lg:"Ekyokya",so:"Kulul",bn:"গরম",hi:"गर्म",fr:"Chaud"} },
+                    { id:250, ar:"بارد", pr:"Barid", t:{en:"Cold",ph:"Malamig",id:"Dingin",am:"ቀዝቃዛ",or:"Qabbanaa'aa",sw:"Baridi",lg:"Ekinyogoga",so:"Qabow",bn:"ঠান্ডا",hi:"ठंडा",fr:"Froid"} }
+                ]
+            }
+        ];
+
+        let selectedWords = [];
+        let learnedWords = []; 
+        
+        try {
+            let data = JSON.parse(localStorage.getItem('awalem_food_dict_words_250'));
+            if (Array.isArray(data)) selectedWords = data.map(Number).filter(n => !isNaN(n) && n > 0);
+            
+            let learned = JSON.parse(localStorage.getItem('awalem_food_dict_learned_250'));
+            if (Array.isArray(learned)) learnedWords = learned.map(Number).filter(n => !isNaN(n) && n > 0);
+        } catch(e) {}
+        
+        if (selectedWords.length === 0 && learnedWords.length === 0) {
+            selectedWords = [1, 2, 71, 91, 131, 191, 216, 217];
+        }
+
+        function initDictionary() { renderWordBank(); renderTable(); }
+
+        function renderWordBank() {
+            const container = document.getElementById('wordBankContainer');
+            const learnedContainer = document.getElementById('learnedBankContainer');
+            const vaultCard = document.getElementById('learnedVaultCard');
+            
+            container.innerHTML = '';
+            learnedContainer.innerHTML = '';
+            
+            let hasLearnedWords = false;
+
+            fullDictionary.forEach(section => {
+                let sectionHTML = `<div class="category-group"><h4>${section.category}</h4><div class="tags-container">`;
+                let hasWordsInSection = false;
+
+                section.words.forEach(word => {
+                    const id = Number(word.id);
+                    const isLearned = learnedWords.includes(id);
+                    
+                    if (isLearned) {
+                        hasLearnedWords = true;
+                        learnedContainer.innerHTML += `<div class="learned-tag" oncontextmenu="toggleLearned(event, ${id})">${word.ar}</div>`;
+                    } else {
+                        hasWordsInSection = true;
+                        const isActive = selectedWords.includes(id);
+                        const activeClass = isActive ? 'active' : '';
+                        sectionHTML += `<div class="word-tag ${activeClass}" onclick="toggleWord(${id})" oncontextmenu="toggleLearned(event, ${id})">${word.ar}</div>`;
+                    }
+                });
+                
+                sectionHTML += `</div></div>`;
+                if (hasWordsInSection) {
+                    container.innerHTML += sectionHTML;
+                }
+            });
+
+            if (hasLearnedWords) {
+                vaultCard.style.display = 'block';
+            } else {
+                vaultCard.style.display = 'none';
+            }
+        }
+
+        function toggleWord(id) {
+            id = Number(id);
+            const index = selectedWords.findIndex(sid => Number(sid) === id);
+            if (index > -1) { selectedWords.splice(index, 1); } else { selectedWords.push(id); }
+            localStorage.setItem('awalem_food_dict_words_250', JSON.stringify(selectedWords));
+            renderWordBank(); renderTable();   
+        }
+
+        function toggleLearned(e, id) {
+            if(e) e.preventDefault(); 
+            id = Number(id);
+            
+            const selIdx = selectedWords.indexOf(id);
+            if (selIdx > -1) selectedWords.splice(selIdx, 1);
+            
+            const lrnIdx = learnedWords.indexOf(id);
+            if (lrnIdx > -1) {
+                learnedWords.splice(lrnIdx, 1); 
+            } else {
+                learnedWords.push(id); 
+            }
+            
+            localStorage.setItem('awalem_food_dict_words_250', JSON.stringify(selectedWords));
+            localStorage.setItem('awalem_food_dict_learned_250', JSON.stringify(learnedWords));
+            
+            renderWordBank(); 
+            renderTable();
+        }
+
+        function toggleAll() {
+            selectedWords = []; localStorage.setItem('awalem_food_dict_words_250', JSON.stringify(selectedWords));
+            renderWordBank(); renderTable();
+        }
+
+        function renderTable() {
+            const lang = document.getElementById('languageSelect').value;
+            const tbody = document.getElementById('tableBody');
+            const thead = document.getElementById('tableHead');
+            
+            const meaningTranslated = meaningT[lang] || 'Meaning';
+            
+            thead.innerHTML = `
+                <tr>
+                    <th style="width: 30%; text-align: right;">الكلمة</th>
+                    <th style="width: 40%; text-align: center;">طريقة النطق<br>(${pronT[lang] || 'Pronunciation'})</th>
+                    <th style="width: 30%; text-align: left;">المعنى<br>(${meaningTranslated})</th>
+                </tr>
+            `;
+            
+            let htmlContent = '';
+
+            if (selectedWords.length === 0) {
+                tbody.innerHTML = `<tr><td colspan="3" class="empty-state">الجدول فارغ. اختاري الكلمات من البنك في الأعلى.</td></tr>`; return;
+            }
+
+            fullDictionary.forEach(section => {
+                const visibleWords = section.words.filter(w => selectedWords.includes(Number(w.id)));
+                if(visibleWords.length > 0) {
+                    const cleanCategoryName = section.category.replace(/\s*\(\d+\s*كلمة\)/g, '').trim(); 
+                    const translatedCategoryName = section.transCat[lang] || section.transCat.en;
+                    
+                    htmlContent += `<tr class="category-row"><td colspan="3">${cleanCategoryName} - ${translatedCategoryName}</td></tr>`;
+                    
+                    visibleWords.forEach(word => {
+                        let pronHTML = `<span class="eng-pron">${word.pr}</span>`;
+                        const meaningRaw = (word.t && word.t[lang]) ? word.t[lang] : '-';
+                        
+                        htmlContent += `
+                            <tr>
+                                <td style="font-weight: 700; text-align: right;">${word.ar}</td>
+                                <td style="text-align: center;">${pronHTML}</td>
+                                <td style="text-align: left; font-family: 'Poppins', sans-serif;">${meaningRaw}</td>
+                            </tr>
+                        `;
+                    });
+                }
+            });
+            tbody.innerHTML = htmlContent;
+        }
+    </script>
+</body>
+</html>
