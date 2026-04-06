@@ -259,7 +259,14 @@
     <script>
         // ================== [ 1. إعدادات تسجيل الدخول والربط ] ==================
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbywgjpXRddsBCAcQJgi6yVM38dOUuDn6L63jNkClSPonHgE3Ks3_-wnHowVspUTva0/exec";
-        
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
         function getOrCreateDeviceId() {
             let id = localStorage.getItem('awalem_food_device_id');
             if (!id) { id = 'AW-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now(); localStorage.setItem('awalem_food_device_id', id); }

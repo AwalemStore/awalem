@@ -278,7 +278,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 <option value="tl">الفلبينية (Tagalog)</option>
                 <option value="id">الإندونيسية (Indonesian)</option>
                 <option value="am">الأمهرية (Amharic)</option>
-                <option value="om">الأورومو (Oromo)</option>
+                <option value="or">الأورومو (Oromo)</option>
                 <option value="sw">السواحيلية (Swahili)</option>
                 <option value="lg">اللوغندا (Luganda)</option>
                 <option value="so">الصومالية (Somali)</option>
@@ -400,6 +400,13 @@ document.addEventListener('DOMContentLoaded', () => {
 </div>
 
 <script>
+    function escapeHTML(str) {
+        if (!str) return '';
+        const div = document.createElement('div');
+        div.textContent = str;
+        return div.innerHTML;
+    }
+
     function toggleWorkHours() {
         const type = document.getElementById('workHoursType').value;
         document.getElementById('fixedHours').style.display = type === 'fixed' ? 'flex' : 'none';
@@ -674,24 +681,23 @@ document.addEventListener('DOMContentLoaded', () => {
             
             html += `
                 <div class="welcome-banner">
-                    <strong>مرحباً بكِ في منزلنا يا ${workerName} 🌸</strong>
-                    <div class="msg-text">${welcomeAr}</div>
-                    ${targetLang !== 'ar' ? `<div class="msg-translated" dir="ltr">${welcomeTranslated}</div>` : ''}
+                    <strong>مرحباً بكِ في منزلنا يا ${escapeHTML(workerName)} 🌸</strong>
+                    <div class="msg-text">${escapeHTML(welcomeAr)}</div>
+                    ${targetLang !== 'ar' ? `<div class="msg-translated" dir="ltr">${escapeHTML(welcomeTranslated)}</div>` : ''}
                 </div>
             `;
 
-            // إظهار قسم تفاصيل العمل فقط إذا تم تخصيص أحد الخيارات
             if(showDuration || showDayOff || showWorkHours) {
                 html += `
                     <div class="work-details-banner">
                         <div style="font-weight:800; color:var(--primary); margin-bottom:12px; font-size:1.15rem;">⏱️ تفاصيل العمل والجدول / Work & Schedule Details:</div>
                 `;
-                if(showDuration) html += `<div class="detail-row"><strong>📅 مدة الجدول:</strong> <span>${durationTextAr}</span></div>`;
-                if(showDayOff) html += `<div class="detail-row"><strong>🌴 الإجازة:</strong> <span>${dayOffTextAr}</span></div>`;
-                if(showWorkHours) html += `<div class="detail-row"><strong>⏰ أوقات العمل:</strong> <span>${hoursTextAr}</span></div>`;
+                if(showDuration) html += `<div class="detail-row"><strong>📅 مدة الجدول:</strong> <span>${escapeHTML(durationTextAr)}</span></div>`;
+                if(showDayOff) html += `<div class="detail-row"><strong>🌴 الإجازة:</strong> <span>${escapeHTML(dayOffTextAr)}</span></div>`;
+                if(showWorkHours) html += `<div class="detail-row"><strong>⏰ أوقات العمل:</strong> <span>${escapeHTML(hoursTextAr)}</span></div>`;
                 
                 if(targetLang !== 'ar' && detailsTranslated) {
-                    html += `<div class="msg-translated" style="margin-top:15px; border-top:1px dashed #ccc; padding-top:10px;" dir="ltr">${detailsTranslated}</div>`;
+                    html += `<div class="msg-translated" style="margin-top:15px; border-top:1px dashed #ccc; padding-top:10px;" dir="ltr">${escapeHTML(detailsTranslated)}</div>`;
                 }
                 html += `</div>`;
             }
@@ -711,7 +717,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     enText = await translateText(currentAr, targetLang);
                 }
 
-                html += `<li><b>${currentAr}</b>${targetLang !== 'ar' ? `<span dir="ltr">${enText}</span>` : ''}</li>`;
+                html += `<li><b>${escapeHTML(currentAr)}</b>${targetLang !== 'ar' ? `<span dir="ltr">${escapeHTML(enText)}</span>` : ''}</li>`;
             }
             html += `</ul></div>`;
         }
@@ -739,8 +745,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 sortedTasks[freqId] += `
                     <tr>
                         <td>
-                            <div class="label-ar">✓ ${currentAr}</div>
-                            ${targetLang !== 'ar' ? `<div class="label-en" style="display:block" dir="ltr">${enText}</div>` : ''}
+                            <div class="label-ar">✓ ${escapeHTML(currentAr)}</div>
+                            ${targetLang !== 'ar' ? `<div class="label-en" style="display:block" dir="ltr">${escapeHTML(enText)}</div>` : ''}
                         </td>
                         ${includeCheckboxes ? `<td style="width: 160px; text-align: left;">${getBoxes(freqId)}</td>` : ''}
                     </tr>
