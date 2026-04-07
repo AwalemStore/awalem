@@ -306,8 +306,6 @@
         }
 
         function getOrCreateDeviceId() {
-
-        function getOrCreateDeviceId() {
             let id = localStorage.getItem('awalem_device_id');
             if (!id) { id = 'AW-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now(); localStorage.setItem('awalem_device_id', id); }
             return id;
