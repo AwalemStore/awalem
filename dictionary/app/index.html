@@ -320,7 +320,11 @@
         };
 
         async function handleLogin() {
-            const phone = document.getElementById('phone').value.trim();
+            let phone = document.getElementById('phone').value.trim();
+            phone = phone.replace(/[\s\-\(\)\+]/g, '');
+            if (phone.startsWith('00966')) phone = phone.substring(5);
+            if (phone.startsWith('966')) phone = phone.substring(3);
+            if (phone.startsWith('0')) phone = phone.substring(1);
             const msg = document.getElementById('statusMessage');
             const btnText = document.getElementById('btnText');
             const loader = document.getElementById('btnLoader');

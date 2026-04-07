@@ -1,8 +1,17 @@
+function normalizePhone(phone) {
+  var p = phone.toString().trim();
+  p = p.replace(/[\s\-\(\)\+]/g, '');
+  if (p.startsWith('00966')) p = p.substring(5);
+  if (p.startsWith('966')) p = p.substring(3);
+  if (p.startsWith('0')) p = p.substring(1);
+  return p;
+}
+
 function doPost(e) {
   try {
     var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Subscribers');
     var body = JSON.parse(e.postData.contents);
-    var phone = body.phone.toString().trim();
+    var phone = normalizePhone(body.phone);
     var deviceId = body.deviceId.toString().trim();
     var sku = body.sku.toString().trim();
 
@@ -25,7 +34,7 @@ function doPost(e) {
     var matchedRowIndex = -1;
 
     for (var i = 1; i < data.length; i++) {
-      var rowPhone = data[i][colPhone].toString().trim();
+      var rowPhone = normalizePhone(data[i][colPhone]);
       var rowSku = data[i][colSku].toString().trim();
       var rowStatus = data[i][colStatus].toString().trim();
 
@@ -61,7 +70,7 @@ function doPost(e) {
 
 function doGet(e) {
   var p = e.parameter;
-  var phone = (p.phone || '').toString().trim();
+  var phone = normalizePhone(p.phone || '');
   var deviceId = (p.deviceId || '').toString().trim();
   var sku = (p.sku || '').toString().trim();
 
@@ -86,7 +95,7 @@ function doGet(e) {
     var matchedRowIndex = -1;
 
     for (var i = 1; i < data.length; i++) {
-      var rowPhone = data[i][colPhone].toString().trim();
+      var rowPhone = normalizePhone(data[i][colPhone]);
       var rowSku = data[i][colSku].toString().trim();
       var rowStatus = data[i][colStatus].toString().trim();
 
