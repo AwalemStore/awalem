@@ -7,9 +7,11 @@ function normalizePhone(phone) {
   return p;
 }
 
+var SHEET_NAME = 'الملف الشامل لطلبات عوالم';
+
 function doPost(e) {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Subscribers');
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
     var body = JSON.parse(e.postData.contents);
     var phone = normalizePhone(body.phone);
     var deviceId = body.deviceId.toString().trim();
@@ -36,9 +38,8 @@ function doPost(e) {
     for (var i = 1; i < data.length; i++) {
       var rowPhone = normalizePhone(data[i][colPhone]);
       var rowSku = data[i][colSku].toString().trim();
-      var rowStatus = data[i][colStatus].toString().trim();
 
-      if (rowPhone === phone && rowStatus === 'نشط') {
+      if (rowPhone === phone) {
         if (rowSku === sku || rowSku === 'awalem-all') {
           matchedRow = data[i];
           matchedRowIndex = i + 1;
@@ -55,10 +56,12 @@ function doPost(e) {
 
     if (storedDeviceId === '') {
       sheet.getRange(matchedRowIndex, colDeviceId + 1).setValue(deviceId);
+      sheet.getRange(matchedRowIndex, colStatus + 1).setValue('مستخدم');
       return jsonResponse({ success: true, message: 'تم تسجيل الدخول بنجاح! مرحباً بكِ' });
     }
 
     if (storedDeviceId === deviceId) {
+      sheet.getRange(matchedRowIndex, colStatus + 1).setValue('مستخدم');
       return jsonResponse({ success: true, message: 'مرحباً بعودتك!' });
     }
 
@@ -79,7 +82,7 @@ function doGet(e) {
   }
 
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Subscribers');
+    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
     var data = sheet.getDataRange().getValues();
     var headers = data[0];
     var colPhone = headers.indexOf('phone');
@@ -97,9 +100,8 @@ function doGet(e) {
     for (var i = 1; i < data.length; i++) {
       var rowPhone = normalizePhone(data[i][colPhone]);
       var rowSku = data[i][colSku].toString().trim();
-      var rowStatus = data[i][colStatus].toString().trim();
 
-      if (rowPhone === phone && rowStatus === 'نشط') {
+      if (rowPhone === phone) {
         if (rowSku === sku || rowSku === 'awalem-all') {
           matchedRow = data[i];
           matchedRowIndex = i + 1;
@@ -116,10 +118,12 @@ function doGet(e) {
 
     if (storedDeviceId === '') {
       sheet.getRange(matchedRowIndex, colDeviceId + 1).setValue(deviceId);
+      sheet.getRange(matchedRowIndex, colStatus + 1).setValue('مستخدم');
       return jsonResponse({ success: true, message: 'تم تسجيل الدخول بنجاح! مرحباً بكِ' });
     }
 
     if (storedDeviceId === deviceId) {
+      sheet.getRange(matchedRowIndex, colStatus + 1).setValue('مستخدم');
       return jsonResponse({ success: true, message: 'مرحباً بعودتك!' });
     }
 
