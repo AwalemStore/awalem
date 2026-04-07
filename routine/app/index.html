@@ -207,35 +207,38 @@ async function handleLogin() {
         phoneInput = phoneInput.substring(1);
     }
 
-    var xhr = new XMLHttpRequest();
-    xhr.open('POST', GOOGLE_SCRIPT_URL, true);
-    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-    xhr.onload = function() {
-        try {
-            var data = JSON.parse(xhr.responseText);
-            if (data.success === true) {
-                document.getElementById("auth-screen").style.display = "none";
-                try { localStorage.setItem("smart_routine_logged_in", "true"); } catch(e){}
-            } else {
-                errorMsg.innerText = data.message || "الرقم غير مسجل في المتجر";
-                errorMsg.style.display = "block";
-                btn.innerText = "تسجيل الدخول";
-                btn.style.opacity = "1";
-            }
-        } catch(e) {
-            errorMsg.innerText = "حدث خطأ في الاتصال، حاولي مرة أخرى.";
+    var cbName = 'awalem_cb_' + Date.now();
+    var timeout = setTimeout(function() {
+        delete window[cbName];
+        errorMsg.innerText = "انتهت مهلة الاتصال، حاولي مرة أخرى.";
+        errorMsg.style.display = "block";
+        btn.innerText = "تسجيل الدخول";
+        btn.style.opacity = "1";
+    }, 15000);
+    window[cbName] = function(data) {
+        clearTimeout(timeout);
+        delete window[cbName];
+        if (data.success === true) {
+            document.getElementById("auth-screen").style.display = "none";
+            try { localStorage.setItem("smart_routine_logged_in", "true"); } catch(e){}
+        } else {
+            errorMsg.innerText = data.message || "الرقم غير مسجل في المتجر";
             errorMsg.style.display = "block";
             btn.innerText = "تسجيل الدخول";
             btn.style.opacity = "1";
         }
     };
-    xhr.onerror = function() {
+    var s = document.createElement('script');
+    s.src = GOOGLE_SCRIPT_URL + '?phone=' + encodeURIComponent(phoneInput) + '&deviceId=' + encodeURIComponent(getOrCreateDeviceId()) + '&sku=' + PRODUCT_SKU + '&callback=' + cbName;
+    s.onerror = function() {
+        clearTimeout(timeout);
+        delete window[cbName];
         errorMsg.innerText = "حدث خطأ في الاتصال، حاولي مرة أخرى.";
         errorMsg.style.display = "block";
         btn.innerText = "تسجيل الدخول";
         btn.style.opacity = "1";
     };
-    xhr.send('phone=' + encodeURIComponent(phoneInput) + '&deviceId=' + encodeURIComponent(getOrCreateDeviceId()) + '&sku=' + PRODUCT_SKU);
+    document.head.appendChild(s);
 }
 
 // دمج التحقق من الدخول التلقائي مع تهيئة المنصة

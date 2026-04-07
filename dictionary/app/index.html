@@ -335,37 +335,37 @@
 
             btnText.style.display = 'none'; loader.style.display = 'block'; btn.disabled = true;
 
-            var xhr = new XMLHttpRequest();
-            xhr.open('POST', SCRIPT_URL, true);
-            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
-            xhr.onload = function() {
-                try {
-                    var data = JSON.parse(xhr.responseText);
-                    if (data.success || data.status === 'success') {
-                        msg.innerText = 'تم الدخول بنجاح!'; msg.className = 'msg-box success';
-                        localStorage.setItem('awalem_dictionary_logged_in', 'true');
-                        setTimeout(() => {
-                            document.getElementById('loginView').style.display = 'none';
-                            document.getElementById('dictionaryView').style.display = 'block';
-                            initDictionary();
-                        }, 1000);
-                    } else {
-                        msg.innerText = data.message || 'الرقم غير مسجل في النظام.'; msg.className = 'msg-box error';
-                    }
-                } catch(e) {
-                    msg.innerText = 'خطأ في الاتصال، حاولي مجدداً.'; msg.className = 'msg-box error';
+            var cbName = 'awalem_cb_' + Date.now();
+            var timeout = setTimeout(function() {
+                delete window[cbName];
+                msg.innerText = 'انتهت مهلة الاتصال، حاولي مجدداً.'; msg.className = 'msg-box error';
+                btnText.style.display = 'block'; loader.style.display = 'none'; btn.disabled = false;
+            }, 15000);
+            window[cbName] = function(data) {
+                clearTimeout(timeout);
+                delete window[cbName];
+                if (data.success || data.status === 'success') {
+                    msg.innerText = 'تم الدخول بنجاح!'; msg.className = 'msg-box success';
+                    localStorage.setItem('awalem_dictionary_logged_in', 'true');
+                    setTimeout(() => {
+                        document.getElementById('loginView').style.display = 'none';
+                        document.getElementById('dictionaryView').style.display = 'block';
+                        initDictionary();
+                    }, 1000);
+                } else {
+                    msg.innerText = data.message || 'الرقم غير مسجل في النظام.'; msg.className = 'msg-box error';
+                    btnText.style.display = 'block'; loader.style.display = 'none'; btn.disabled = false;
                 }
             };
-            xhr.onerror = function() {
+            var s = document.createElement('script');
+            s.src = SCRIPT_URL + '?phone=' + encodeURIComponent(phone) + '&deviceId=' + encodeURIComponent(getOrCreateDeviceId()) + '&sku=' + PRODUCT_SKU + '&callback=' + cbName;
+            s.onerror = function() {
+                clearTimeout(timeout);
+                delete window[cbName];
                 msg.innerText = 'خطأ في الاتصال، حاولي مجدداً.'; msg.className = 'msg-box error';
-            };
-            xhr.send('phone=' + encodeURIComponent(phone) + '&deviceId=' + encodeURIComponent(getOrCreateDeviceId()) + '&sku=' + PRODUCT_SKU);
-            return;
-            } catch (err) {
-                msg.innerText = 'خطأ في الاتصال، حاولي مجدداً.'; msg.className = 'msg-box error';
-            } finally {
                 btnText.style.display = 'block'; loader.style.display = 'none'; btn.disabled = false;
-            }
+            };
+            document.head.appendChild(s);
         }
 
         // ================== [ 2. إعدادات القاموس والكلمات ] ==================
