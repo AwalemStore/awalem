@@ -72,7 +72,7 @@ function doPost(e) {
 
     return jsonResponse({ success: false, message: 'هذا الرقم مسجل بجهاز آخر. لتغيير الجهاز تواصلي مع الدعم.' });
   } catch (err) {
-    return jsonResponse({ success: false, message: 'حدث خطأ تقني، حاولي لاحقاً' });
+    return jsonResponse({ success: false, message: 'خطأ: ' + err.toString() });
   }
 }
 
@@ -134,7 +134,7 @@ function doGet(e) {
 
     return jsonResponse({ success: false, message: 'هذا الرقم مسجل بجهاز آخر. لتغيير الجهاز تواصلي مع الدعم.' });
   } catch (err) {
-    return jsonResponse({ success: false, message: 'حدث خطأ تقني، حاولي لاحقاً' });
+    return jsonResponse({ success: false, message: 'خطأ: ' + err.toString() });
   }
 }
 
