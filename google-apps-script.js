@@ -11,7 +11,17 @@ var SHEET_NAME = 'الملف الشامل لطلبات عوالم';
 var SHEET_ID = '1evB9CEONCn8YLlX6Pel554WDaPVTMGEJXPSiJWrl_CU';
 
 function getSheet() {
-  return SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEET_NAME);
+  var ss = SpreadsheetApp.openById(SHEET_ID);
+  var sheets = ss.getSheets();
+  var names = [];
+  for (var i = 0; i < sheets.length; i++) {
+    names.push(sheets[i].getName());
+  }
+  var sheet = ss.getSheetByName(SHEET_NAME);
+  if (!sheet) {
+    throw new Error('ما لقيت تبويب باسم "' + SHEET_NAME + '" - التبويبات المتاحة: ' + names.join(' | '));
+  }
+  return sheet;
 }
 
 function doPost(e) {
