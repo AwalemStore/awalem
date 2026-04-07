@@ -258,14 +258,18 @@
 
     <script>
         // ================== [ 1. إعدادات تسجيل الدخول والربط ] ==================
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbywgjpXRddsBCAcQJgi6yVM38dOUuDn6L63jNkClSPonHgE3Ks3_-wnHowVspUTva0/exec";
+        const PRODUCT_SKU = "awalem-food";
 
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbywgjpXRddsBCAcQJgi6yVM38dOUuDn6L63jNkClSPonHgE3Ks3_-wnHowVspUTva0/exec";
+        
         function escapeHTML(str) {
             if (!str) return '';
             const div = document.createElement('div');
             div.textContent = str;
             return div.innerHTML;
         }
+
+        function getOrCreateDeviceId() {
 
         function getOrCreateDeviceId() {
             let id = localStorage.getItem('awalem_food_device_id');
@@ -304,7 +308,7 @@
             btnText.style.display = 'none'; loader.style.display = 'block'; btn.disabled = true;
 
             try {
-                const res = await fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}&deviceId=${encodeURIComponent(getOrCreateDeviceId())}`);
+                const res = await fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}&deviceId=${encodeURIComponent(getOrCreateDeviceId())}&sku=${encodeURIComponent(PRODUCT_SKU)}`);
                 const data = await res.json();
                 
                 if (data.success || data.status === 'success') {

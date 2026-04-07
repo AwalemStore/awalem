@@ -292,14 +292,18 @@
 
     <script>
         // ================== [ 1. إعدادات تسجيل الدخول والربط ] ==================
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyOUjTV20QrO93tY6ToJisn8PLpbM2T8xWL39LnfKZpes5k2NAC-sgZFc5JNa2WdAkPdg/exec";
+        const PRODUCT_SKU = "awalem-dictionary";
 
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyOUjTV20QrO93tY6ToJisn8PLpbM2T8xWL39LnfKZpes5k2NAC-sgZFc5JNa2WdAkPdg/exec";
+        
         function escapeHTML(str) {
             if (!str) return '';
             const div = document.createElement('div');
             div.textContent = str;
             return div.innerHTML;
         }
+
+        function getOrCreateDeviceId() {
 
         function getOrCreateDeviceId() {
             let id = localStorage.getItem('awalem_device_id');
@@ -328,7 +332,7 @@
             btnText.style.display = 'none'; loader.style.display = 'block'; btn.disabled = true;
 
             try {
-                const res = await fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}&deviceId=${encodeURIComponent(getOrCreateDeviceId())}`);
+                const res = await fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}&deviceId=${encodeURIComponent(getOrCreateDeviceId())}&sku=${PRODUCT_SKU}`);
                 const data = await res.json();
                 
                 if (data.success || data.status === 'success') {
