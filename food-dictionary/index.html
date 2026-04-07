@@ -310,8 +310,7 @@
             try {
                 const res = await fetch(SCRIPT_URL, {
                     method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: new URLSearchParams({ phone: phone, deviceId: getOrCreateDeviceId(), sku: PRODUCT_SKU })
+                    body: JSON.stringify({ phone: phone, deviceId: getOrCreateDeviceId(), sku: PRODUCT_SKU })
                 });
                 const data = await res.json();
                 

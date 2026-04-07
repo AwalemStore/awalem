@@ -311,8 +311,7 @@
             try {
                 const res = await fetch(SCRIPT_URL, {
                     method: "POST",
-                    headers: { "Content-Type": "application/x-www-form-urlencoded" },
-                    body: new URLSearchParams({ phone: phone, deviceId: getOrCreateDeviceId(), sku: "dicgeneral" })
+                    body: JSON.stringify({ phone: phone, deviceId: getOrCreateDeviceId(), sku: "dicgeneral" })
                 });
                 const data = await res.json();
                 
