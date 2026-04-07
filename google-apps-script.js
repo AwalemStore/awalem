@@ -78,12 +78,13 @@ function doPost(e) {
 
 function doGet(e) {
   var p = e.parameter;
+  var callback = p.callback || '';
   var phone = normalizePhone(p.phone || '');
   var deviceId = (p.deviceId || '').toString().trim();
   var sku = (p.sku || '').toString().trim();
 
   if (!phone || !deviceId || !sku) {
-    return jsonResponse({ success: false, message: 'بيانات ناقصة' });
+    return jsonResponse({ success: false, message: 'بيانات ناقصة' }, callback);
   }
 
   try {
@@ -96,7 +97,7 @@ function doGet(e) {
     var colStatus = headers.indexOf('status');
 
     if (colPhone === -1 || colSku === -1 || colDeviceId === -1 || colStatus === -1) {
-      return jsonResponse({ success: false, message: 'خطأ في إعداد الشيت' });
+      return jsonResponse({ success: false, message: 'خطأ في إعداد الشيت' }, callback);
     }
 
     var matchedRow = null;
@@ -116,7 +117,7 @@ function doGet(e) {
     }
 
     if (!matchedRow) {
-      return jsonResponse({ success: false, message: 'الرقم غير مسجل في النظام أو الاشتراك غير فعال' });
+      return jsonResponse({ success: false, message: 'الرقم غير مسجل في النظام أو الاشتراك غير فعال' }, callback);
     }
 
     var storedDeviceId = matchedRow[colDeviceId].toString().trim();
@@ -124,20 +125,24 @@ function doGet(e) {
     if (storedDeviceId === '') {
       sheet.getRange(matchedRowIndex, colDeviceId + 1).setValue(deviceId);
       sheet.getRange(matchedRowIndex, colStatus + 1).setValue('مستخدم');
-      return jsonResponse({ success: true, message: 'تم تسجيل الدخول بنجاح! مرحباً بكِ' });
+      return jsonResponse({ success: true, message: 'تم تسجيل الدخول بنجاح! مرحباً بكِ' }, callback);
     }
 
     if (storedDeviceId === deviceId) {
       sheet.getRange(matchedRowIndex, colStatus + 1).setValue('مستخدم');
-      return jsonResponse({ success: true, message: 'مرحباً بعودتك!' });
+      return jsonResponse({ success: true, message: 'مرحباً بعودتك!' }, callback);
     }
 
-    return jsonResponse({ success: false, message: 'هذا الرقم مسجل بجهاز آخر. لتغيير الجهاز تواصلي مع الدعم.' });
+    return jsonResponse({ success: false, message: 'هذا الرقم مسجل بجهاز آخر. لتغيير الجهاز تواصلي مع الدعم.' }, callback);
   } catch (err) {
-    return jsonResponse({ success: false, message: 'حدث خطأ تقني، حاولي لاحقاً' });
+    return jsonResponse({ success: false, message: 'حدث خطأ تقني، حاولي لاحقاً' }, callback);
   }
 }
 
-function jsonResponse(data) {
-  return ContentService.createTextOutput(JSON.stringify(data)).setMimeType(ContentService.MimeType.JSON);
+function jsonResponse(data, callback) {
+  var json = JSON.stringify(data);
+  if (callback) {
+    return ContentService.createTextOutput(callback + '(' + json + ')').setMimeType(ContentService.MimeType.JAVASCRIPT);
+  }
+  return ContentService.createTextOutput(json).setMimeType(ContentService.MimeType.JSON);
 }

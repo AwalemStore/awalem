@@ -208,26 +208,35 @@ async function handleLogin() {
     }
 
     try {
-        const response = await fetch(GOOGLE_SCRIPT_URL, {
-            method: "POST",
-            body: JSON.stringify({
-                phone: phoneInput,
-                deviceId: getOrCreateDeviceId(),
-                sku: PRODUCT_SKU
-            })
-        });
+        var cbName = 'awalem_cb_' + Date.now();
+        var script = document.createElement('script');
+        script.src = GOOGLE_SCRIPT_URL + '?phone=' + encodeURIComponent(phoneInput) + '&deviceId=' + encodeURIComponent(getOrCreateDeviceId()) + '&sku=' + PRODUCT_SKU + '&callback=' + cbName;
 
-        const data = await response.json();
+        window[cbName] = function(data) {
+            delete window[cbName];
+            document.body.removeChild(script);
 
-        if (data.success === true) {
-            document.getElementById("auth-screen").style.display = "none";
-            try { localStorage.setItem("smart_routine_logged_in", "true"); } catch(e){}
-        } else {
-            errorMsg.innerText = data.message || "الرقم غير مسجل في المتجر";
+            if (data.success === true) {
+                document.getElementById("auth-screen").style.display = "none";
+                try { localStorage.setItem("smart_routine_logged_in", "true"); } catch(e){}
+            } else {
+                errorMsg.innerText = data.message || "الرقم غير مسجل في المتجر";
+                errorMsg.style.display = "block";
+                btn.innerText = "تسجيل الدخول";
+                btn.style.opacity = "1";
+            }
+        };
+
+        script.onerror = function() {
+            delete window[cbName];
+            document.body.removeChild(script);
+            errorMsg.innerText = "حدث خطأ في الاتصال، حاولي مرة أخرى.";
             errorMsg.style.display = "block";
             btn.innerText = "تسجيل الدخول";
             btn.style.opacity = "1";
-        }
+        };
+
+        document.body.appendChild(script);
     } catch (error) {
         errorMsg.innerText = "حدث خطأ في الاتصال، حاولي مرة أخرى.";
         errorMsg.style.display = "block";
