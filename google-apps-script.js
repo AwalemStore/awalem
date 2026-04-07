@@ -8,10 +8,15 @@ function normalizePhone(phone) {
 }
 
 var SHEET_NAME = 'الملف الشامل لطلبات عوالم';
+var SHEET_ID = '1evB9CEONCn8YLlX6Pel554WDaPVTMGEJXPSiJWrl_CU';
+
+function getSheet() {
+  return SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEET_NAME);
+}
 
 function doPost(e) {
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+    var sheet = getSheet();
     var body = JSON.parse(e.postData.contents);
     var phone = normalizePhone(body.phone);
     var deviceId = body.deviceId.toString().trim();
@@ -82,7 +87,7 @@ function doGet(e) {
   }
 
   try {
-    var sheet = SpreadsheetApp.getActiveSpreadsheet().getSheetByName(SHEET_NAME);
+    var sheet = getSheet();
     var data = sheet.getDataRange().getValues();
     var headers = data[0];
     var colPhone = headers.indexOf('phone');
