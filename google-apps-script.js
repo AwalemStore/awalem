@@ -7,7 +7,7 @@ function normalizePhone(phone) {
   return p;
 }
 
-var SHEET_NAME = 'الملف الشامل لطلبات عوالم';
+var SHEET_NAME = 'الورقة1';
 var SHEET_ID = '1evB9CEONCn8YLlX6Pel554WDaPVTMGEJXPSiJWrl_CU';
 
 function getSheet() {
