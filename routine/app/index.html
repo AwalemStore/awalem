@@ -159,9 +159,9 @@
 </div>
 
 <script>
-    const PRODUCT_SKU = "awalem-routine";
+    const PRODUCT_SKU = "routaine";
 
-    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxU-GFgnvbVdBCISpf4tzhN80H0CPIHvUAj_LIjaZ_yTTz6-20DWKwAbTSwd210JHhF/exec";
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx4drp7ZHE20bbQUYOSqv7w7FRERwiUJioVMzpMcAkT_LvJwenJJBWXQ8fOg3dIdTEu/exec";
 
     function escapeHTML(str) {        if (!str) return '';
         const div = document.createElement('div');
@@ -216,7 +216,7 @@ async function handleLogin() {
 
         const data = await response.json();
 
-        if (data.status === "success") {
+        if (data.success === true) {
             document.getElementById("auth-screen").style.display = "none";
             try { localStorage.setItem("smart_routine_logged_in", "true"); } catch(e){}
         } else {

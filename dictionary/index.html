@@ -269,8 +269,15 @@
 
     <script>
         // ================== [ 1. إعدادات تسجيل الدخول والربط ] ==================
-        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyrZisBd8XFU62SxbrQZLJ_FpFFQunB1UAGMPlOJfZSjdXwgtP1r2pR158D8KGqpFmNJQ/exec";
+        const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbx4drp7ZHE20bbQUYOSqv7w7FRERwiUJioVMzpMcAkT_LvJwenJJBWXQ8fOg3dIdTEu/exec";
         
+        function escapeHTML(str) {
+            if (!str) return '';
+            const div = document.createElement('div');
+            div.textContent = str;
+            return div.innerHTML;
+        }
+
         function getOrCreateDeviceId() {
             let id = localStorage.getItem('awalem_device_id');
             if (!id) { id = 'AW-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now(); localStorage.setItem('awalem_device_id', id); }
@@ -298,7 +305,7 @@
             btnText.style.display = 'none'; loader.style.display = 'block'; btn.disabled = true;
 
             try {
-                const res = await fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}&deviceId=${encodeURIComponent(getOrCreateDeviceId())}`);
+                const res = await fetch(`${SCRIPT_URL}?phone=${encodeURIComponent(phone)}&deviceId=${encodeURIComponent(getOrCreateDeviceId())}&sku=dicgeneral`);
                 const data = await res.json();
                 
                 if (data.success || data.status === 'success') {
