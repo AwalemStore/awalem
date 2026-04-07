@@ -17,10 +17,10 @@ function getSheet() {
 function doPost(e) {
   try {
     var sheet = getSheet();
-    var body = JSON.parse(e.postData.contents);
-    var phone = normalizePhone(body.phone);
-    var deviceId = body.deviceId.toString().trim();
-    var sku = body.sku.toString().trim();
+    var p = e.parameter;
+    var phone = normalizePhone(p.phone || '');
+    var deviceId = (p.deviceId || '').toString().trim();
+    var sku = (p.sku || '').toString().trim();
 
     if (!phone || !deviceId || !sku) {
       return jsonResponse({ success: false, message: 'بيانات ناقصة' });

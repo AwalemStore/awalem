@@ -335,15 +335,12 @@
 
             btnText.style.display = 'none'; loader.style.display = 'block'; btn.disabled = true;
 
-            try {
-                var cbName = 'awalem_cb_' + Date.now();
-                var script = document.createElement('script');
-                script.src = SCRIPT_URL + '?phone=' + encodeURIComponent(phone) + '&deviceId=' + encodeURIComponent(getOrCreateDeviceId()) + '&sku=' + PRODUCT_SKU + '&callback=' + cbName;
-
-                window[cbName] = function(data) {
-                    delete window[cbName];
-                    document.body.removeChild(script);
-
+            var xhr = new XMLHttpRequest();
+            xhr.open('POST', SCRIPT_URL, true);
+            xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+            xhr.onload = function() {
+                try {
+                    var data = JSON.parse(xhr.responseText);
                     if (data.success || data.status === 'success') {
                         msg.innerText = 'تم الدخول بنجاح!'; msg.className = 'msg-box success';
                         localStorage.setItem('awalem_dictionary_logged_in', 'true');
@@ -355,15 +352,15 @@
                     } else {
                         msg.innerText = data.message || 'الرقم غير مسجل في النظام.'; msg.className = 'msg-box error';
                     }
-                };
-
-                script.onerror = function() {
-                    delete window[cbName];
-                    document.body.removeChild(script);
+                } catch(e) {
                     msg.innerText = 'خطأ في الاتصال، حاولي مجدداً.'; msg.className = 'msg-box error';
-                };
-
-                document.body.appendChild(script);
+                }
+            };
+            xhr.onerror = function() {
+                msg.innerText = 'خطأ في الاتصال، حاولي مجدداً.'; msg.className = 'msg-box error';
+            };
+            xhr.send('phone=' + encodeURIComponent(phone) + '&deviceId=' + encodeURIComponent(getOrCreateDeviceId()) + '&sku=' + PRODUCT_SKU);
+            return;
             } catch (err) {
                 msg.innerText = 'خطأ في الاتصال، حاولي مجدداً.'; msg.className = 'msg-box error';
             } finally {

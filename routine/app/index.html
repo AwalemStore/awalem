@@ -207,15 +207,12 @@ async function handleLogin() {
         phoneInput = phoneInput.substring(1);
     }
 
-    try {
-        var cbName = 'awalem_cb_' + Date.now();
-        var script = document.createElement('script');
-        script.src = GOOGLE_SCRIPT_URL + '?phone=' + encodeURIComponent(phoneInput) + '&deviceId=' + encodeURIComponent(getOrCreateDeviceId()) + '&sku=' + PRODUCT_SKU + '&callback=' + cbName;
-
-        window[cbName] = function(data) {
-            delete window[cbName];
-            document.body.removeChild(script);
-
+    var xhr = new XMLHttpRequest();
+    xhr.open('POST', GOOGLE_SCRIPT_URL, true);
+    xhr.setRequestHeader('Content-Type', 'application/x-www-form-urlencoded');
+    xhr.onload = function() {
+        try {
+            var data = JSON.parse(xhr.responseText);
             if (data.success === true) {
                 document.getElementById("auth-screen").style.display = "none";
                 try { localStorage.setItem("smart_routine_logged_in", "true"); } catch(e){}
@@ -225,24 +222,20 @@ async function handleLogin() {
                 btn.innerText = "تسجيل الدخول";
                 btn.style.opacity = "1";
             }
-        };
-
-        script.onerror = function() {
-            delete window[cbName];
-            document.body.removeChild(script);
+        } catch(e) {
             errorMsg.innerText = "حدث خطأ في الاتصال، حاولي مرة أخرى.";
             errorMsg.style.display = "block";
             btn.innerText = "تسجيل الدخول";
             btn.style.opacity = "1";
-        };
-
-        document.body.appendChild(script);
-    } catch (error) {
+        }
+    };
+    xhr.onerror = function() {
         errorMsg.innerText = "حدث خطأ في الاتصال، حاولي مرة أخرى.";
         errorMsg.style.display = "block";
         btn.innerText = "تسجيل الدخول";
         btn.style.opacity = "1";
-    }
+    };
+    xhr.send('phone=' + encodeURIComponent(phoneInput) + '&deviceId=' + encodeURIComponent(getOrCreateDeviceId()) + '&sku=' + PRODUCT_SKU);
 }
 
 // دمج التحقق من الدخول التلقائي مع تهيئة المنصة
