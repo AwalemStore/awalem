@@ -171,7 +171,9 @@
 
     <script>
         window.onerror = function(msg, url, line) {
-            alert("عذراً، يوجد خطأ أثناء نسخ الكود. تأكدي من نسخه بالكامل من البداية للنهاية.\nالخطأ: " + msg);
+            if (msg && msg.indexOf('JSON') === -1 && msg.indexOf('callback') === -1) {
+                console.error("Error: " + msg + " at line " + line);
+            }
         };
     </script>
 
