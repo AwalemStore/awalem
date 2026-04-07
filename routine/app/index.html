@@ -169,6 +169,14 @@
         return div.innerHTML;
     }
 
+    function getOrCreateDeviceId() {
+        try {
+            let id = localStorage.getItem('awalem_device_id');
+            if (!id) { id = 'AW-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now(); localStorage.setItem('awalem_device_id', id); }
+            return id;
+        } catch(e) { return 'AW-FALLBACK-' + Date.now(); }
+    }
+
 // 1. إنشاء بصمة الجهاز بحماية (عشان ما ينهار المتصفح الخفي)
 function getDeviceId() {
     try {
