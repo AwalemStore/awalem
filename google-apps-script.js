@@ -11,26 +11,16 @@ var SHEET_NAME = 'Subscribers';
 var SHEET_ID = '1evB9CEONCn8YLlX6Pel554WDaPVTMGEJXPSiJWrl_CU';
 
 function getSheet() {
-  var ss = SpreadsheetApp.openById(SHEET_ID);
-  var sheets = ss.getSheets();
-  var names = [];
-  for (var i = 0; i < sheets.length; i++) {
-    names.push(sheets[i].getName());
-  }
-  var sheet = ss.getSheetByName(SHEET_NAME);
-  if (!sheet) {
-    throw new Error('ما لقيت تبويب باسم "' + SHEET_NAME + '" - التبويبات المتاحة: ' + names.join(' | '));
-  }
-  return sheet;
+  return SpreadsheetApp.openById(SHEET_ID).getSheetByName(SHEET_NAME);
 }
 
 function doPost(e) {
   try {
     var sheet = getSheet();
-    var body = JSON.parse(e.postData.contents);
-    var phone = normalizePhone(body.phone);
-    var deviceId = body.deviceId.toString().trim();
-    var sku = body.sku.toString().trim();
+    var p = e.parameter;
+    var phone = normalizePhone(p.phone || '');
+    var deviceId = (p.deviceId || '').toString().trim();
+    var sku = (p.sku || '').toString().trim();
 
     if (!phone || !deviceId || !sku) {
       return jsonResponse({ success: false, message: 'بيانات ناقصة' });
@@ -82,7 +72,7 @@ function doPost(e) {
 
     return jsonResponse({ success: false, message: 'هذا الرقم مسجل بجهاز آخر. لتغيير الجهاز تواصلي مع الدعم.' });
   } catch (err) {
-    return jsonResponse({ success: false, message: 'خطأ: ' + err.toString() });
+    return jsonResponse({ success: false, message: 'حدث خطأ تقني، حاولي لاحقاً' });
   }
 }
 
@@ -144,7 +134,7 @@ function doGet(e) {
 
     return jsonResponse({ success: false, message: 'هذا الرقم مسجل بجهاز آخر. لتغيير الجهاز تواصلي مع الدعم.' });
   } catch (err) {
-    return jsonResponse({ success: false, message: 'خطأ: ' + err.toString() });
+    return jsonResponse({ success: false, message: 'حدث خطأ تقني، حاولي لاحقاً' });
   }
 }
 

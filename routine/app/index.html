@@ -208,7 +208,15 @@ async function handleLogin() {
     }
 
     try {
-        const response = await fetch(`${GOOGLE_SCRIPT_URL}?phone=${encodeURIComponent(phoneInput)}&deviceId=${encodeURIComponent(getOrCreateDeviceId())}&sku=${PRODUCT_SKU}`);
+        const response = await fetch(GOOGLE_SCRIPT_URL, {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: new URLSearchParams({
+                phone: phoneInput,
+                deviceId: getOrCreateDeviceId(),
+                sku: PRODUCT_SKU
+            })
+        });
 
         const data = await response.json();
 
