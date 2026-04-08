@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Baby Food Guide | دليل غذاء الطفل | عوالم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6A4C9C;
+            --secondary: #9982bb;
+            --accent: #F8B4C8;
+            --accent-light: #FFF0F5;
+            --bg-color: #F4F4F8;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --border-light: rgba(106, 76, 156, 0.15);
+            --text-main: #2C2C2C;
+            --text-muted: #666;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            font-family: 'Tajawal', 'Poppins', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 20px 15px;
+        }
+
+        .hero-section {
+            text-align: center;
+            margin-bottom: 30px;
+            background: linear-gradient(135deg, #6A4C9C, #9982bb, #F8B4C8);
+            color: white;
+            padding: 45px 30px;
+            border-radius: 30px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 15px 35px rgba(106, 76, 156, 0.15);
+        }
+        .hero-section h1 {
+            margin: 0 0 10px 0;
+            font-weight: 800;
+            font-size: 2.2rem;
+        }
+        .hero-section h2 {
+            margin: 0;
+            font-weight: 500;
+            font-size: 1.2rem;
+            color: #F0E0F5;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 900px;
+            width: 100%;
+        }
+
+        .bento-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border-radius: 28px;
+            padding: 30px;
+            margin-bottom: 25px;
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.02);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+        }
+
+        .section-title {
+            color: var(--primary);
+            font-size: 1.4rem;
+            margin-top: 0;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid var(--border-light);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            line-height: 1.4;
+        }
+
+        .age-stage-card {
+            background: white;
+            border-radius: 20px;
+            padding: 25px;
+            margin-bottom: 15px;
+            border: 1px solid #EAEAEA;
+            transition: 0.25s;
+            cursor: pointer;
+        }
+        .age-stage-card:hover {
+            border-color: var(--secondary);
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(106, 76, 156, 0.1);
+        }
+        .age-stage-card .stage-header {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 10px;
+        }
+        .age-stage-card .stage-icon {
+            width: 55px;
+            height: 55px;
+            border-radius: 16px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.8rem;
+            flex-shrink: 0;
+        }
+        .age-stage-card .stage-title {
+            font-size: 1.15rem;
+            font-weight: 700;
+            color: var(--primary);
+        }
+        .age-stage-card .stage-age {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            font-weight: 500;
+        }
+        .age-stage-card .stage-desc {
+            font-size: 0.95rem;
+            color: #555;
+            line-height: 1.6;
+        }
+        .age-stage-card .stage-content {
+            max-height: 0;
+            overflow: hidden;
+            transition: max-height 0.4s ease, padding 0.3s ease;
+            padding: 0 0;
+        }
+        .age-stage-card.active .stage-content {
+            max-height: 2000px;
+            padding-top: 15px;
+            border-top: 1px dashed var(--border-light);
+            margin-top: 10px;
+        }
+        .age-stage-card .toggle-icon {
+            margin-right: auto;
+            font-size: 1.2rem;
+            color: var(--secondary);
+            transition: transform 0.3s;
+        }
+        .age-stage-card.active .toggle-icon {
+            transform: rotate(180deg);
+        }
+
+        .food-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+            gap: 12px;
+            margin-top: 15px;
+        }
+        .food-item {
+            background: var(--accent-light);
+            border: 1px solid rgba(248, 180, 200, 0.3);
+            border-radius: 14px;
+            padding: 15px 10px;
+            text-align: center;
+            font-weight: 600;
+            font-size: 0.95rem;
+            color: var(--text-main);
+            transition: 0.2s;
+            cursor: default;
+        }
+        .food-item:hover {
+            background: var(--accent);
+            color: white;
+            transform: translateY(-2px);
+        }
+        .food-item.forbidden {
+            background: #FFF0F0;
+            border-color: rgba(220, 80, 80, 0.2);
+        }
+        .food-item.forbidden:hover {
+            background: #E74C3C;
+        }
+
+        .note-box {
+            background: rgba(106, 76, 156, 0.05);
+            border: 1px dashed var(--secondary);
+            border-radius: 14px;
+            padding: 18px;
+            margin-top: 15px;
+            font-size: 0.95rem;
+            line-height: 1.7;
+            color: #555;
+        }
+
+        .tip-item {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+            padding: 16px;
+            background: white;
+            border-radius: 14px;
+            margin-bottom: 12px;
+            border: 1px solid #EAEAEA;
+            line-height: 1.7;
+            font-size: 0.95rem;
+            color: #444;
+        }
+        .tip-item .tip-icon {
+            font-size: 1.3rem;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .food-category-label {
+            font-size: 0.85rem;
+            font-weight: 700;
+            color: var(--primary);
+            margin-top: 18px;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 6px;
+        }
+        .food-category-label:first-child {
+            margin-top: 0;
+        }
+
+        .allergy-tag {
+            display: inline-block;
+            background: #FFF3CD;
+            color: #856404;
+            font-size: 0.75rem;
+            padding: 2px 8px;
+            border-radius: 20px;
+            font-weight: 700;
+            margin-right: 5px;
+        }
+
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 99998;
+            background: #25D366;
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(37, 211, 102, 0.4);
+            text-decoration: none;
+            font-size: 28px;
+            transition: transform 0.2s;
+        }
+        .whatsapp-float:hover { transform: scale(1.1); }
+
+        .footer {
+            margin-top: auto;
+            padding-top: 40px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+
+        .back-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            color: var(--primary);
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 1rem;
+            margin-bottom: 20px;
+            transition: 0.2s;
+        }
+        .back-link:hover {
+            color: var(--secondary);
+        }
+
+        @media (max-width: 768px) {
+            .hero-section { padding: 30px 20px; border-radius: 20px; }
+            .hero-section h1 { font-size: 1.7rem; }
+            .bento-card { padding: 20px; border-radius: 20px; }
+            .food-grid { grid-template-columns: repeat(2, 1fr); }
+        }
+    </style>
+</head>
+<body>
+
+    <a href="https://wa.me/966553388257" target="_blank" class="whatsapp-float">💬</a>
+
+    <div class="container">
+        <a href="../main-page/index.html" class="back-link">→ العودة للرئيسية</a>
+    </div>
+
+    <div class="hero-section">
+        <h1>Baby Food Guide 🍼</h1>
+        <h2>دليلك الشامل لغذاء طفلكِ في كل مرحلة عمرية<br>أطعمة آمنة وصحية مع نصائح مهمة لكل أم</h2>
+    </div>
+
+    <div class="container">
+        <div class="bento-card">
+            <h2 class="section-title">🎯 المراحل العمرية</h2>
+            <p style="color: var(--text-muted); margin-bottom: 20px; line-height: 1.6;">اضغطي على المرحلة العمرية لمعرفة الأطعمة المناسبة لطفلكِ</p>
+
+            <div id="stages-container">
+                <!-- المراحل العمرية ستُضاف هنا -->
+            </div>
+        </div>
+
+        <div class="bento-card">
+            <h2 class="section-title">⚠️ أطعمة ممنوعة قبل عمر سنة</h2>
+            <div class="food-grid" id="forbidden-foods">
+                <!-- الأطعمة الممنوعة -->
+            </div>
+        </div>
+
+        <div class="bento-card">
+            <h2 class="section-title">💡 نصائح مهمة</h2>
+            <div id="tips-container">
+                <!-- النصائح -->
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">صنع من قبل عوالم Awalem</div>
+
+    <script src="data.js"></script>
+</body>
+</html>
