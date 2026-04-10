@@ -3,1329 +3,515 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>جدول تغذية طفلك - عوالم</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <title>دليل غذاء الطفل الذكي | منصة عوالم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800;900&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
-            --primary-font: 'Tajawal', sans-serif;
-            --number-font: 'Poppins', sans-serif;
-            --radius-omax: 28px;
-            --glass-bg: rgba(255, 255, 255, 0.55);
-            --glass-border: rgba(255, 255, 255, 0.5);
-            --glass-shadow: 0 8px 32px 0 rgba(135, 142, 168, 0.15);
-            --text-dark: #2c3e50;
-            --awalem-primary: #2b3a67;
-            --awalem-secondary: #dcb99c;
-            --card-bg: rgba(255, 255, 255, 0.9);
-            --card-hover-shadow: 0 15px 35px rgba(0,0,0,0.08);
-            --prep-bg: rgba(245, 245, 247, 0.8);
-            --input-bg: rgba(255,255,255,0.7);
-            --input-focus-bg: #fff;
-            --week-bg: rgba(255,255,255,0.3);
-            --week-border: rgba(255,255,255,0.4);
-            --toast-success-bg: #d4edda;
-            --toast-success-border: #28a745;
-            --toast-success-color: #155724;
-            --toast-error-bg: #f8d7da;
-            --toast-error-border: #dc3545;
-            --toast-error-color: #721c24;
-            --toast-warning-bg: #fff3cd;
-            --toast-warning-border: #ffc107;
-            --toast-warning-color: #856404;
+            --p-pink: #fbc2eb;
+            --p-blue: #a6c1ee;
+            --awalem-purple: #6A4C9C;
+            --bg: #F5F5F7;
+            --glass: rgba(255, 255, 255, 0.85);
+            --radius: 28px;
+            --shadow: 0 20px 50px rgba(0,0,0,0.06);
+            --gradient: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%);
         }
 
-        [data-theme="dark"] {
-            --text-dark: #e8e8e8;
-            --glass-bg: rgba(30, 35, 50, 0.65);
-            --glass-border: rgba(255, 255, 255, 0.1);
-            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
-            --awalem-primary: #8fa4d4;
-            --awalem-secondary: #b8956e;
-            --card-bg: rgba(40, 45, 60, 0.85);
-            --card-hover-shadow: 0 15px 35px rgba(0,0,0,0.25);
-            --prep-bg: rgba(50, 55, 70, 0.7);
-            --input-bg: rgba(50, 55, 70, 0.7);
-            --input-focus-bg: rgba(60, 65, 80, 0.9);
-            --week-bg: rgba(40, 45, 60, 0.4);
-            --week-border: rgba(255, 255, 255, 0.08);
-        }
-
-        * { box-sizing: border-box; }
+        * { box-sizing: border-box; margin: 0; padding: 0; -webkit-font-smoothing: antialiased; }
 
         body {
-            margin: 0;
-            padding: 40px 20px;
-            font-family: var(--primary-font);
-            background: linear-gradient(135deg, #e0c3fc 0%, #d4f0f0 50%, #8ec5fc 100%);
-            min-height: 100vh;
-            color: var(--text-dark);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        [data-theme="dark"] body {
-            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
-        }
-
-        .top-bar {
-            display: flex;
-            justify-content: flex-end;
-            width: 100%;
-            max-width: 1200px;
-            margin-bottom: 10px;
-        }
-
-        .theme-toggle {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: 50%;
-            width: 44px;
-            height: 44px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            cursor: pointer;
-            font-size: 1.3rem;
-            transition: all 0.3s;
-        }
-
-        .theme-toggle:hover {
-            transform: scale(1.1);
-        }
-
-        .header-title {
-            text-align: center;
-            font-weight: 800;
-            font-size: 2.5rem;
-            margin-bottom: 40px;
-            color: #fff;
-            text-shadow: 0 4px 15px rgba(0,0,0,0.1);
-        }
-
-        .bento-container {
-            display: grid;
-            grid-template-columns: repeat(12, 1fr);
-            gap: 24px;
-            max-width: 1200px;
-            width: 100%;
-        }
-
-        .omax-card {
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid var(--glass-border);
-            border-radius: var(--radius-omax);
-            padding: 30px;
-            box-shadow: var(--glass-shadow);
-            transition: transform 0.3s ease, background 0.3s, border 0.3s, box-shadow 0.3s;
-        }
-
-        .omax-card:hover {
-            transform: translateY(-2px);
-        }
-
-        .input-section { grid-column: span 12; }
-        .schedule-section { grid-column: span 12; display: none; background: transparent; box-shadow: none; border: none; padding: 0; backdrop-filter: none; }
-        .rules-section { grid-column: span 12; display: none; background: rgba(240, 248, 245, 0.7); border-right: 6px solid #8ec5fc; }
-        .forbidden-section { grid-column: span 12; display: none; background: rgba(255, 240, 240, 0.7); border-right: 6px solid #ff7675; }
-        .references-section { grid-column: span 12; display: none; background: rgba(245, 240, 255, 0.7); border-right: 6px solid #a29bfe; }
-
-        [data-theme="dark"] .rules-section { background: rgba(20, 40, 35, 0.6); }
-        [data-theme="dark"] .forbidden-section { background: rgba(40, 20, 20, 0.6); }
-        [data-theme="dark"] .references-section { background: rgba(30, 20, 50, 0.6); }
-
-        h2, h3 {
-            margin-top: 0;
-            font-weight: 700;
-            color: var(--text-dark);
-        }
-
-        .form-group {
-            margin-bottom: 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-        }
-
-        label {
-            font-weight: 500;
-            font-size: 1.1rem;
-        }
-
-        input, select {
-            padding: 16px 20px;
-            border-radius: 16px;
-            border: 1px solid var(--glass-border);
-            background: var(--input-bg);
-            font-family: var(--primary-font);
-            font-size: 1rem;
-            outline: none;
-            transition: all 0.3s;
-            color: var(--text-dark);
-        }
-
-        input[type="date"] {
-            font-family: var(--number-font);
-            text-align: right;
-        }
-
-        input:focus, select:focus, textarea:focus {
-            background: var(--input-focus-bg);
-            box-shadow: 0 0 0 4px rgba(255,255,255,0.4);
-        }
-
-        .btn-primary {
-            padding: 16px 32px;
-            border-radius: var(--radius-omax);
-            border: none;
-            background: #fff;
-            color: var(--awalem-primary);
-            font-family: var(--primary-font);
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-            transition: all 0.3s;
-        }
-
-        [data-theme="dark"] .btn-primary {
-            background: rgba(50, 55, 75, 0.9);
-            color: #e8e8e8;
-        }
-
-        .btn-primary:hover {
-            background: var(--awalem-primary);
-            color: #fff;
-            transform: scale(1.02);
-        }
-
-        .btn-secondary {
-            background: var(--awalem-secondary);
-            color: #fff;
-        }
-
-        .btn-secondary:hover {
-            background: #c29d7d;
-        }
-
-        .btn-whatsapp {
-            background: #25d366;
-            color: #fff;
-        }
-
-        .btn-whatsapp:hover {
-            background: #1da851;
-        }
-
-        ul {
-            padding-right: 20px;
-            line-height: 1.8;
-        }
-
-        li { margin-bottom: 10px; }
-
-        .number-font {
-            font-family: var(--number-font);
-            font-weight: 600;
-        }
-
-        .alert-red { color: #d63031; font-weight: bold; }
-        [data-theme="dark"] .alert-red { color: #ff6b6b; }
-
-        .phase-header {
-            background: var(--awalem-primary);
-            color: white;
-            text-align: center;
+            font-family: 'Tajawal', 'Poppins', sans-serif;
+            background: var(--bg);
+            color: #1D1D1F;
             padding: 20px;
-            border-radius: 20px;
-            font-size: 1.4rem;
-            font-weight: 700;
-            margin-bottom: 24px;
-            box-shadow: 0 4px 15px rgba(43, 58, 103, 0.2);
-        }
-
-        [data-theme="dark"] .phase-header {
-            color: #1a1a2e;
-        }
-
-        .week-container {
-            margin-bottom: 40px;
-            background: var(--week-bg);
-            padding: 24px;
-            border-radius: var(--radius-omax);
-            border: 1px solid var(--week-border);
-        }
-
-        .week-title {
-            font-size: 1.2rem;
-            font-weight: 800;
-            color: var(--awalem-primary);
-            margin-bottom: 16px;
-            display: inline-block;
-            background: var(--card-bg);
-            padding: 8px 20px;
-            border-radius: 20px;
-            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
-        }
-
-        .cards-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 24px;
-        }
-
-        .food-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(20px);
-            border-radius: var(--radius-omax);
-            padding: 24px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-            border: 1px solid var(--glass-border);
-            transition: 0.3s;
-        }
-
-        .food-card:hover { transform: translateY(-5px); box-shadow: var(--card-hover-shadow); }
-
-        .food-card-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-
-        .food-title {
-            font-size: 1.5rem;
-            font-weight: 800;
-            color: var(--awalem-primary);
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .food-icon { font-size: 2rem; }
-
-        .date-badge {
-            background: var(--awalem-secondary);
-            color: #fff;
-            padding: 6px 16px;
-            border-radius: 20px;
-            font-size: 0.9rem;
-            font-weight: 600;
-            align-self: flex-start;
-        }
-
-        .prep-box {
-            background: var(--prep-bg);
-            padding: 16px;
-            border-radius: 16px;
-            font-size: 0.95rem;
             line-height: 1.6;
         }
 
-        .prep-title { color: #b5a183; font-weight: 700; }
-        .alt-title { color: #8ba989; font-weight: 700; margin-top: 8px; display: block; }
+        .container { max-width: 1050px; margin: 0 auto; display: grid; grid-template-columns: repeat(12, 1fr); gap: 24px; }
 
-        .days-tracker {
-            display: flex;
-            justify-content: space-between;
-            gap: 10px;
-            margin-top: 10px;
+        /* --- Hero --- */
+        .hero {
+            grid-column: span 12; padding: 60px 30px; border-radius: var(--radius);
+            background: var(--gradient); text-align: center; box-shadow: var(--shadow);
+            margin-bottom: 10px; position: relative;
         }
+        .hero h1 { font-size: 2.8rem; font-weight: 900; margin-bottom: 15px; color: #1d1d1f; letter-spacing: -1px; }
+        .hero p { font-size: 1.25rem; font-weight: 500; color: rgba(0,0,0,0.7); max-width: 750px; margin: 0 auto; line-height: 1.8; }
 
-        .day-pill {
-            flex: 1;
-            background: var(--prep-bg);
-            text-align: center;
-            padding: 10px 5px;
-            border-radius: 12px;
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: var(--text-dark);
-            border: 1px solid transparent;
+        /* --- Bento System --- */
+        .bento {
+            background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
+            border-radius: var(--radius); padding: 40px; border: 1px solid rgba(255,255,255,0.6);
+            box-shadow: var(--shadow); grid-column: span 12;
         }
+        .half { grid-column: span 6; }
 
-        .done-btn {
-            background: var(--prep-bg);
-            border: 2px solid #8ba989;
-            border-radius: 12px;
-            padding: 8px 16px;
-            cursor: pointer;
-            font-family: var(--primary-font);
-            font-weight: 700;
-            font-size: 0.9rem;
-            color: #555;
-            transition: all 0.3s;
-            text-align: center;
-        }
+        .section-title { font-size: 1.6rem; font-weight: 800; margin-bottom: 30px; color: var(--awalem-purple); display: flex; align-items: center; gap: 12px; }
 
-        .done-btn:hover { background: #8ba989; color: #fff; }
+        /* --- Controls UI --- */
+        .controls-wrapper { display: flex; flex-direction: column; gap: 25px; margin-bottom: 30px; align-items: center; }
+        
+        .selector-container { background: #E5E5E7; padding: 6px; border-radius: 18px; display: inline-flex; width: 100%; max-width: 450px; }
+        .selector-btn { flex: 1; padding: 12px; border-radius: 14px; border: none; cursor: pointer; font-family: inherit; font-weight: 700; transition: 0.3s; background: transparent; color: #666; font-size: 1rem; }
+        .selector-btn.active { background: #fff; color: var(--awalem-purple); box-shadow: 0 4px 15px rgba(0,0,0,0.08); }
 
-        .done-btn.completed {
-            background: #28a745;
-            color: #fff;
-            border-color: #28a745;
-        }
+        .inputs-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 20px; width: 100%; }
+        .field { display: flex; flex-direction: column; gap: 8px; }
+        .field label { font-weight: 800; font-size: 0.85rem; color: #666; }
+        .field input, .field select { padding: 16px; border-radius: 16px; border: 1px solid #E5E5E7; outline: none; font-family: 'Poppins', 'Tajawal', sans-serif; font-size: 1rem; background: #fff; text-align: right; }
+        .field input[type="date"] { direction: rtl; } 
+        .field input:focus, .field select:focus { border-color: var(--awalem-purple); box-shadow: 0 0 0 4px rgba(106, 76, 156, 0.1); }
+        
+        .age-discovery { background: rgba(106, 76, 156, 0.05); color: var(--awalem-purple); padding: 12px 15px; border-radius: 12px; font-weight: 700; font-size: 0.9rem; display: none; margin-top: 5px; border: 1px dashed rgba(106, 76, 156, 0.2); text-align: center; }
 
-        textarea.notes-area {
-            width: 100%;
-            border: 1px dashed #ccc;
-            border-radius: 16px;
-            padding: 12px;
-            font-family: var(--primary-font);
-            font-size: 0.9rem;
-            background: rgba(255,255,255,0.5);
-            resize: none;
-            box-sizing: border-box;
-            outline: none;
-            color: var(--text-dark);
-        }
+        .action-and-tabs-container { width: 100%; max-width: 600px; display: flex; flex-direction: column; gap: 20px; margin: 0 auto 30px auto; }
+        
+        .btn-group { display: flex; gap: 10px; width: 100%; }
+        .btn { flex: 2; background: #1d1d1f; color: #fff; padding: 16px; border-radius: 16px; border: none; font-weight: 800; font-size: 1rem; cursor: pointer; transition: 0.3s; font-family: inherit; }
+        .btn:hover { transform: translateY(-2px); box-shadow: 0 10px 20px rgba(0,0,0,0.15); }
+        
+        .btn-print { flex: 1; background: var(--gradient); color: #1d1d1f; display: none; }
+        .btn-print:hover { background: var(--gradient); color: #1d1d1f; transform: translateY(-2px); box-shadow: 0 10px 20px rgba(166, 193, 238, 0.4); filter: saturate(1.1); }
 
-        [data-theme="dark"] textarea.notes-area {
-            background: rgba(40, 45, 60, 0.6);
-            border-color: #555;
-        }
+        /* --- Vertical Accordion for Weeks (New Feature) --- */
+        .week-accordion { background: #fff; border-radius: 20px; border: 1px solid #E5E5E7; margin-bottom: 15px; overflow: hidden; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .week-header { padding: 20px 25px; display: flex; justify-content: space-between; align-items: center; cursor: pointer; background: #fff; transition: 0.3s; }
+        .week-header:hover { background: #FBFBFD; }
+        .week-header h3 { font-size: 1.2rem; font-weight: 900; color: var(--awalem-purple); margin: 0; }
+        .toggle-icon { font-size: 1.2rem; color: #888; transition: transform 0.3s; }
+        .week-accordion.open .toggle-icon { transform: rotate(180deg); color: var(--awalem-purple); }
+        .week-content { max-height: 0; overflow: hidden; transition: max-height 0.4s ease, padding 0.4s ease; background: #FBFBFD; }
+        .week-accordion.open .week-content { max-height: 2000px; padding: 25px; border-top: 1px solid #E5E5E7; }
 
-        .legacy-info {
-            background: var(--glass-bg);
-            border-radius: 20px;
-            padding: 24px;
-            margin-top: 30px;
-            border-right: 6px solid var(--awalem-primary);
-        }
+        /* --- Meal Card --- */
+        .meals-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 24px; }
+        .meal-card { background: #fff; padding: 25px; border-radius: var(--radius); border: 1px solid #E5E5E7; position: relative; transition: 0.3s; box-shadow: 0 4px 15px rgba(0,0,0,0.02); }
+        .meal-card:hover { transform: translateY(-5px); box-shadow: 0 15px 35px rgba(0,0,0,0.05); }
+        
+        .meal-badge { background: #F5F5F7; color: var(--awalem-purple); padding: 5px 12px; border-radius: 10px; font-size: 0.75rem; font-weight: 800; display: inline-block; margin-bottom: 12px; }
+        .meal-card h4 { font-weight: 800; font-size: 1.2rem; color: var(--awalem-purple); margin-bottom: 15px; }
+        
+        .action-row { display: flex; gap: 10px; margin-bottom: 20px; flex-wrap: wrap; }
+        .badge-btn { flex: 1; background: rgba(166, 193, 238, 0.15); color: #4A90E2; padding: 10px; border-radius: 12px; font-size: 0.8rem; font-weight: 800; cursor: pointer; border: none; font-family: inherit; transition: 0.2s; }
+        .badge-btn:hover { background: rgba(166, 193, 238, 0.3); }
+        .badge-swap { background: #f0f0f5; color: #666; }
+        .badge-swap:hover { background: #E5E5E7; }
 
-        .action-bar {
-            display: flex;
-            gap: 15px;
-            justify-content: center;
-            margin-top: 30px;
-            margin-bottom: 30px;
-            flex-wrap: wrap;
-        }
+        .tracker-section { background: #FBFBFD; padding: 15px; border-radius: 18px; border: 1px solid #E5E5E7; }
+        .tracker-title { font-size: 0.75rem; font-weight: 800; color: #888; display: flex; justify-content: space-between; margin-bottom: 10px; }
+        .days-group { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; }
+        .t-day-box { text-align: center; display: flex; flex-direction: column; gap: 4px; }
+        .t-date { font-family: 'Poppins', sans-serif; font-size: 0.65rem; font-weight: 700; color: #999; direction: ltr; }
+        .t-btn { padding: 10px 5px; background: #fff; border: 1px solid #E5E5E7; border-radius: 10px; font-size: 0.75rem; font-weight: 800; cursor: pointer; transition: 0.3s; }
+        .t-btn.active { background: #34C759; color: #fff; border-color: #34C759; }
 
-        .progress-container {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 30px;
-            background: var(--glass-bg);
-            backdrop-filter: blur(16px);
-            border-radius: 20px;
-            padding: 20px 24px;
-            border: 1px solid var(--glass-border);
-        }
+        .reactions { display: flex; gap: 10px; justify-content: center; margin-top: 15px; padding-top: 10px; border-top: 1px solid #eee; }
+        .react-btn { font-size: 1.4rem; cursor: pointer; opacity: 0.3; border: none; background: none; transition: 0.3s; }
+        .react-btn.active { opacity: 1; transform: scale(1.2); }
 
-        .progress-bar-wrapper {
-            flex: 1;
-            background: rgba(0,0,0,0.08);
-            border-radius: 12px;
-            height: 14px;
-            overflow: hidden;
-        }
+        /* --- Sections (Tips & Forbidden) --- */
+        .forbidden-grid { display: flex; flex-wrap: wrap; gap: 12px; }
+        .pill { padding: 12px 20px; background: #fff; border: 1px solid #E5E5E7; border-radius: 16px; font-weight: 800; font-size: 0.95rem; margin: 4px; display: inline-flex; align-items: center; gap: 10px; border-right: 5px solid #FF3B30; }
 
-        .progress-bar-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #8ec5fc, #28a745);
-            border-radius: 12px;
-            transition: width 0.5s ease;
-            width: 0%;
-        }
+        .tip-box { background: #fff; padding: 20px; border-radius: 20px; border: 1px solid #E5E5E7; margin-bottom: 15px; display: flex; gap: 15px; }
+        .tip-icon { font-size: 1.5rem; }
+        .tip-text h4 { margin-bottom: 5px; color: var(--awalem-purple); font-weight: 800; }
+        .tip-text p { font-size: 0.9rem; color: #666; line-height: 1.7; }
 
-        [data-theme="dark"] .progress-bar-fill {
-            background: linear-gradient(90deg, #8fa4d4, #28a745);
-        }
+        .footer { grid-column: span 12; text-align: center; padding: 40px; color: #888; font-weight: 800; border-top: 1px solid #E5E5E7; margin-top: 20px; }
 
-        .progress-text {
-            font-weight: 700;
-            font-size: 0.95rem;
-            min-width: 60px;
-            text-align: center;
-        }
+        /* --- Modal --- */
+        #modal { display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.4); backdrop-filter: blur(8px); z-index: 9999; justify-content: center; align-items: center; padding: 20px; }
+        .modal-content { background: #fff; padding: 40px; border-radius: var(--radius); max-width: 550px; width: 100%; position: relative; }
 
-        .toast-container {
-            position: fixed;
-            top: 20px;
-            left: 50%;
-            transform: translateX(-50%);
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            gap: 10px;
-            align-items: center;
-        }
-
-        .toast {
-            padding: 14px 28px;
-            border-radius: 16px;
-            font-family: var(--primary-font);
-            font-weight: 600;
-            font-size: 1rem;
-            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
-            opacity: 0;
-            transform: translateY(-20px);
-            transition: all 0.4s ease;
-            max-width: 90vw;
-            text-align: center;
-        }
-
-        .toast.show {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        .toast-success {
-            background: var(--toast-success-bg);
-            border: 1px solid var(--toast-success-border);
-            color: var(--toast-success-color);
-        }
-
-        .toast-error {
-            background: var(--toast-error-bg);
-            border: 1px solid var(--toast-error-border);
-            color: var(--toast-error-color);
-        }
-
-        .toast-warning {
-            background: var(--toast-warning-bg);
-            border: 1px solid var(--toast-warning-border);
-            color: var(--toast-warning-color);
-        }
-
-        .footer {
-            margin-top: 60px;
-            text-align: center;
-            color: var(--awalem-primary);
-            font-weight: 600;
-            font-size: 1rem;
-            opacity: 0.8;
-        }
-
-        @media (max-width: 600px) {
-            body { padding: 20px 12px; }
-            .header-title { font-size: 1.8rem; margin-bottom: 24px; }
-            .omax-card { padding: 20px; }
-            .cards-grid { grid-template-columns: 1fr; gap: 16px; }
-            .food-card { padding: 18px; }
-            .food-title { font-size: 1.25rem; }
-            .week-container { padding: 16px; }
-            .action-bar { gap: 10px; }
-            .btn-primary { padding: 14px 24px; font-size: 1rem; }
-            .phase-header { font-size: 1.15rem; padding: 16px; }
-            .days-tracker { gap: 6px; }
-            .day-pill { padding: 8px 3px; font-size: 0.78rem; }
-            .progress-container { flex-direction: column; text-align: center; }
-        }
-
+        /* --- PRINT ENGINE (1 Page Colorful & Beautiful) --- */
+        #printArea { display: none; }
         @media print {
-            @page { size: A4 portrait; margin: 8mm; }
-            *, *::before, *::after {
-                -webkit-print-color-adjust: exact !important;
-                print-color-adjust: exact !important;
-                color-adjust: exact !important;
-                backdrop-filter: none !important;
-                -webkit-backdrop-filter: none !important;
-            }
-            html {
-                height: 297mm !important;
-            }
-            body {
-                background: #fff !important;
-                color: #000 !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                font-size: 10px !important;
-                line-height: 1.35 !important;
-                display: flex !important;
-                flex-direction: column !important;
-                height: 297mm !important;
-                min-height: 297mm !important;
-                max-height: 297mm !important;
-                overflow: hidden !important;
-                align-items: center !important;
-            }
-            .input-section,
-            .action-bar,
-            .header-title,
-            .footer,
-            .top-bar,
-            .progress-container,
-            .done-btn,
-            .toast-container,
-            .theme-toggle,
-            .rules-section,
-            .forbidden-section,
-            .references-section,
-            .legacy-info,
-            textarea.notes-area { display: none !important; }
+            * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            
+            body * { display: none !important; }
+            #printArea, #printArea * { display: block !important; }
+            #printArea { background: white; width: 100%; font-family: 'Tajawal', sans-serif; direction: rtl; }
+            
+            .print-page { padding: 10px; height: 100vh; overflow: hidden; page-break-inside: avoid; }
+            .print-header { text-align: center; border-bottom: 2px solid var(--awalem-purple); padding-bottom: 10px; margin-bottom: 15px; }
+            .print-header h1 { font-size: 22px; font-weight: 900; color: var(--awalem-purple); margin: 0; }
+            .print-header p { font-size: 11px; font-weight: 700; color: #666; margin: 5px 0 0 0; }
 
-            #scheduleCard,
-            .schedule-section {
-                display: flex !important;
-                flex-direction: column !important;
-                flex: 1 !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-                background: none !important;
-                border: none !important;
-                box-shadow: none !important;
-                padding: 0 !important;
-                margin: 0 !important;
-                width: 100% !important;
-            }
-            #trackingContent {
-                display: flex !important;
-                flex-direction: column !important;
-                flex: 1 !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-                width: 100% !important;
-            }
-            .bento-container {
-                display: flex !important;
-                flex-direction: column !important;
-                flex: 1 !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-                width: 100% !important;
-                height: 100% !important;
-            }
+            .print-weeks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 15px; }
+            
+            .print-week-card { background: #FBFBFD; border: 1px solid #E5E5E7; border-radius: 12px; padding: 8px; }
+            .print-week-title { font-size: 12px; font-weight: 800; color: var(--awalem-purple); margin-bottom: 6px; border-bottom: 1px dashed #ccc; padding-bottom: 4px; display: flex; justify-content: space-between; }
+            
+            .print-meal { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 6px; margin-bottom: 6px; }
+            .print-meal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
+            .print-meal-name { font-size: 10px; font-weight: 800; color: #1d1d1f; }
+            .print-dates { font-size: 8px; font-family: 'Poppins', sans-serif; color: #888; direction: ltr; }
+            
+            .print-tracker-row { display: flex; gap: 6px; align-items: center; }
+            .print-t-label { font-size: 8px; font-weight: 700; color: #666; }
+            .print-t-boxes { display: flex; gap: 4px; }
+            .print-box { width: 10px; height: 10px; border: 1px solid #999; border-radius: 3px; display: inline-block; background: #fff; }
+            .print-box-text { font-size: 7px; margin-right: 2px; }
 
-            .phase-header {
-                background: #2b3a67 !important;
-                color: #fff !important;
-                font-size: 13px !important;
-                padding: 5px 10px !important;
-                margin: 0 0 6px 0 !important;
-                text-align: center;
-                border-radius: 8px;
-                flex-shrink: 0 !important;
-            }
+            .print-rules { display: flex; gap: 10px; border-top: 1px solid #ddd; padding-top: 10px; margin-top: 5px; }
+            .print-rules-col { flex: 1; background: #fff; border: 1px dashed #ccc; padding: 8px; border-radius: 8px; }
+            .print-rules-col h4 { font-size: 10px; margin-bottom: 4px; color: #FF3B30; }
+            .print-rules-col.tips h4 { color: var(--awalem-purple); }
+            .print-rules-col ul { margin: 0; padding-right: 12px; font-size: 8px; color: #333; line-height: 1.3; }
 
-            .week-container {
-                background: transparent !important;
-                border: none !important;
-                margin: 0 !important;
-                padding: 0 !important;
-                border-radius: 0 !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-                flex: 1 !important;
-                display: flex !important;
-                flex-direction: column !important;
-            }
-            .week-title {
-                font-size: 11px !important;
-                padding: 2px 12px !important;
-                margin: 0 0 3px 0 !important;
-                background: #eee !important;
-                color: #2b3a67 !important;
-                border-radius: 6px;
-                box-shadow: none !important;
-                display: inline-block;
-                flex-shrink: 0 !important;
-            }
-
-            .cards-grid {
-                display: grid !important;
-                grid-template-columns: repeat(2, 1fr) !important;
-                grid-template-rows: 1fr 1fr !important;
-                gap: 5px !important;
-                flex: 1 !important;
-            }
-
-            .food-card {
-                background: #fff !important;
-                border: 1px solid #ccc !important;
-                box-shadow: none !important;
-                padding: 6px 8px !important;
-                gap: 3px !important;
-                border-radius: 8px !important;
-                display: flex !important;
-                flex-direction: column !important;
-                opacity: 1 !important;
-                visibility: visible !important;
-                justify-content: center !important;
-            }
-
-            .food-card-header { display: flex !important; justify-content: space-between; align-items: center; margin: 0; }
-            .food-title { font-size: 12px !important; color: #2b3a67 !important; font-weight: 800 !important; margin: 0; }
-            .food-icon { font-size: 14px; }
-            .date-badge { background: #dcb99c !important; color: #fff !important; padding: 2px 8px; font-size: 9px !important; border-radius: 6px; margin: 0; }
-            .prep-box { background: #f7f7f9 !important; padding: 4px 6px; font-size: 9.5px !important; line-height: 1.35; border-radius: 5px; color: #000 !important; margin: 0; }
-            .prep-title { color: #8b7355 !important; font-size: 9.5px !important; }
-            .alt-title { color: #6b8b65 !important; margin-top: 1px; font-size: 9.5px !important; }
-
-            .days-tracker { display: flex !important; gap: 4px; margin: 2px 0 0 0; }
-            .day-pill { background: #f0f0f5 !important; padding: 3px; font-size: 8.5px !important; border-radius: 4px; text-align: center; color: #000 !important; }
-            .day-pill .number-font { font-size: 8.5px !important; }
+            .print-footer { text-align: center; margin-top: 10px; font-size: 9px; font-weight: 800; color: #aaa; }
         }
-        #auth-screen {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: linear-gradient(135deg, #e0c3fc 0%, #d4f0f0 50%, #8ec5fc 100%);
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            z-index: 99999;
-            font-family: var(--primary-font);
-            direction: rtl;
-            padding: 20px;
-        }
-        [data-theme="dark"] #auth-screen { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
-        .auth-card {
-            background: rgba(255, 255, 255, 0.7);
-            backdrop-filter: blur(20px);
-            -webkit-backdrop-filter: blur(20px);
-            border-radius: 28px;
-            padding: 40px 30px;
-            box-shadow: 0 10px 40px rgba(43, 58, 103, 0.1);
-            border: 1px solid rgba(255, 255, 255, 0.5);
-            text-align: center;
-            width: 100%;
-            max-width: 400px;
-        }
-        .auth-title {
-            font-size: 26px;
-            font-weight: 800;
-            background: linear-gradient(135deg, #2b3a67, #8fa4d4);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-            margin: 0 0 10px 0;
-        }
-        .auth-subtitle {
-            font-size: 14px;
-            color: #666;
-            margin: 0 0 30px 0;
-            line-height: 1.5;
-        }
-        .auth-input {
-            width: 100%;
-            padding: 18px;
-            border-radius: 20px;
-            border: 1.5px solid #e1e1e7;
-            background: rgba(255, 255, 255, 0.9);
-            font-family: var(--number-font);
-            font-size: 16px;
-            outline: none;
-            transition: all 0.3s ease;
-            text-align: center;
-            letter-spacing: 2px;
-            direction: ltr;
-        }
-        .auth-input:focus { border-color: #2b3a67; box-shadow: 0 0 0 4px rgba(43, 58, 103, 0.1); }
-        .auth-label {
-            display: block;
-            margin-bottom: 8px;
-            font-weight: 700;
-            font-size: 13px;
-            color: #2b3a67;
-            padding-right: 5px;
-            text-align: right;
-        }
-        .auth-btn {
-            background: linear-gradient(135deg, #2b3a67, #4a5a8a);
-            color: white;
-            border: none;
-            width: 100%;
-            padding: 18px;
-            border-radius: 20px;
-            font-family: var(--primary-font);
-            font-weight: 700;
-            font-size: 16px;
-            cursor: pointer;
-            box-shadow: 0 8px 20px rgba(43, 58, 103, 0.2);
-            transition: all 0.3s ease;
-        }
-        .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(43, 58, 103, 0.3); }
-        .auth-error { color: #d35400; font-size: 13px; margin-top: 15px; font-weight: 600; display: none; }
-        .auth-footer { text-align: center; color: #888; font-size: 12px; margin-top: 25px; font-weight: 500; }
-
-        @media print { #auth-screen { display: none !important; } }
+        @media (max-width: 768px) { .half { grid-column: span 12; } .inputs-row { grid-template-columns: 1fr; } .hero h1 { font-size: 2.2rem; } .btn-group { flex-direction: column; } }
     </style>
 </head>
 <body>
 
-    <div id="auth-screen">
-        <div class="auth-card">
-            <div style="font-size: 3rem; margin-bottom: 10px;">👶</div>
-            <h2 class="auth-title">تغذية طفلك</h2>
-            <p class="auth-subtitle">أدخلي رقم الجوال المسجل في طلبك للدخول إلى منصتك</p>
-            <div style="text-align: right; margin-bottom: 24px;">
-                <label class="auth-label">رقم الجوال</label>
-                <input type="tel" id="userPhone" placeholder="05XXXXXXXX" maxlength="10" autocomplete="tel" class="auth-input">
-            </div>
-            <button onclick="handleLogin()" id="verify-btn" class="auth-btn">تسجيل الدخول</button>
-            <p id="error-msg" class="auth-error"></p>
-        </div>
-        <div class="auth-footer">صنع من قبل عوالم Awalem</div>
-    </div>
+    <a href="/awalem/" style="position:fixed; top:20px; right:20px; background:var(--awalem-purple); color:white; padding:10px 22px; border-radius:50px; font-weight:800; font-size:0.9rem; text-decoration:none; z-index:1000; box-shadow:0 8px 20px rgba(106,76,156,0.3); transition:0.3s; display:flex; align-items:center; gap:8px;">🏠 عوالم</a>
 
-    <script>
-        const PRODUCT_SKU = "babyfood";
-        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxL4pI3wIIBfT4SKMXQsBwJId9bqwviUwHiCfEZFIOemEOwZ2cGq8gjqvedDFAfJjlP/exec";
+    <a href="https://wa.me/966553388257" target="_blank" style="position:fixed; bottom:25px; left:25px; background:#25D366; color:white; width:60px; height:60px; border-radius:50%; display:flex; align-items:center; justify-content:center; box-shadow:0 10px 25px rgba(37,211,102,0.3); font-size:30px; z-index:1000; text-decoration:none;">💬</a>
 
-        function getOrCreateDeviceId() {
-            try {
-                let id = localStorage.getItem('awalem_babyfood_device_id');
-                if (!id) { id = 'AW-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now(); localStorage.setItem('awalem_babyfood_device_id', id); }
-                return id;
-            } catch(e) { return 'AW-FALLBACK-' + Date.now(); }
-        }
-
-        async function handleLogin() {
-            const btn = document.getElementById("verify-btn");
-            const errorMsg = document.getElementById("error-msg");
-            let phoneInput = document.getElementById("userPhone").value.trim();
-
-            errorMsg.style.display = "none";
-            btn.innerText = "...جاري التحقق";
-            btn.style.opacity = "0.7";
-
-            if (!/^(05|5)\d{8}$/.test(phoneInput)) {
-                errorMsg.innerText = "يرجى إدخال رقم جوال صحيح";
-                errorMsg.style.display = "block";
-                btn.innerText = "تسجيل الدخول";
-                btn.style.opacity = "1";
-                return;
-            }
-
-            if (phoneInput.startsWith('0')) {
-                phoneInput = phoneInput.substring(1);
-            }
-
-            var cbName = 'awalem_cb_' + Date.now();
-            var timeout = setTimeout(function() {
-                delete window[cbName];
-                errorMsg.innerText = "انتهت مهلة الاتصال، حاولي مرة أخرى.";
-                errorMsg.style.display = "block";
-                btn.innerText = "تسجيل الدخول";
-                btn.style.opacity = "1";
-            }, 15000);
-            window[cbName] = function(data) {
-                clearTimeout(timeout);
-                delete window[cbName];
-                if (data.success === true) {
-                    document.getElementById("auth-screen").style.display = "none";
-                    try { localStorage.setItem("awalem_babyfood_logged_in", "true"); } catch(e){}
-                } else {
-                    errorMsg.innerText = data.message || "الرقم غير مسجل في المتجر";
-                    errorMsg.style.display = "block";
-                    btn.innerText = "تسجيل الدخول";
-                    btn.style.opacity = "1";
-                }
-            };
-            var s = document.createElement('script');
-            s.src = GOOGLE_SCRIPT_URL + '?phone=' + encodeURIComponent(phoneInput) + '&deviceId=' + encodeURIComponent(getOrCreateDeviceId()) + '&sku=' + PRODUCT_SKU + '&callback=' + cbName;
-            s.onerror = function() {
-                clearTimeout(timeout);
-                delete window[cbName];
-                errorMsg.innerText = "حدث خطأ في الاتصال، حاولي مرة أخرى.";
-                errorMsg.style.display = "block";
-                btn.innerText = "تسجيل الدخول";
-                btn.style.opacity = "1";
-            };
-            document.head.appendChild(s);
-        }
-
-        document.addEventListener('DOMContentLoaded', function() {
-            try {
-                if (localStorage.getItem("awalem_babyfood_logged_in") === "true") {
-                    document.getElementById("auth-screen").style.display = "none";
-                }
-            } catch (e) {}
-            initTheme();
-            setMaxDate();
-            loadSavedData();
-        });
-    </script>
-
-    <div class="toast-container" id="toastContainer"></div>
-
-    <div class="top-bar">
-        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="تبديل الوضع الداكن" title="تبديل الوضع الداكن">🌙</button>
-    </div>
-
-    <div class="header-title">رحلة غذاء طفلك</div>
-
-    <div class="bento-container">
-        <div class="omax-card input-section">
-            <h2>أدخلي بيانات طفلك</h2>
-            <div class="form-group">
-                <label for="childName">اسم الطفل/الطفلة:</label>
-                <input type="text" id="childName" placeholder="مثال: نورة" maxlength="50" aria-label="اسم الطفل">
-            </div>
-            <div class="form-group">
-                <label for="childDob">تاريخ ميلاد الطفل:</label>
-                <input type="date" id="childDob" aria-label="تاريخ ميلاد الطفل">
-                <select id="childAge" style="display:none;">
-                    <option value="6">6</option>
-                    <option value="7">7 - 8</option>
-                    <option value="9">9 - 11</option>
-                    <option value="12">12</option>
-                </select>
-            </div>
-            <div style="text-align: center; margin-top: 20px;">
-                <button class="btn-primary" onclick="generateSchedule()">عرض الجدول المخصص (4 أسابيع)</button>
-            </div>
+    <div class="container">
+        <div class="hero">
+            <h1>دليل غذاء الطفل الذكي | منصة عوالم</h1>
+            <p>منصة التغذية الطبيعية المتكاملة: جدول 4 أسابيع، تتبع الحساسية، وترجمة فورية لمساعدتكِ.</p>
         </div>
 
-        <div class="omax-card rules-section" id="rulesCard">
-            <h3>قواعد التغذية الطبية السليمة 🌿</h3>
-            <ul>
-                <li><strong>قاعدة الـ 3 أيام:</strong> تقديم صنف واحد جديد كل 3 أيام لمراقبة الحساسية.</li>
-                <li><strong>يُمنع منعاً تاماً:</strong> إضافة (<span class="alert-red">الملح، السكر، العسل</span>) قبل عمر السنة.</li>
-                <li><strong>البداية:</strong> ابدأي بملعقة واحدة إلى ملعقتين يومياً في الأيام الأولى.</li>
-            </ul>
-        </div>
+        <div class="bento full">
+            <h2 class="section-title">✨ المخطط التفاعلي للوجبات</h2>
+            
+            <div class="controls-wrapper">
+                <div class="selector-container">
+                    <button id="useBirthDate" class="selector-btn active" onclick="setMode('birth')">إدخال تاريخ الولادة</button>
+                    <button id="useManual" class="selector-btn" onclick="setMode('manual')">إدخال العمر يدوياً</button>
+                </div>
 
-        <div class="schedule-section" id="scheduleCard">
-            <div class="action-bar" id="actionBar" style="display: none;">
-                <button class="btn-primary btn-secondary" onclick="window.print()">🖨️ طباعة الجدول الطبي</button>
-                <button class="btn-primary" onclick="sendToDoctor()">🩺 إرسال بالبريد</button>
-                <button class="btn-primary btn-whatsapp" onclick="sendToWhatsApp()">💬 واتساب</button>
-            </div>
+                <div class="inputs-row">
+                    <div class="field" id="birthField">
+                        <label>تاريخ ولادة الطفل</label>
+                        <input type="date" id="babyBirthDate" onchange="calculateAge()">
+                    </div>
+                    <div class="field" id="manualField" style="display:none;">
+                        <label>عمر الطفل (بالأشهر)</label>
+                        <input type="number" id="manualAge" placeholder="6">
+                    </div>
+                    <div class="field">
+                        <label>تاريخ البدء في الخطة</label>
+                        <input type="date" id="planStartDate">
+                    </div>
+                    <div class="field">
+                        <label>لغة المساعدة (اختياري)</label>
+                        <select id="workerLang" onchange="if(masterPlan.length) renderAllWeeks()">
+                            <option value="ar">عربي (الافتراضي)</option>
+                            <option value="en">English (إنجليزي)</option>
+                            <option value="tl">Tagalog (فلبيني)</option>
+                            <option value="id">Indonesia (إندونيسي)</option>
+                            <option value="hi">Hindi (هندي)</option>
+                            <option value="ur">Urdu (أردو)</option>
+                            <option value="bn">Bengali (بنغالي)</option>
+                            <option value="si">Sinhala (سيرلانكي)</option>
+                            <option value="ne">Nepali (نيبالي)</option>
+                            <option value="am">Amharic (أمهرية)</option>
+                            <option value="sw">Swahili (سواحلي)</option>
+                        </select>
+                    </div>
+                </div>
 
-            <div class="progress-container" id="progressContainer" style="display: none;">
-                <span class="progress-text" id="progressText">0 / 8</span>
-                <div class="progress-bar-wrapper">
-                    <div class="progress-bar-fill" id="progressBar"></div>
+                <div id="ageDiscoveryText" class="age-discovery"></div>
+
+                <div class="action-and-tabs-container">
+                    <div class="btn-group">
+                        <button class="btn" onclick="initPlan()">توليد خطة الـ 4 أسابيع</button>
+                        <button class="btn btn-print" id="printBtn" onclick="prepareBeautifulPrint()">طباعة الجدول الشامل 🖨️</button>
+                    </div>
                 </div>
             </div>
 
-            <div id="trackingContent"></div>
+            <div id="plannerWorkspace" style="display:none; width: 100%;">
+                </div>
+        </div>
 
-            <div class="legacy-info" id="legacyContent" style="display: none;">
-                <h2 id="scheduleTitle" style="color: var(--awalem-primary); font-size:1.2rem;">ملخص المرحلة لـ </h2>
-                <p id="calculatedAge" style="color: #555; font-weight: bold; margin-bottom: 10px;"></p>
-                <div id="scheduleContent" style="font-size: 0.95rem; line-height: 1.6;"></div>
+        <div class="bento half">
+            <h2 class="section-title">⚠️ الممنوعات قبل السنة</h2>
+            <div id="forbidden-container" class="forbidden-grid"></div>
+        </div>
+
+        <div class="bento half">
+            <h2 class="section-title">💡 نصائح عوالم</h2>
+            <div id="tips-container"></div>
+        </div>
+
+        <div class="footer">صنع من قبل عوالم Awalem</div>
+    </div>
+
+    <div id="modal">
+        <div class="modal-content">
+            <span style="position:absolute; top:20px; left:25px; cursor:pointer; font-size:1.5rem; color:#888;" onclick="document.getElementById('modal').style.display='none'">✕</span>
+            <h2 id="mTitle" style="color:var(--awalem-purple); margin-bottom:20px; font-weight:900;"></h2>
+            <div style="background:#F5F5F7; padding:20px; border-radius:18px; margin-bottom:20px;">
+                <strong id="mIngTitle">المكونات:</strong>
+                <p id="mIng" style="color:#444; margin-top:8px;"></p>
             </div>
-        </div>
-
-        <div class="omax-card forbidden-section" id="forbiddenCard">
-            <h3 class="alert-red">أطعمة محظورة تماماً (قبل عمر السنة) ⚠️</h3>
-            <ul>
-                <li><strong>العسل:</strong> يمنع منعاً باتاً لاحتوائه على أبواغ بكتيرية قد تسبب التسمم السجقي.</li>
-                <li><strong>حليب البقر:</strong> لا يقدم كمشروب رئيسي بديلاً لحليب الأم أو الصناعي.</li>
-                <li><strong>المكسرات الكاملة:</strong> لتجنب الاختناق (يمكن تقديمها مطحونة تماماً ومطبوخة).</li>
-            </ul>
-        </div>
-
-        <div class="omax-card references-section" id="referencesCard">
-            <h3>📚 المراجع الطبية</h3>
-            <ul>
-                <li><strong>منظمة الصحة العالمية (WHO):</strong> دليل التغذية التكميلية للرضع والأطفال الصغار.</li>
-                <li><strong>الأكاديمية الأمريكية لطب الأطفال (AAP):</strong> توصيات إدخال الأطعمة الصلبة للأطفال.</li>
-                <li><strong>UNICEF:</strong> دليل التغذية المبكرة وتطوير عادات الأكل الصحي.</li>
-            </ul>
+            <strong id="mStepTitle">التحضير:</strong>
+            <p id="mStep" style="line-height:1.7; color:#555; margin-top:8px;"></p>
         </div>
     </div>
 
-    <div class="footer">
-        صنع من قبل عوالم Awalem
-    </div>
+    <div id="printArea"></div>
 
+    <script src="data.js"></script>
     <script>
-        const STORAGE_KEYS = {
-            name: 'babyfood_name',
-            dob: 'babyfood_dob',
-            theme: 'babyfood_theme',
-            completed: 'babyfood_completed',
-            notes: 'babyfood_notes'
-        };
+        const D = APP_DATA.dict;
+        const S = APP_DATA.stages;
 
-        function saveToStorage(key, value) {
-            try { localStorage.setItem(key, value); } catch(e) {}
+        function t(key, lang) { return D[lang] ? D[lang][key] : (D["en"][key] || key); }
+
+        let mode = 'birth';
+        let calculatedAge = 0;
+        let masterPlan = [];
+        let currentStageKey = 6;
+
+        function setMode(m) {
+            mode = m;
+            document.getElementById('useBirthDate').classList.toggle('active', m === 'birth');
+            document.getElementById('useManual').classList.toggle('active', m === 'manual');
+            document.getElementById('birthField').style.display = m === 'birth' ? 'flex' : 'none';
+            document.getElementById('manualField').style.display = m === 'manual' ? 'flex' : 'none';
         }
 
-        function loadFromStorage(key) {
-            try { return localStorage.getItem(key); } catch(e) { return null; }
+        function calculateAge() {
+            const birth = new Date(document.getElementById('babyBirthDate').value);
+            const now = new Date();
+            if(isNaN(birth)) return;
+            let months = (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
+            if(now.getDate() < birth.getDate()) months--;
+            calculatedAge = Math.max(0, months);
+            const stageInfo = getStageInfo(calculatedAge);
+            document.getElementById('ageDiscoveryText').innerHTML = `🎉 ${t('ageNow','ar')} <strong>${calculatedAge} ${t('months','ar')}</strong> — ${stageInfo.icon} ${stageInfo.title}`;
+            document.getElementById('ageDiscoveryText').style.display = 'block';
         }
 
-        function loadCompleted() {
-            try {
-                const data = localStorage.getItem(STORAGE_KEYS.completed);
-                return data ? JSON.parse(data) : {};
-            } catch(e) { return {}; }
+        function getStageKey(age) {
+            const keys = Object.keys(S).map(Number).sort((a, b) => a - b);
+            let result = keys[0];
+            for (const k of keys) { if (age >= k) result = k; }
+            return result;
         }
 
-        function saveCompleted(data) {
-            try { localStorage.setItem(STORAGE_KEYS.completed, JSON.stringify(data)); } catch(e) {}
+        function getStageInfo(age) {
+            const key = getStageKey(age);
+            return S[key];
         }
 
-        function loadNotes() {
-            try {
-                const data = localStorage.getItem(STORAGE_KEYS.notes);
-                return data ? JSON.parse(data) : {};
-            } catch(e) { return {}; }
-        }
+        function initPlan() {
+            const startStr = document.getElementById('planStartDate').value;
+            const age = mode === 'birth' ? calculatedAge : parseInt(document.getElementById('manualAge').value);
+            if(!startStr || !age) return alert(t('enterData','ar'));
 
-        function saveNotes(data) {
-            try { localStorage.setItem(STORAGE_KEYS.notes, JSON.stringify(data)); } catch(e) {}
-        }
+            document.getElementById('plannerWorkspace').style.display = 'block';
+            document.getElementById('printBtn').style.display = 'inline-block';
 
-        function showToast(message, type = 'success') {
-            const container = document.getElementById('toastContainer');
-            const toast = document.createElement('div');
-            toast.className = `toast toast-${type}`;
-            toast.textContent = message;
-            container.appendChild(toast);
-            requestAnimationFrame(() => { toast.classList.add('show'); });
-            setTimeout(() => {
-                toast.classList.remove('show');
-                setTimeout(() => toast.remove(), 400);
-            }, 3500);
-        }
+            currentStageKey = getStageKey(age);
+            const stage = S[currentStageKey];
 
-        function toggleTheme() {
-            const html = document.documentElement;
-            const btn = document.getElementById('themeToggle');
-            const isDark = html.getAttribute('data-theme') === 'dark';
-            if (isDark) {
-                html.removeAttribute('data-theme');
-                btn.textContent = '🌙';
-                saveToStorage(STORAGE_KEYS.theme, 'light');
-            } else {
-                html.setAttribute('data-theme', 'dark');
-                btn.textContent = '☀️';
-                saveToStorage(STORAGE_KEYS.theme, 'dark');
-            }
-        }
+            masterPlan = [];
+            let currentDay = new Date(startStr);
 
-        function initTheme() {
-            const theme = loadFromStorage(STORAGE_KEYS.theme);
-            if (theme === 'dark') {
-                document.documentElement.setAttribute('data-theme', 'dark');
-                document.getElementById('themeToggle').textContent = '☀️';
-            }
-        }
-
-        function setMaxDate() {
-            const today = new Date();
-            const maxDate = today.toISOString().split('T')[0];
-            const minDate = new Date(today.getFullYear() - 5, today.getMonth(), today.getDate()).toISOString().split('T')[0];
-            const dobInput = document.getElementById('childDob');
-            dobInput.setAttribute('max', maxDate);
-            dobInput.setAttribute('min', minDate);
-        }
-
-        function formatDateArabic(date) {
-            const options = { day: 'numeric', month: 'long' };
-            return date.toLocaleDateString('ar-EG', options);
-        }
-
-        function updateProgress() {
-            const completed = loadCompleted();
-            const totalMeals = document.querySelectorAll('.done-btn').length;
-            const doneCount = Object.values(completed).filter(v => v).length;
-            const percentage = totalMeals > 0 ? (doneCount / totalMeals) * 100 : 0;
-
-            document.getElementById('progressText').textContent = `${doneCount} / ${totalMeals}`;
-            document.getElementById('progressBar').style.width = percentage + '%';
-        }
-
-        function toggleDone(btn) {
-            const foodKey = btn.getAttribute('data-food');
-            const completed = loadCompleted();
-            completed[foodKey] = !completed[foodKey];
-            saveCompleted(completed);
-
-            if (completed[foodKey]) {
-                btn.classList.add('completed');
-                btn.textContent = '✅ تم التقديم';
-            } else {
-                btn.classList.remove('completed');
-                btn.textContent = 'تم التقديم؟';
-            }
-            updateProgress();
-        }
-
-        function saveNoteForFood(textarea) {
-            const foodKey = textarea.getAttribute('data-note-food');
-            const notes = loadNotes();
-            notes[foodKey] = textarea.value;
-            saveNotes(notes);
-        }
-
-        function getNotesText() {
-            const childName = document.getElementById('childName').value || 'الطفل';
-            let notes = `مرحباً دكتور،\nهذه ملاحظاتي حول تغذية طفلي (${childName}) خلال الأسابيع الماضية:\n\n`;
-            let hasNotes = false;
-
-            const textareas = document.querySelectorAll('.notes-area');
-            textareas.forEach((ta) => {
-                if (ta.value.trim() !== '') {
-                    hasNotes = true;
-                    const card = ta.closest('.food-card');
-                    const foodTitle = card.querySelector('.food-title').innerText.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, '').trim();
-                    notes += `📌 صنف (${foodTitle}):\n- ${ta.value.trim()}\n\n`;
-                }
+            stage.weeks.forEach((week, weekIdx) => {
+                week.forEach(meal => {
+                    let d1 = new Date(currentDay);
+                    let d2 = new Date(currentDay); d2.setDate(d2.getDate() + 1);
+                    let d3 = new Date(currentDay); d3.setDate(d3.getDate() + 2);
+                    masterPlan.push({
+                        id: masterPlan.length,
+                        dates: [d1, d2, d3],
+                        name: meal.name,
+                        icon: meal.icon,
+                        prep: meal.prep,
+                        alt: meal.alt
+                    });
+                    currentDay.setDate(currentDay.getDate() + 3);
+                });
             });
 
-            if (!hasNotes) return null;
-
-            notes += `شكراً لك.\nالمرسل: أم ${childName}`;
-            return notes;
+            renderAllWeeks();
         }
 
-        function sendToDoctor() {
-            const notes = getNotesText();
-            if (!notes) {
-                showToast('لم تقومي بكتابة أي ملاحظات في بطاقات الوجبات لإرسالها.', 'warning');
-                return;
-            }
-            const childName = document.getElementById('childName').value || 'الطفل';
-            window.location.href = `mailto:?subject=تقرير التغذية والملاحظات الطبية - ${childName}&body=${encodeURIComponent(notes)}`;
+        function toggleWeek(weekId) {
+            const acc = document.getElementById(weekId);
+            acc.classList.toggle('open');
         }
 
-        function sendToWhatsApp() {
-            const notes = getNotesText();
-            if (!notes) {
-                showToast('لم تقومي بكتابة أي ملاحظات في بطاقات الوجبات لإرسالها.', 'warning');
-                return;
-            }
-            const encoded = encodeURIComponent(notes);
-            window.open(`https://wa.me/?text=${encoded}`, '_blank');
-        }
+        function renderAllWeeks() {
+            const lang = document.getElementById('workerLang').value;
+            const workspace = document.getElementById('plannerWorkspace');
+            const stage = S[currentStageKey];
+            workspace.innerHTML = '';
 
-        function generateFourWeeksPlan(phaseTitle, weeksData) {
-            let html = `<div class="phase-header">${phaseTitle}</div>`;
-            let currentDate = new Date();
-            let foodIndex = 0;
-
-            weeksData.forEach((week, index) => {
-                html += `<div class="week-container">`;
-                html += `<div class="week-title">الأسبوع ${index + 1}</div>`;
-                html += `<div class="cards-grid">`;
-
+            let blockIdx = 0;
+            stage.weeks.forEach((week, w) => {
+                let mealsHTML = '';
                 week.forEach(meal => {
-                    let startDate = new Date(currentDate);
-                    let day2 = new Date(currentDate.setDate(currentDate.getDate() + 1));
-                    let day3 = new Date(currentDate.setDate(currentDate.getDate() + 1));
-
-                    let startStr = formatDateArabic(startDate);
-                    let endStr = formatDateArabic(day3);
-
-                    const completed = loadCompleted();
-                    const savedNotes = loadNotes();
-                    const foodKey = `food_${foodIndex}`;
-                    const isCompleted = completed[foodKey];
-                    const savedNote = savedNotes[foodKey] || '';
-
-                    html += `
-                    <div class="food-card">
-                        <div class="food-card-header">
-                            <div class="food-title">${meal.name} <span class="food-icon">${meal.icon}</span></div>
-                        </div>
-
-                        <div class="date-badge">${startStr} - ${endStr}</div>
-
-                        <div class="prep-box">
-                            <span class="prep-title">التحضير:</span> ${meal.prep}<br>
-                            <span class="alt-title">البديل الطبي:</span> ${meal.alt}
-                        </div>
-
-                        <div class="days-tracker">
-                            <div class="day-pill">اليوم 1<br><span class="number-font">${startStr}</span></div>
-                            <div class="day-pill">اليوم 2<br><span class="number-font">${formatDateArabic(day2)}</span></div>
-                            <div class="day-pill">اليوم 3<br><span class="number-font">${endStr}</span></div>
-                        </div>
-
-                        <button class="done-btn ${isCompleted ? 'completed' : ''}" data-food="${foodKey}" onclick="toggleDone(this)">
-                            ${isCompleted ? '✅ تم التقديم' : 'تم التقديم؟'}
-                        </button>
-
-                        <textarea class="notes-area" rows="2" data-note-food="${foodKey}" oninput="saveNoteForFood(this)" placeholder="اكتبي ملاحظاتك هنا ليقرأها الطبيب (مثل: تحسس، تقبله...)...">${savedNote}</textarea>
-                    </div>`;
-
-                    currentDate.setDate(currentDate.getDate() + 2);
-                    foodIndex++;
+                    const b = masterPlan[blockIdx];
+                    blockIdx++;
+                    mealsHTML += `
+                        <div class="meal-card">
+                            <div class="meal-badge">${t('day','ar')} الـ 3 أيام القادمة</div>
+                            <h4>${meal.icon} ${meal.name}</h4>
+                            <div class="action-row">
+                                <button class="badge-btn" onclick="openRecipe(${b.id})">${t('prep', lang)} 📖</button>
+                                <button class="badge-btn badge-swap" onclick="swapDish(${b.id})">🔄 ${t('alt', lang)}</button>
+                            </div>
+                            <div class="tracker-section">
+                                <div class="tracker-title">${t('track', lang)}:</div>
+                                <div class="tracker-grid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
+                                    ${b.dates.map((d, i) => `
+                                        <div class="t-day-box">
+                                            <span class="t-date">${d.toLocaleDateString('en-GB', {day:'2-digit', month:'2-digit'})}</span>
+                                            <button class="t-btn" onclick="this.classList.toggle('active')">D ${i+1}</button>
+                                        </div>`).join('')}
+                                </div>
+                            </div>
+                            <div class="reactions">
+                                <button class="react-btn" onclick="setReact(this)">😍</button>
+                                <button class="react-btn" onclick="setReact(this)">🤢</button>
+                            </div>
+                        </div>`;
                 });
 
-                html += `</div></div>`;
+                const isOpen = w === 0 ? 'open' : '';
+                workspace.innerHTML += `
+                    <div class="week-accordion ${isOpen}" id="weekAcc${w}">
+                        <div class="week-header" onclick="toggleWeek('weekAcc${w}')">
+                            <h3>${t('week','ar')} ${w + 1} | <span style="font-size:0.9rem; color:#888; font-weight:500;">${t('week', lang)} ${w + 1}</span></h3>
+                            <span class="toggle-icon">▼</span>
+                        </div>
+                        <div class="week-content">
+                            <div class="meals-grid">${mealsHTML}</div>
+                        </div>
+                    </div>`;
+            });
+        }
+
+        function swapDish(id) {
+            const item = masterPlan[id];
+            const temp = item.name;
+            item.name = item.alt;
+            item.alt = temp;
+            renderAllWeeks();
+        }
+
+        function setReact(btn) {
+            btn.parentElement.querySelectorAll('.react-btn').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+        }
+
+        function openRecipe(id) {
+            const lang = document.getElementById('workerLang').value;
+            const meal = masterPlan[id];
+            document.getElementById('mTitle').innerText = meal.icon + ' ' + meal.name;
+            document.getElementById('mIngTitle').innerText = t('prep', lang) + ":";
+            document.getElementById('mIng').innerText = meal.prep;
+            document.getElementById('mStepTitle').innerText = t('alt', lang) + ":";
+            document.getElementById('mStep').innerText = meal.alt;
+            document.getElementById('modal').style.display = 'flex';
+        }
+
+        function renderForbidden() {
+            const container = document.getElementById('forbidden-container');
+            container.innerHTML = APP_DATA.forbiddenFoods.map(f =>
+                `<div class="pill danger" title="${f.reason}"><span>${f.icon}</span> ${f.name}</div>`
+            ).join('');
+        }
+
+        function renderTips() {
+            const container = document.getElementById('tips-container');
+            container.innerHTML = APP_DATA.tips.map(tip =>
+                `<div class="tip-box">
+                    <div class="tip-icon">${tip.icon}</div>
+                    <div class="tip-text"><p>${tip.text}</p></div>
+                </div>`
+            ).join('');
+        }
+
+        function prepareBeautifulPrint() {
+            const lang = document.getElementById('workerLang').value;
+            const age = mode === 'birth' ? calculatedAge : document.getElementById('manualAge').value;
+            const printArea = document.getElementById('printArea');
+            const stage = S[currentStageKey];
+
+            let weeksHTML = '';
+            let blockIdx = 0;
+            stage.weeks.forEach((week, w) => {
+                let mealsHTML = '';
+                week.forEach(meal => {
+                    const b = masterPlan[blockIdx];
+                    blockIdx++;
+                    const datesStr = b.dates[0].toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit'}) + ' ➔ ' + b.dates[2].toLocaleDateString('en-GB',{day:'2-digit',month:'2-digit'});
+
+                    mealsHTML += `
+                        <div class="print-meal">
+                            <div class="print-meal-header">
+                                <span class="print-meal-name">${meal.icon} ${meal.name}</span>
+                                <span class="print-dates">${datesStr}</span>
+                            </div>
+                            <div class="print-tracker-row">
+                                <span class="print-t-label">${t('track', lang)}:</span>
+                                <div class="print-t-boxes">
+                                    <div><span class="print-box-text">1</span><div class="print-box"></div></div>
+                                    <div><span class="print-box-text">2</span><div class="print-box"></div></div>
+                                    <div><span class="print-box-text">3</span><div class="print-box"></div></div>
+                                </div>
+                            </div>
+                        </div>`;
+                });
+
+                weeksHTML += `
+                    <div class="print-week-card">
+                        <div class="print-week-title">
+                            <span>${t('week','ar')} ${w + 1}</span>
+                            <span style="font-size:10px; color:#888;">${t('week', lang)} ${w + 1}</span>
+                        </div>
+                        ${mealsHTML}
+                    </div>`;
             });
 
-            return html;
+            const forbiddenHTML = APP_DATA.forbiddenFoods.map(f => `<li>${f.icon} ${f.name}: ${f.reason}</li>`).join('');
+            const tipsHTML = APP_DATA.tips.map(tip => `<li>${tip.icon} ${tip.text}</li>`).join('');
+
+            printArea.innerHTML = `
+                <div class="print-page">
+                    <div class="print-header">
+                        <h1>${t('printTitle','ar')} | ${t('printTitle', lang)}</h1>
+                        <p>${t('ageNow','ar')}: ${age} ${t('months','ar')} | ${t('footer','ar')}</p>
+                    </div>
+
+                    <div style="text-align:center; background:#FBFBFD; padding:6px; border-radius:10px; margin-bottom:10px; font-size:11px; font-weight:800; color:var(--awalem-purple);">${stage.icon} ${stage.title}</div>
+
+                    <div class="print-weeks-grid">
+                        ${weeksHTML}
+                    </div>
+
+                    <div class="print-rules">
+                        <div class="print-rules-col">
+                            <h4>⚠️ الممنوعات الطبية الصارمة:</h4>
+                            <ul>${forbiddenHTML}</ul>
+                        </div>
+                        <div class="print-rules-col tips">
+                            <h4>💡 إرشادات ونصائح عوالم:</h4>
+                            <ul>${tipsHTML}</ul>
+                        </div>
+                    </div>
+
+                    <div class="print-footer">${t('footer','ar')} | يعتمد على وجبات منزلية طبيعية 100%</div>
+                </div>
+            `;
+
+            window.print();
         }
 
-        function generateSchedule() {
-            const name = document.getElementById('childName').value || 'طفلك';
-            const dobInput = document.getElementById('childDob').value;
-
-            if (!dobInput) {
-                showToast('الرجاء إدخال تاريخ ميلاد الطفل لتحديد العمر بدقة.', 'error');
-                return;
-            }
-
-            saveToStorage(STORAGE_KEYS.name, name);
-            saveToStorage(STORAGE_KEYS.dob, dobInput);
-
-            const dob = new Date(dobInput);
-            const today = new Date();
-            let ageMonths = (today.getFullYear() - dob.getFullYear()) * 12 + today.getMonth() - dob.getMonth();
-            if (today.getDate() < dob.getDate()) { ageMonths--; }
-
-            if (ageMonths < 6) {
-                showToast(`عمر الطفل الآن ${ageMonths} أشهر. يُنصح بالبدء في الطعام من عمر 6 أشهر.`, 'warning');
-                return;
-            }
-
-            if (ageMonths > 60) {
-                showToast('يرجى التأكد من تاريخ الميلاد، العمر المدخل يتجاوز 5 سنوات.', 'error');
-                return;
-            }
-
-            let ageGroup = '';
-            let phaseTitle = '';
-            let weeksData = [];
-
-            if (ageMonths === 6) {
-                ageGroup = '6';
-                phaseTitle = 'المرحلة الأولى: الخضروات والفواكه المهروسة ناعمة جداً';
-                weeksData = [
-                    [
-                        { name: 'كوسة', icon: '🥒', prep: 'تقشير، سلق بالبخار، ثم هرس ناعم جداً.', alt: 'لوبيا خضراء مهروسة.' },
-                        { name: 'جزر', icon: '🥕', prep: 'سلق مطول لضمان الليونة التامة، ثم هرس.', alt: 'قرع عسلي.' }
-                    ],
-                    [
-                        { name: 'بطاطس', icon: '🥔', prep: 'سلق جيد، هرس مع قليل من حليب الأم.', alt: 'بطاطا حلوة.' },
-                        { name: 'تفاح', icon: '🍎', prep: 'تقشير، سلق بالبخار، وهرس.', alt: 'كمثرى مسلوقة ومهروسة.' }
-                    ],
-                    [
-                        { name: 'موز', icon: '🍌', prep: 'هرس الموز الناضج جداً بالشوكة.', alt: 'أفوكادو مهروس ناعم.' },
-                        { name: 'بروكلي', icon: '🥦', prep: 'سلق الزهرات فقط (بدون الساق) وهرسها.', alt: 'قرنبيط مسلوق ومهروس.' }
-                    ],
-                    [
-                        { name: 'شوفان', icon: '🥣', prep: 'طحن الشوفان، طبخه بالماء حتى يذوب، تخفيفه بالحليب.', alt: 'أرز مطحون ومطبوخ.' },
-                        { name: 'خوخ', icon: '🍑', prep: 'تقشير وسلق وهرس ناعم.', alt: 'مشمش مسلوق.' }
-                    ]
-                ];
-            } else if (ageMonths >= 7 && ageMonths <= 8) {
-                ageGroup = '7';
-                phaseTitle = 'المرحلة الثانية: إدخال البروتين والقوام الأثقل';
-                weeksData = [
-                    [
-                        { name: 'دجاج مهروس', icon: '🍗', prep: 'سلق جيد وهرس مع مرق السلق.', alt: 'ديك رومي مهروس.' },
-                        { name: 'عدس', icon: '🍲', prep: 'سلق العدس حتى يذوب تماماً.', alt: 'حمص مقشر ومهروس.' }
-                    ],
-                    [
-                        { name: 'صفار البيض', icon: '🥚', prep: 'سلق البيضة كاملة، وأخذ الصفار فقط.', alt: 'مهروس الأفوكادو.' },
-                        { name: 'سبانخ', icon: '🍃', prep: 'سلق وهرس مع قليل من البطاطس.', alt: 'سلق مطبوخ ومهروس.' }
-                    ],
-                    [
-                        { name: 'بازلاء', icon: '🫛', prep: 'سلق وهرس وتصفية القشور إن لزم.', alt: 'فاصوليا خضراء.' },
-                        { name: 'شوفان خشن', icon: '🥣', prep: 'طبخ الشوفان كما هو بدون طحن.', alt: 'برغل ناعم مطبوخ.' }
-                    ],
-                    [
-                        { name: 'لحم عجل', icon: '🥩', prep: 'سلق مفروم العجل ناعماً جداً.', alt: 'كبدة دجاج مسلوقة ومهروسة.' },
-                        { name: 'قرع', icon: '🎃', prep: 'شوي القرع بالفرن وهرسه.', alt: 'جزر مشوي ومهروس.' }
-                    ]
-                ];
-            } else if (ageMonths >= 9 && ageMonths <= 11) {
-                ageGroup = '9';
-                phaseTitle = 'المرحلة الثالثة: الأطعمة اللينة (Finger Foods)';
-                weeksData = [
-                    [
-                        { name: 'بطيخ', icon: '🍉', prep: 'إزالة البذور وتقطيع لمكعبات لينة.', alt: 'شمام مقطع.' },
-                        { name: 'زبادي', icon: '🥛', prep: 'تقديم زبادي طبيعي كامل الدسم.', alt: 'موز مع حليب.' }
-                    ],
-                    [
-                        { name: 'مكرونة', icon: '🍝', prep: 'سلق زيادة لتصبح لينة جداً.', alt: 'قطع خبز لينة.' },
-                        { name: 'جبن', icon: '🧀', prep: 'جبن مبستر قليل الملح (مثل الموزاريلا الطازجة).', alt: 'لبنة غير مالحة.' }
-                    ],
-                    [
-                        { name: 'سمك أبيض', icon: '🐟', prep: 'شوي أو سلق مع التأكد من خلوه من الشوك.', alt: 'تونة معلبة بالماء.' },
-                        { name: 'طماطم', icon: '🍅', prep: 'تقشير وتقطيع ناعم.', alt: 'فلفل رومي مشوي ومقشر.' }
-                    ],
-                    [
-                        { name: 'موز قطع', icon: '🍌', prep: 'تقطيع الموز لشرائح طولية يمسكها الطفل.', alt: 'كيوي ناضج جداً.' },
-                        { name: 'بانكيك صحي', icon: '🥞', prep: 'عمل بانكيك من (موز + بيض + شوفان) بدون سكر.', alt: 'وافل الشوفان اللين.' }
-                    ]
-                ];
-            } else if (ageMonths >= 12) {
-                ageGroup = '12';
-                phaseTitle = 'المرحلة الرابعة: طعام العائلة المعتاد';
-                weeksData = [
-                    [
-                        { name: 'لحم مفروم بخضار', icon: '🥘', prep: 'طبخ مع الخضار (بدون ملح مضاف للطفل).', alt: 'دجاج مفتت.' },
-                        { name: 'حليب بقر', icon: '🥛', prep: 'كمشروب في كوب (مبستر وكامل الدسم).', alt: 'حليب نباتي مدعم.' }
-                    ],
-                    [
-                        { name: 'أرز بمرق', icon: '🍛', prep: 'أرز لين مع مرق الدجاج أو اللحم.', alt: 'مكرونة بصلصة الطماطم.' },
-                        { name: 'بيضة كاملة', icon: '🥚', prep: 'تقديم البياض والصفار (مقلي بزيت زيتون أو مسلوق).', alt: 'أومليت بالخضار.' }
-                    ],
-                    [
-                        { name: 'فواكه مشكلة', icon: '🍓', prep: 'شرائح طولية (فراولة، عنب مقطع طولياً، تفاح).', alt: 'سلطة فواكه لينة.' },
-                        { name: 'خبز أو توست', icon: '🍞', prep: 'مع القليل من الزبدة الطبيعية.', alt: 'شابورة أطفال تلين بالماء.' }
-                    ],
-                    [
-                        { name: 'زبدة فول سوداني', icon: '🥜', prep: 'دهن طبقة رقيقة جداً (ناعمة) لمراقبة التحسس.', alt: 'زبدة اللوز الناعمة.' },
-                        { name: 'شوربة شوفان', icon: '🥣', prep: 'مع قطع لحم صغيرة جداً.', alt: 'شوربة خضار مهروسة خشناً.' }
-                    ]
-                ];
-            }
-
-            const scheduleCard = document.getElementById('scheduleCard');
-            const rulesCard = document.getElementById('rulesCard');
-            const forbiddenCard = document.getElementById('forbiddenCard');
-            const referencesCard = document.getElementById('referencesCard');
-            const trackingContent = document.getElementById('trackingContent');
-            const legacyContent = document.getElementById('legacyContent');
-            const actionBar = document.getElementById('actionBar');
-            const progressContainer = document.getElementById('progressContainer');
-
-            const scheduleTitle = document.getElementById('scheduleTitle');
-            const scheduleContent = document.getElementById('scheduleContent');
-            const calculatedAge = document.getElementById('calculatedAge');
-
-            scheduleTitle.innerText = `ملخص المرحلة لـ ${name}`;
-            calculatedAge.innerText = `العمر المستنتج: ${ageMonths} أشهر`;
-
-            let legacyHTML = '';
-            if (ageGroup === '6') legacyHTML = `<strong>القوام:</strong> مهروس ناعم جداً وشبه سائل.<br><strong>عدد الوجبات:</strong> وجبة واحدة يومياً (ملعقتين إلى 3 ملاعق صغيرة).`;
-            else if (ageGroup === '7') legacyHTML = `<strong>القوام:</strong> مهروس أثقل قليلاً (Mashed).<br><strong>عدد الوجبات:</strong> وجبتين يومياً.`;
-            else if (ageGroup === '9') legacyHTML = `<strong>القوام:</strong> أطعمة مقطعة لقطع صغيرة جداً (Finger Foods).<br><strong>عدد الوجبات:</strong> 3 وجبات رئيسية + وجبة خفيفة.`;
-            else if (ageGroup === '12') legacyHTML = `<strong>القوام:</strong> طعام العائلة المعتاد.<br><strong>عدد الوجبات:</strong> 3 وجبات رئيسية + وجبتين خفيفة.`;
-            scheduleContent.innerHTML = legacyHTML;
-
-            trackingContent.innerHTML = generateFourWeeksPlan(phaseTitle, weeksData);
-
-            scheduleCard.style.display = 'block';
-            rulesCard.style.display = 'block';
-            forbiddenCard.style.display = 'block';
-            referencesCard.style.display = 'block';
-            legacyContent.style.display = 'block';
-            actionBar.style.display = 'flex';
-            progressContainer.style.display = 'flex';
-
-            updateProgress();
-
-            setTimeout(() => {
-                scheduleCard.style.opacity = '1';
-                rulesCard.style.opacity = '1';
-                forbiddenCard.style.opacity = '1';
-                referencesCard.style.opacity = '1';
-            }, 50);
-
-            showToast(`تم توليد خطة التغذية لـ ${name} (${ageMonths} شهر)`, 'success');
-        }
-
-        function loadSavedData() {
-            const savedName = loadFromStorage(STORAGE_KEYS.name);
-            const savedDob = loadFromStorage(STORAGE_KEYS.dob);
-            if (savedName) document.getElementById('childName').value = savedName;
-            if (savedDob) document.getElementById('childDob').value = savedDob;
-        }
-
+        renderForbidden();
+        renderTips();
     </script>
 </body>
 </html>
