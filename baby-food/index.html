@@ -244,16 +244,18 @@
         <div class="footer">صنع من قبل عوالم Awalem</div>
     </div>
 
-    <div id="modal">
+    <div id="modal" onclick="if(event.target===this) this.style.display='none'">
         <div class="modal-content">
             <span style="position:absolute; top:20px; left:25px; cursor:pointer; font-size:1.5rem; color:#888;" onclick="document.getElementById('modal').style.display='none'">✕</span>
             <h2 id="mTitle" style="color:var(--awalem-purple); margin-bottom:20px; font-weight:900;"></h2>
             <div style="background:#F5F5F7; padding:20px; border-radius:18px; margin-bottom:20px;">
-                <strong id="mIngTitle">المكونات:</strong>
-                <p id="mIng" style="color:#444; margin-top:8px;"></p>
+                <strong id="mPrepTitle">طريقة التحضير:</strong>
+                <p id="mPrep" style="color:#444; margin-top:8px; line-height:1.8;"></p>
             </div>
-            <strong id="mStepTitle">التحضير:</strong>
-            <p id="mStep" style="line-height:1.7; color:#555; margin-top:8px;"></p>
+            <div style="background:rgba(166,193,238,0.1); padding:20px; border-radius:18px;">
+                <strong id="mAltTitle">🔄 البديل المقترح:</strong>
+                <p id="mAlt" style="color:#555; margin-top:8px; line-height:1.7;"></p>
+            </div>
         </div>
     </div>
 
@@ -410,10 +412,10 @@
             const lang = document.getElementById('workerLang').value;
             const meal = masterPlan[id];
             document.getElementById('mTitle').innerText = meal.icon + ' ' + meal.name;
-            document.getElementById('mIngTitle').innerText = t('prep', lang) + ":";
-            document.getElementById('mIng').innerText = meal.prep;
-            document.getElementById('mStepTitle').innerText = t('alt', lang) + ":";
-            document.getElementById('mStep').innerText = meal.alt;
+            document.getElementById('mPrepTitle').innerText = t('prep', lang) + ":";
+            document.getElementById('mPrep').innerText = meal.prep;
+            document.getElementById('mAltTitle').innerText = "🔄 " + t('alt', lang) + ":";
+            document.getElementById('mAlt').innerText = meal.alt;
             document.getElementById('modal').style.display = 'flex';
         }
 
