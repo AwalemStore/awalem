@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جدول تغذية طفلك - عوالم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary-font: 'Tajawal', sans-serif;
+            --number-font: 'Poppins', sans-serif;
+            --radius-omax: 28px;
+            --glass-bg: rgba(255, 255, 255, 0.55);
+            --glass-border: rgba(255, 255, 255, 0.5);
+            --glass-shadow: 0 8px 32px 0 rgba(135, 142, 168, 0.15);
+            --text-dark: #2c3e50;
+            --awalem-primary: #2b3a67;
+            --awalem-secondary: #dcb99c;
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --card-hover-shadow: 0 15px 35px rgba(0,0,0,0.08);
+            --prep-bg: rgba(245, 245, 247, 0.8);
+            --input-bg: rgba(255,255,255,0.7);
+            --input-focus-bg: #fff;
+            --week-bg: rgba(255,255,255,0.3);
+            --week-border: rgba(255,255,255,0.4);
+            --toast-success-bg: #d4edda;
+            --toast-success-border: #28a745;
+            --toast-success-color: #155724;
+            --toast-error-bg: #f8d7da;
+            --toast-error-border: #dc3545;
+            --toast-error-color: #721c24;
+            --toast-warning-bg: #fff3cd;
+            --toast-warning-border: #ffc107;
+            --toast-warning-color: #856404;
+        }
+
+        [data-theme="dark"] {
+            --text-dark: #e8e8e8;
+            --glass-bg: rgba(30, 35, 50, 0.65);
+            --glass-border: rgba(255, 255, 255, 0.1);
+            --glass-shadow: 0 8px 32px 0 rgba(0, 0, 0, 0.3);
+            --awalem-primary: #8fa4d4;
+            --awalem-secondary: #b8956e;
+            --card-bg: rgba(40, 45, 60, 0.85);
+            --card-hover-shadow: 0 15px 35px rgba(0,0,0,0.25);
+            --prep-bg: rgba(50, 55, 70, 0.7);
+            --input-bg: rgba(50, 55, 70, 0.7);
+            --input-focus-bg: rgba(60, 65, 80, 0.9);
+            --week-bg: rgba(40, 45, 60, 0.4);
+            --week-border: rgba(255, 255, 255, 0.08);
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            margin: 0;
+            padding: 40px 20px;
+            font-family: var(--primary-font);
+            background: linear-gradient(135deg, #e0c3fc 0%, #d4f0f0 50%, #8ec5fc 100%);
+            min-height: 100vh;
+            color: var(--text-dark);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        [data-theme="dark"] body {
+            background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%);
+        }
+
+        .top-bar {
+            display: flex;
+            justify-content: flex-end;
+            width: 100%;
+            max-width: 1200px;
+            margin-bottom: 10px;
+        }
+
+        .theme-toggle {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: 50%;
+            width: 44px;
+            height: 44px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            font-size: 1.3rem;
+            transition: all 0.3s;
+        }
+
+        .theme-toggle:hover {
+            transform: scale(1.1);
+        }
+
+        .header-title {
+            text-align: center;
+            font-weight: 800;
+            font-size: 2.5rem;
+            margin-bottom: 40px;
+            color: #fff;
+            text-shadow: 0 4px 15px rgba(0,0,0,0.1);
+        }
+
+        .bento-container {
+            display: grid;
+            grid-template-columns: repeat(12, 1fr);
+            gap: 24px;
+            max-width: 1200px;
+            width: 100%;
+        }
+
+        .omax-card {
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            -webkit-backdrop-filter: blur(16px);
+            border: 1px solid var(--glass-border);
+            border-radius: var(--radius-omax);
+            padding: 30px;
+            box-shadow: var(--glass-shadow);
+            transition: transform 0.3s ease, background 0.3s, border 0.3s, box-shadow 0.3s;
+        }
+
+        .omax-card:hover {
+            transform: translateY(-2px);
+        }
+
+        .input-section { grid-column: span 12; }
+        .schedule-section { grid-column: span 12; display: none; background: transparent; box-shadow: none; border: none; padding: 0; backdrop-filter: none; }
+        .rules-section { grid-column: span 12; display: none; background: rgba(240, 248, 245, 0.7); border-right: 6px solid #8ec5fc; }
+        .forbidden-section { grid-column: span 12; display: none; background: rgba(255, 240, 240, 0.7); border-right: 6px solid #ff7675; }
+        .references-section { grid-column: span 12; display: none; background: rgba(245, 240, 255, 0.7); border-right: 6px solid #a29bfe; }
+
+        [data-theme="dark"] .rules-section { background: rgba(20, 40, 35, 0.6); }
+        [data-theme="dark"] .forbidden-section { background: rgba(40, 20, 20, 0.6); }
+        [data-theme="dark"] .references-section { background: rgba(30, 20, 50, 0.6); }
+
+        h2, h3 {
+            margin-top: 0;
+            font-weight: 700;
+            color: var(--text-dark);
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+
+        label {
+            font-weight: 500;
+            font-size: 1.1rem;
+        }
+
+        input, select {
+            padding: 16px 20px;
+            border-radius: 16px;
+            border: 1px solid var(--glass-border);
+            background: var(--input-bg);
+            font-family: var(--primary-font);
+            font-size: 1rem;
+            outline: none;
+            transition: all 0.3s;
+            color: var(--text-dark);
+        }
+
+        input[type="date"] {
+            font-family: var(--number-font);
+            text-align: right;
+        }
+
+        input:focus, select:focus, textarea:focus {
+            background: var(--input-focus-bg);
+            box-shadow: 0 0 0 4px rgba(255,255,255,0.4);
+        }
+
+        .btn-primary {
+            padding: 16px 32px;
+            border-radius: var(--radius-omax);
+            border: none;
+            background: #fff;
+            color: var(--awalem-primary);
+            font-family: var(--primary-font);
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: all 0.3s;
+        }
+
+        [data-theme="dark"] .btn-primary {
+            background: rgba(50, 55, 75, 0.9);
+            color: #e8e8e8;
+        }
+
+        .btn-primary:hover {
+            background: var(--awalem-primary);
+            color: #fff;
+            transform: scale(1.02);
+        }
+
+        .btn-secondary {
+            background: var(--awalem-secondary);
+            color: #fff;
+        }
+
+        .btn-secondary:hover {
+            background: #c29d7d;
+        }
+
+        .btn-whatsapp {
+            background: #25d366;
+            color: #fff;
+        }
+
+        .btn-whatsapp:hover {
+            background: #1da851;
+        }
+
+        ul {
+            padding-right: 20px;
+            line-height: 1.8;
+        }
+
+        li { margin-bottom: 10px; }
+
+        .number-font {
+            font-family: var(--number-font);
+            font-weight: 600;
+        }
+
+        .alert-red { color: #d63031; font-weight: bold; }
+        [data-theme="dark"] .alert-red { color: #ff6b6b; }
+
+        .phase-header {
+            background: var(--awalem-primary);
+            color: white;
+            text-align: center;
+            padding: 20px;
+            border-radius: 20px;
+            font-size: 1.4rem;
+            font-weight: 700;
+            margin-bottom: 24px;
+            box-shadow: 0 4px 15px rgba(43, 58, 103, 0.2);
+        }
+
+        [data-theme="dark"] .phase-header {
+            color: #1a1a2e;
+        }
+
+        .week-container {
+            margin-bottom: 40px;
+            background: var(--week-bg);
+            padding: 24px;
+            border-radius: var(--radius-omax);
+            border: 1px solid var(--week-border);
+        }
+
+        .week-title {
+            font-size: 1.2rem;
+            font-weight: 800;
+            color: var(--awalem-primary);
+            margin-bottom: 16px;
+            display: inline-block;
+            background: var(--card-bg);
+            padding: 8px 20px;
+            border-radius: 20px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+        }
+
+        .cards-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 24px;
+        }
+
+        .food-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(20px);
+            border-radius: var(--radius-omax);
+            padding: 24px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.04);
+            display: flex;
+            flex-direction: column;
+            gap: 16px;
+            border: 1px solid var(--glass-border);
+            transition: 0.3s;
+        }
+
+        .food-card:hover { transform: translateY(-5px); box-shadow: var(--card-hover-shadow); }
+
+        .food-card-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .food-title {
+            font-size: 1.5rem;
+            font-weight: 800;
+            color: var(--awalem-primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+
+        .food-icon { font-size: 2rem; }
+
+        .date-badge {
+            background: var(--awalem-secondary);
+            color: #fff;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            align-self: flex-start;
+        }
+
+        .prep-box {
+            background: var(--prep-bg);
+            padding: 16px;
+            border-radius: 16px;
+            font-size: 0.95rem;
+            line-height: 1.6;
+        }
+
+        .prep-title { color: #b5a183; font-weight: 700; }
+        .alt-title { color: #8ba989; font-weight: 700; margin-top: 8px; display: block; }
+
+        .days-tracker {
+            display: flex;
+            justify-content: space-between;
+            gap: 10px;
+            margin-top: 10px;
+        }
+
+        .day-pill {
+            flex: 1;
+            background: var(--prep-bg);
+            text-align: center;
+            padding: 10px 5px;
+            border-radius: 12px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: var(--text-dark);
+            border: 1px solid transparent;
+        }
+
+        .done-btn {
+            background: var(--prep-bg);
+            border: 2px solid #8ba989;
+            border-radius: 12px;
+            padding: 8px 16px;
+            cursor: pointer;
+            font-family: var(--primary-font);
+            font-weight: 700;
+            font-size: 0.9rem;
+            color: #555;
+            transition: all 0.3s;
+            text-align: center;
+        }
+
+        .done-btn:hover { background: #8ba989; color: #fff; }
+
+        .done-btn.completed {
+            background: #28a745;
+            color: #fff;
+            border-color: #28a745;
+        }
+
+        textarea.notes-area {
+            width: 100%;
+            border: 1px dashed #ccc;
+            border-radius: 16px;
+            padding: 12px;
+            font-family: var(--primary-font);
+            font-size: 0.9rem;
+            background: rgba(255,255,255,0.5);
+            resize: none;
+            box-sizing: border-box;
+            outline: none;
+            color: var(--text-dark);
+        }
+
+        [data-theme="dark"] textarea.notes-area {
+            background: rgba(40, 45, 60, 0.6);
+            border-color: #555;
+        }
+
+        .legacy-info {
+            background: var(--glass-bg);
+            border-radius: 20px;
+            padding: 24px;
+            margin-top: 30px;
+            border-right: 6px solid var(--awalem-primary);
+        }
+
+        .action-bar {
+            display: flex;
+            gap: 15px;
+            justify-content: center;
+            margin-top: 30px;
+            margin-bottom: 30px;
+            flex-wrap: wrap;
+        }
+
+        .progress-container {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            margin-bottom: 30px;
+            background: var(--glass-bg);
+            backdrop-filter: blur(16px);
+            border-radius: 20px;
+            padding: 20px 24px;
+            border: 1px solid var(--glass-border);
+        }
+
+        .progress-bar-wrapper {
+            flex: 1;
+            background: rgba(0,0,0,0.08);
+            border-radius: 12px;
+            height: 14px;
+            overflow: hidden;
+        }
+
+        .progress-bar-fill {
+            height: 100%;
+            background: linear-gradient(90deg, #8ec5fc, #28a745);
+            border-radius: 12px;
+            transition: width 0.5s ease;
+            width: 0%;
+        }
+
+        [data-theme="dark"] .progress-bar-fill {
+            background: linear-gradient(90deg, #8fa4d4, #28a745);
+        }
+
+        .progress-text {
+            font-weight: 700;
+            font-size: 0.95rem;
+            min-width: 60px;
+            text-align: center;
+        }
+
+        .toast-container {
+            position: fixed;
+            top: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .toast {
+            padding: 14px 28px;
+            border-radius: 16px;
+            font-family: var(--primary-font);
+            font-weight: 600;
+            font-size: 1rem;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.15);
+            opacity: 0;
+            transform: translateY(-20px);
+            transition: all 0.4s ease;
+            max-width: 90vw;
+            text-align: center;
+        }
+
+        .toast.show {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .toast-success {
+            background: var(--toast-success-bg);
+            border: 1px solid var(--toast-success-border);
+            color: var(--toast-success-color);
+        }
+
+        .toast-error {
+            background: var(--toast-error-bg);
+            border: 1px solid var(--toast-error-border);
+            color: var(--toast-error-color);
+        }
+
+        .toast-warning {
+            background: var(--toast-warning-bg);
+            border: 1px solid var(--toast-warning-border);
+            color: var(--toast-warning-color);
+        }
+
+        .footer {
+            margin-top: 60px;
+            text-align: center;
+            color: var(--awalem-primary);
+            font-weight: 600;
+            font-size: 1rem;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 600px) {
+            body { padding: 20px 12px; }
+            .header-title { font-size: 1.8rem; margin-bottom: 24px; }
+            .omax-card { padding: 20px; }
+            .cards-grid { grid-template-columns: 1fr; gap: 16px; }
+            .food-card { padding: 18px; }
+            .food-title { font-size: 1.25rem; }
+            .week-container { padding: 16px; }
+            .action-bar { gap: 10px; }
+            .btn-primary { padding: 14px 24px; font-size: 1rem; }
+            .phase-header { font-size: 1.15rem; padding: 16px; }
+            .days-tracker { gap: 6px; }
+            .day-pill { padding: 8px 3px; font-size: 0.78rem; }
+            .progress-container { flex-direction: column; text-align: center; }
+        }
+
+        @media print {
+            @page { size: A4 portrait; margin: 8mm; }
+            *, *::before, *::after {
+                -webkit-print-color-adjust: exact !important;
+                print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+            html {
+                height: 297mm !important;
+            }
+            body {
+                background: #fff !important;
+                color: #000 !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                font-size: 10px !important;
+                line-height: 1.35 !important;
+                display: flex !important;
+                flex-direction: column !important;
+                height: 297mm !important;
+                min-height: 297mm !important;
+                max-height: 297mm !important;
+                overflow: hidden !important;
+                align-items: center !important;
+            }
+            .input-section,
+            .action-bar,
+            .header-title,
+            .footer,
+            .top-bar,
+            .progress-container,
+            .done-btn,
+            .toast-container,
+            .theme-toggle,
+            .rules-section,
+            .forbidden-section,
+            .references-section,
+            .legacy-info,
+            textarea.notes-area { display: none !important; }
+
+            #scheduleCard,
+            .schedule-section {
+                display: flex !important;
+                flex-direction: column !important;
+                flex: 1 !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                background: none !important;
+                border: none !important;
+                box-shadow: none !important;
+                padding: 0 !important;
+                margin: 0 !important;
+                width: 100% !important;
+            }
+            #trackingContent {
+                display: flex !important;
+                flex-direction: column !important;
+                flex: 1 !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                width: 100% !important;
+            }
+            .bento-container {
+                display: flex !important;
+                flex-direction: column !important;
+                flex: 1 !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                width: 100% !important;
+                height: 100% !important;
+            }
+
+            .phase-header {
+                background: #2b3a67 !important;
+                color: #fff !important;
+                font-size: 13px !important;
+                padding: 5px 10px !important;
+                margin: 0 0 6px 0 !important;
+                text-align: center;
+                border-radius: 8px;
+                flex-shrink: 0 !important;
+            }
+
+            .week-container {
+                background: transparent !important;
+                border: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                border-radius: 0 !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                flex: 1 !important;
+                display: flex !important;
+                flex-direction: column !important;
+            }
+            .week-title {
+                font-size: 11px !important;
+                padding: 2px 12px !important;
+                margin: 0 0 3px 0 !important;
+                background: #eee !important;
+                color: #2b3a67 !important;
+                border-radius: 6px;
+                box-shadow: none !important;
+                display: inline-block;
+                flex-shrink: 0 !important;
+            }
+
+            .cards-grid {
+                display: grid !important;
+                grid-template-columns: repeat(2, 1fr) !important;
+                grid-template-rows: 1fr 1fr !important;
+                gap: 5px !important;
+                flex: 1 !important;
+            }
+
+            .food-card {
+                background: #fff !important;
+                border: 1px solid #ccc !important;
+                box-shadow: none !important;
+                padding: 6px 8px !important;
+                gap: 3px !important;
+                border-radius: 8px !important;
+                display: flex !important;
+                flex-direction: column !important;
+                opacity: 1 !important;
+                visibility: visible !important;
+                justify-content: center !important;
+            }
+
+            .food-card-header { display: flex !important; justify-content: space-between; align-items: center; margin: 0; }
+            .food-title { font-size: 12px !important; color: #2b3a67 !important; font-weight: 800 !important; margin: 0; }
+            .food-icon { font-size: 14px; }
+            .date-badge { background: #dcb99c !important; color: #fff !important; padding: 2px 8px; font-size: 9px !important; border-radius: 6px; margin: 0; }
+            .prep-box { background: #f7f7f9 !important; padding: 4px 6px; font-size: 9.5px !important; line-height: 1.35; border-radius: 5px; color: #000 !important; margin: 0; }
+            .prep-title { color: #8b7355 !important; font-size: 9.5px !important; }
+            .alt-title { color: #6b8b65 !important; margin-top: 1px; font-size: 9.5px !important; }
+
+            .days-tracker { display: flex !important; gap: 4px; margin: 2px 0 0 0; }
+            .day-pill { background: #f0f0f5 !important; padding: 3px; font-size: 8.5px !important; border-radius: 4px; text-align: center; color: #000 !important; }
+            .day-pill .number-font { font-size: 8.5px !important; }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="toast-container" id="toastContainer"></div>
+
+    <div class="top-bar">
+        <button class="theme-toggle" id="themeToggle" onclick="toggleTheme()" aria-label="تبديل الوضع الداكن" title="تبديل الوضع الداكن">🌙</button>
+    </div>
+
+    <div class="header-title">رحلة غذاء طفلك</div>
+
+    <div class="bento-container">
+        <div class="omax-card input-section">
+            <h2>أدخلي بيانات طفلك</h2>
+            <div class="form-group">
+                <label for="childName">اسم الطفل/الطفلة:</label>
+                <input type="text" id="childName" placeholder="مثال: نورة" maxlength="50" aria-label="اسم الطفل">
+            </div>
+            <div class="form-group">
+                <label for="childDob">تاريخ ميلاد الطفل:</label>
+                <input type="date" id="childDob" aria-label="تاريخ ميلاد الطفل">
+                <select id="childAge" style="display:none;">
+                    <option value="6">6</option>
+                    <option value="7">7 - 8</option>
+                    <option value="9">9 - 11</option>
+                    <option value="12">12</option>
+                </select>
+            </div>
+            <div style="text-align: center; margin-top: 20px;">
+                <button class="btn-primary" onclick="generateSchedule()">عرض الجدول المخصص (4 أسابيع)</button>
+            </div>
+        </div>
+
+        <div class="omax-card rules-section" id="rulesCard">
+            <h3>قواعد التغذية الطبية السليمة 🌿</h3>
+            <ul>
+                <li><strong>قاعدة الـ 3 أيام:</strong> تقديم صنف واحد جديد كل 3 أيام لمراقبة الحساسية.</li>
+                <li><strong>يُمنع منعاً تاماً:</strong> إضافة (<span class="alert-red">الملح، السكر، العسل</span>) قبل عمر السنة.</li>
+                <li><strong>البداية:</strong> ابدأي بملعقة واحدة إلى ملعقتين يومياً في الأيام الأولى.</li>
+            </ul>
+        </div>
+
+        <div class="schedule-section" id="scheduleCard">
+            <div class="action-bar" id="actionBar" style="display: none;">
+                <button class="btn-primary btn-secondary" onclick="window.print()">🖨️ طباعة الجدول الطبي</button>
+                <button class="btn-primary" onclick="sendToDoctor()">🩺 إرسال بالبريد</button>
+                <button class="btn-primary btn-whatsapp" onclick="sendToWhatsApp()">💬 واتساب</button>
+            </div>
+
+            <div class="progress-container" id="progressContainer" style="display: none;">
+                <span class="progress-text" id="progressText">0 / 8</span>
+                <div class="progress-bar-wrapper">
+                    <div class="progress-bar-fill" id="progressBar"></div>
+                </div>
+            </div>
+
+            <div id="trackingContent"></div>
+
+            <div class="legacy-info" id="legacyContent" style="display: none;">
+                <h2 id="scheduleTitle" style="color: var(--awalem-primary); font-size:1.2rem;">ملخص المرحلة لـ </h2>
+                <p id="calculatedAge" style="color: #555; font-weight: bold; margin-bottom: 10px;"></p>
+                <div id="scheduleContent" style="font-size: 0.95rem; line-height: 1.6;"></div>
+            </div>
+        </div>
+
+        <div class="omax-card forbidden-section" id="forbiddenCard">
+            <h3 class="alert-red">أطعمة محظورة تماماً (قبل عمر السنة) ⚠️</h3>
+            <ul>
+                <li><strong>العسل:</strong> يمنع منعاً باتاً لاحتوائه على أبواغ بكتيرية قد تسبب التسمم السجقي.</li>
+                <li><strong>حليب البقر:</strong> لا يقدم كمشروب رئيسي بديلاً لحليب الأم أو الصناعي.</li>
+                <li><strong>المكسرات الكاملة:</strong> لتجنب الاختناق (يمكن تقديمها مطحونة تماماً ومطبوخة).</li>
+            </ul>
+        </div>
+
+        <div class="omax-card references-section" id="referencesCard">
+            <h3>📚 المراجع الطبية</h3>
+            <ul>
+                <li><strong>منظمة الصحة العالمية (WHO):</strong> دليل التغذية التكميلية للرضع والأطفال الصغار.</li>
+                <li><strong>الأكاديمية الأمريكية لطب الأطفال (AAP):</strong> توصيات إدخال الأطعمة الصلبة للأطفال.</li>
+                <li><strong>UNICEF:</strong> دليل التغذية المبكرة وتطوير عادات الأكل الصحي.</li>
+            </ul>
+        </div>
+    </div>
+
+    <div class="footer">
+        صنع من قبل عوالم Awalem
+    </div>
+
+    <script>
+        const STORAGE_KEYS = {
+            name: 'babyfood_name',
+            dob: 'babyfood_dob',
+            theme: 'babyfood_theme',
+            completed: 'babyfood_completed',
+            notes: 'babyfood_notes'
+        };
+
+        function saveToStorage(key, value) {
+            try { localStorage.setItem(key, value); } catch(e) {}
+        }
+
+        function loadFromStorage(key) {
+            try { return localStorage.getItem(key); } catch(e) { return null; }
+        }
+
+        function loadCompleted() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEYS.completed);
+                return data ? JSON.parse(data) : {};
+            } catch(e) { return {}; }
+        }
+
+        function saveCompleted(data) {
+            try { localStorage.setItem(STORAGE_KEYS.completed, JSON.stringify(data)); } catch(e) {}
+        }
+
+        function loadNotes() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEYS.notes);
+                return data ? JSON.parse(data) : {};
+            } catch(e) { return {}; }
+        }
+
+        function saveNotes(data) {
+            try { localStorage.setItem(STORAGE_KEYS.notes, JSON.stringify(data)); } catch(e) {}
+        }
+
+        function showToast(message, type = 'success') {
+            const container = document.getElementById('toastContainer');
+            const toast = document.createElement('div');
+            toast.className = `toast toast-${type}`;
+            toast.textContent = message;
+            container.appendChild(toast);
+            requestAnimationFrame(() => { toast.classList.add('show'); });
+            setTimeout(() => {
+                toast.classList.remove('show');
+                setTimeout(() => toast.remove(), 400);
+            }, 3500);
+        }
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            const btn = document.getElementById('themeToggle');
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            if (isDark) {
+                html.removeAttribute('data-theme');
+                btn.textContent = '🌙';
+                saveToStorage(STORAGE_KEYS.theme, 'light');
+            } else {
+                html.setAttribute('data-theme', 'dark');
+                btn.textContent = '☀️';
+                saveToStorage(STORAGE_KEYS.theme, 'dark');
+            }
+        }
+
+        function initTheme() {
+            const theme = loadFromStorage(STORAGE_KEYS.theme);
+            if (theme === 'dark') {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('themeToggle').textContent = '☀️';
+            }
+        }
+
+        function setMaxDate() {
+            const today = new Date();
+            const maxDate = today.toISOString().split('T')[0];
+            const minDate = new Date(today.getFullYear() - 5, today.getMonth(), today.getDate()).toISOString().split('T')[0];
+            const dobInput = document.getElementById('childDob');
+            dobInput.setAttribute('max', maxDate);
+            dobInput.setAttribute('min', minDate);
+        }
+
+        function formatDateArabic(date) {
+            const options = { day: 'numeric', month: 'long' };
+            return date.toLocaleDateString('ar-EG', options);
+        }
+
+        function updateProgress() {
+            const completed = loadCompleted();
+            const totalMeals = document.querySelectorAll('.done-btn').length;
+            const doneCount = Object.values(completed).filter(v => v).length;
+            const percentage = totalMeals > 0 ? (doneCount / totalMeals) * 100 : 0;
+
+            document.getElementById('progressText').textContent = `${doneCount} / ${totalMeals}`;
+            document.getElementById('progressBar').style.width = percentage + '%';
+        }
+
+        function toggleDone(btn) {
+            const foodKey = btn.getAttribute('data-food');
+            const completed = loadCompleted();
+            completed[foodKey] = !completed[foodKey];
+            saveCompleted(completed);
+
+            if (completed[foodKey]) {
+                btn.classList.add('completed');
+                btn.textContent = '✅ تم التقديم';
+            } else {
+                btn.classList.remove('completed');
+                btn.textContent = 'تم التقديم؟';
+            }
+            updateProgress();
+        }
+
+        function saveNoteForFood(textarea) {
+            const foodKey = textarea.getAttribute('data-note-food');
+            const notes = loadNotes();
+            notes[foodKey] = textarea.value;
+            saveNotes(notes);
+        }
+
+        function getNotesText() {
+            const childName = document.getElementById('childName').value || 'الطفل';
+            let notes = `مرحباً دكتور،\nهذه ملاحظاتي حول تغذية طفلي (${childName}) خلال الأسابيع الماضية:\n\n`;
+            let hasNotes = false;
+
+            const textareas = document.querySelectorAll('.notes-area');
+            textareas.forEach((ta) => {
+                if (ta.value.trim() !== '') {
+                    hasNotes = true;
+                    const card = ta.closest('.food-card');
+                    const foodTitle = card.querySelector('.food-title').innerText.replace(/[\uD800-\uDBFF][\uDC00-\uDFFF]/g, '').trim();
+                    notes += `📌 صنف (${foodTitle}):\n- ${ta.value.trim()}\n\n`;
+                }
+            });
+
+            if (!hasNotes) return null;
+
+            notes += `شكراً لك.\nالمرسل: أم ${childName}`;
+            return notes;
+        }
+
+        function sendToDoctor() {
+            const notes = getNotesText();
+            if (!notes) {
+                showToast('لم تقومي بكتابة أي ملاحظات في بطاقات الوجبات لإرسالها.', 'warning');
+                return;
+            }
+            const childName = document.getElementById('childName').value || 'الطفل';
+            window.location.href = `mailto:?subject=تقرير التغذية والملاحظات الطبية - ${childName}&body=${encodeURIComponent(notes)}`;
+        }
+
+        function sendToWhatsApp() {
+            const notes = getNotesText();
+            if (!notes) {
+                showToast('لم تقومي بكتابة أي ملاحظات في بطاقات الوجبات لإرسالها.', 'warning');
+                return;
+            }
+            const encoded = encodeURIComponent(notes);
+            window.open(`https://wa.me/?text=${encoded}`, '_blank');
+        }
+
+        function generateFourWeeksPlan(phaseTitle, weeksData) {
+            let html = `<div class="phase-header">${phaseTitle}</div>`;
+            let currentDate = new Date();
+            let foodIndex = 0;
+
+            weeksData.forEach((week, index) => {
+                html += `<div class="week-container">`;
+                html += `<div class="week-title">الأسبوع ${index + 1}</div>`;
+                html += `<div class="cards-grid">`;
+
+                week.forEach(meal => {
+                    let startDate = new Date(currentDate);
+                    let day2 = new Date(currentDate.setDate(currentDate.getDate() + 1));
+                    let day3 = new Date(currentDate.setDate(currentDate.getDate() + 1));
+
+                    let startStr = formatDateArabic(startDate);
+                    let endStr = formatDateArabic(day3);
+
+                    const completed = loadCompleted();
+                    const savedNotes = loadNotes();
+                    const foodKey = `food_${foodIndex}`;
+                    const isCompleted = completed[foodKey];
+                    const savedNote = savedNotes[foodKey] || '';
+
+                    html += `
+                    <div class="food-card">
+                        <div class="food-card-header">
+                            <div class="food-title">${meal.name} <span class="food-icon">${meal.icon}</span></div>
+                        </div>
+
+                        <div class="date-badge">${startStr} - ${endStr}</div>
+
+                        <div class="prep-box">
+                            <span class="prep-title">التحضير:</span> ${meal.prep}<br>
+                            <span class="alt-title">البديل الطبي:</span> ${meal.alt}
+                        </div>
+
+                        <div class="days-tracker">
+                            <div class="day-pill">اليوم 1<br><span class="number-font">${startStr}</span></div>
+                            <div class="day-pill">اليوم 2<br><span class="number-font">${formatDateArabic(day2)}</span></div>
+                            <div class="day-pill">اليوم 3<br><span class="number-font">${endStr}</span></div>
+                        </div>
+
+                        <button class="done-btn ${isCompleted ? 'completed' : ''}" data-food="${foodKey}" onclick="toggleDone(this)">
+                            ${isCompleted ? '✅ تم التقديم' : 'تم التقديم؟'}
+                        </button>
+
+                        <textarea class="notes-area" rows="2" data-note-food="${foodKey}" oninput="saveNoteForFood(this)" placeholder="اكتبي ملاحظاتك هنا ليقرأها الطبيب (مثل: تحسس، تقبله...)...">${savedNote}</textarea>
+                    </div>`;
+
+                    currentDate.setDate(currentDate.getDate() + 2);
+                    foodIndex++;
+                });
+
+                html += `</div></div>`;
+            });
+
+            return html;
+        }
+
+        function generateSchedule() {
+            const name = document.getElementById('childName').value || 'طفلك';
+            const dobInput = document.getElementById('childDob').value;
+
+            if (!dobInput) {
+                showToast('الرجاء إدخال تاريخ ميلاد الطفل لتحديد العمر بدقة.', 'error');
+                return;
+            }
+
+            saveToStorage(STORAGE_KEYS.name, name);
+            saveToStorage(STORAGE_KEYS.dob, dobInput);
+
+            const dob = new Date(dobInput);
+            const today = new Date();
+            let ageMonths = (today.getFullYear() - dob.getFullYear()) * 12 + today.getMonth() - dob.getMonth();
+            if (today.getDate() < dob.getDate()) { ageMonths--; }
+
+            if (ageMonths < 6) {
+                showToast(`عمر الطفل الآن ${ageMonths} أشهر. يُنصح بالبدء في الطعام من عمر 6 أشهر.`, 'warning');
+                return;
+            }
+
+            if (ageMonths > 60) {
+                showToast('يرجى التأكد من تاريخ الميلاد، العمر المدخل يتجاوز 5 سنوات.', 'error');
+                return;
+            }
+
+            let ageGroup = '';
+            let phaseTitle = '';
+            let weeksData = [];
+
+            if (ageMonths === 6) {
+                ageGroup = '6';
+                phaseTitle = 'المرحلة الأولى: الخضروات والفواكه المهروسة ناعمة جداً';
+                weeksData = [
+                    [
+                        { name: 'كوسة', icon: '🥒', prep: 'تقشير، سلق بالبخار، ثم هرس ناعم جداً.', alt: 'لوبيا خضراء مهروسة.' },
+                        { name: 'جزر', icon: '🥕', prep: 'سلق مطول لضمان الليونة التامة، ثم هرس.', alt: 'قرع عسلي.' }
+                    ],
+                    [
+                        { name: 'بطاطس', icon: '🥔', prep: 'سلق جيد، هرس مع قليل من حليب الأم.', alt: 'بطاطا حلوة.' },
+                        { name: 'تفاح', icon: '🍎', prep: 'تقشير، سلق بالبخار، وهرس.', alt: 'كمثرى مسلوقة ومهروسة.' }
+                    ],
+                    [
+                        { name: 'موز', icon: '🍌', prep: 'هرس الموز الناضج جداً بالشوكة.', alt: 'أفوكادو مهروس ناعم.' },
+                        { name: 'بروكلي', icon: '🥦', prep: 'سلق الزهرات فقط (بدون الساق) وهرسها.', alt: 'قرنبيط مسلوق ومهروس.' }
+                    ],
+                    [
+                        { name: 'شوفان', icon: '🥣', prep: 'طحن الشوفان، طبخه بالماء حتى يذوب، تخفيفه بالحليب.', alt: 'أرز مطحون ومطبوخ.' },
+                        { name: 'خوخ', icon: '🍑', prep: 'تقشير وسلق وهرس ناعم.', alt: 'مشمش مسلوق.' }
+                    ]
+                ];
+            } else if (ageMonths >= 7 && ageMonths <= 8) {
+                ageGroup = '7';
+                phaseTitle = 'المرحلة الثانية: إدخال البروتين والقوام الأثقل';
+                weeksData = [
+                    [
+                        { name: 'دجاج مهروس', icon: '🍗', prep: 'سلق جيد وهرس مع مرق السلق.', alt: 'ديك رومي مهروس.' },
+                        { name: 'عدس', icon: '🍲', prep: 'سلق العدس حتى يذوب تماماً.', alt: 'حمص مقشر ومهروس.' }
+                    ],
+                    [
+                        { name: 'صفار البيض', icon: '🥚', prep: 'سلق البيضة كاملة، وأخذ الصفار فقط.', alt: 'مهروس الأفوكادو.' },
+                        { name: 'سبانخ', icon: '🍃', prep: 'سلق وهرس مع قليل من البطاطس.', alt: 'سلق مطبوخ ومهروس.' }
+                    ],
+                    [
+                        { name: 'بازلاء', icon: '🫛', prep: 'سلق وهرس وتصفية القشور إن لزم.', alt: 'فاصوليا خضراء.' },
+                        { name: 'شوفان خشن', icon: '🥣', prep: 'طبخ الشوفان كما هو بدون طحن.', alt: 'برغل ناعم مطبوخ.' }
+                    ],
+                    [
+                        { name: 'لحم عجل', icon: '🥩', prep: 'سلق مفروم العجل ناعماً جداً.', alt: 'كبدة دجاج مسلوقة ومهروسة.' },
+                        { name: 'قرع', icon: '🎃', prep: 'شوي القرع بالفرن وهرسه.', alt: 'جزر مشوي ومهروس.' }
+                    ]
+                ];
+            } else if (ageMonths >= 9 && ageMonths <= 11) {
+                ageGroup = '9';
+                phaseTitle = 'المرحلة الثالثة: الأطعمة اللينة (Finger Foods)';
+                weeksData = [
+                    [
+                        { name: 'بطيخ', icon: '🍉', prep: 'إزالة البذور وتقطيع لمكعبات لينة.', alt: 'شمام مقطع.' },
+                        { name: 'زبادي', icon: '🥛', prep: 'تقديم زبادي طبيعي كامل الدسم.', alt: 'موز مع حليب.' }
+                    ],
+                    [
+                        { name: 'مكرونة', icon: '🍝', prep: 'سلق زيادة لتصبح لينة جداً.', alt: 'قطع خبز لينة.' },
+                        { name: 'جبن', icon: '🧀', prep: 'جبن مبستر قليل الملح (مثل الموزاريلا الطازجة).', alt: 'لبنة غير مالحة.' }
+                    ],
+                    [
+                        { name: 'سمك أبيض', icon: '🐟', prep: 'شوي أو سلق مع التأكد من خلوه من الشوك.', alt: 'تونة معلبة بالماء.' },
+                        { name: 'طماطم', icon: '🍅', prep: 'تقشير وتقطيع ناعم.', alt: 'فلفل رومي مشوي ومقشر.' }
+                    ],
+                    [
+                        { name: 'موز قطع', icon: '🍌', prep: 'تقطيع الموز لشرائح طولية يمسكها الطفل.', alt: 'كيوي ناضج جداً.' },
+                        { name: 'بانكيك صحي', icon: '🥞', prep: 'عمل بانكيك من (موز + بيض + شوفان) بدون سكر.', alt: 'وافل الشوفان اللين.' }
+                    ]
+                ];
+            } else if (ageMonths >= 12) {
+                ageGroup = '12';
+                phaseTitle = 'المرحلة الرابعة: طعام العائلة المعتاد';
+                weeksData = [
+                    [
+                        { name: 'لحم مفروم بخضار', icon: '🥘', prep: 'طبخ مع الخضار (بدون ملح مضاف للطفل).', alt: 'دجاج مفتت.' },
+                        { name: 'حليب بقر', icon: '🥛', prep: 'كمشروب في كوب (مبستر وكامل الدسم).', alt: 'حليب نباتي مدعم.' }
+                    ],
+                    [
+                        { name: 'أرز بمرق', icon: '🍛', prep: 'أرز لين مع مرق الدجاج أو اللحم.', alt: 'مكرونة بصلصة الطماطم.' },
+                        { name: 'بيضة كاملة', icon: '🥚', prep: 'تقديم البياض والصفار (مقلي بزيت زيتون أو مسلوق).', alt: 'أومليت بالخضار.' }
+                    ],
+                    [
+                        { name: 'فواكه مشكلة', icon: '🍓', prep: 'شرائح طولية (فراولة، عنب مقطع طولياً، تفاح).', alt: 'سلطة فواكه لينة.' },
+                        { name: 'خبز أو توست', icon: '🍞', prep: 'مع القليل من الزبدة الطبيعية.', alt: 'شابورة أطفال تلين بالماء.' }
+                    ],
+                    [
+                        { name: 'زبدة فول سوداني', icon: '🥜', prep: 'دهن طبقة رقيقة جداً (ناعمة) لمراقبة التحسس.', alt: 'زبدة اللوز الناعمة.' },
+                        { name: 'شوربة شوفان', icon: '🥣', prep: 'مع قطع لحم صغيرة جداً.', alt: 'شوربة خضار مهروسة خشناً.' }
+                    ]
+                ];
+            }
+
+            const scheduleCard = document.getElementById('scheduleCard');
+            const rulesCard = document.getElementById('rulesCard');
+            const forbiddenCard = document.getElementById('forbiddenCard');
+            const referencesCard = document.getElementById('referencesCard');
+            const trackingContent = document.getElementById('trackingContent');
+            const legacyContent = document.getElementById('legacyContent');
+            const actionBar = document.getElementById('actionBar');
+            const progressContainer = document.getElementById('progressContainer');
+
+            const scheduleTitle = document.getElementById('scheduleTitle');
+            const scheduleContent = document.getElementById('scheduleContent');
+            const calculatedAge = document.getElementById('calculatedAge');
+
+            scheduleTitle.innerText = `ملخص المرحلة لـ ${name}`;
+            calculatedAge.innerText = `العمر المستنتج: ${ageMonths} أشهر`;
+
+            let legacyHTML = '';
+            if (ageGroup === '6') legacyHTML = `<strong>القوام:</strong> مهروس ناعم جداً وشبه سائل.<br><strong>عدد الوجبات:</strong> وجبة واحدة يومياً (ملعقتين إلى 3 ملاعق صغيرة).`;
+            else if (ageGroup === '7') legacyHTML = `<strong>القوام:</strong> مهروس أثقل قليلاً (Mashed).<br><strong>عدد الوجبات:</strong> وجبتين يومياً.`;
+            else if (ageGroup === '9') legacyHTML = `<strong>القوام:</strong> أطعمة مقطعة لقطع صغيرة جداً (Finger Foods).<br><strong>عدد الوجبات:</strong> 3 وجبات رئيسية + وجبة خفيفة.`;
+            else if (ageGroup === '12') legacyHTML = `<strong>القوام:</strong> طعام العائلة المعتاد.<br><strong>عدد الوجبات:</strong> 3 وجبات رئيسية + وجبتين خفيفة.`;
+            scheduleContent.innerHTML = legacyHTML;
+
+            trackingContent.innerHTML = generateFourWeeksPlan(phaseTitle, weeksData);
+
+            scheduleCard.style.display = 'block';
+            rulesCard.style.display = 'block';
+            forbiddenCard.style.display = 'block';
+            referencesCard.style.display = 'block';
+            legacyContent.style.display = 'block';
+            actionBar.style.display = 'flex';
+            progressContainer.style.display = 'flex';
+
+            updateProgress();
+
+            setTimeout(() => {
+                scheduleCard.style.opacity = '1';
+                rulesCard.style.opacity = '1';
+                forbiddenCard.style.opacity = '1';
+                referencesCard.style.opacity = '1';
+            }, 50);
+
+            showToast(`تم توليد خطة التغذية لـ ${name} (${ageMonths} شهر)`, 'success');
+        }
+
+        function loadSavedData() {
+            const savedName = loadFromStorage(STORAGE_KEYS.name);
+            const savedDob = loadFromStorage(STORAGE_KEYS.dob);
+            if (savedName) document.getElementById('childName').value = savedName;
+            if (savedDob) document.getElementById('childDob').value = savedDob;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            initTheme();
+            setMaxDate();
+            loadSavedData();
+        });
+    </script>
+</body>
+</html>

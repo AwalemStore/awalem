@@ -100,6 +100,77 @@ const babyFoodData = [
   }
 ];
 
+const mealSchedule = {
+  6: [
+    { food: "أرز مهروس", icon: "🌾", category: "حبوب ونشويات" },
+    { food: "شوفان مهروس", icon: "🌾", category: "حبوب ونشويات" },
+    { food: "بطاطس مهروسة", icon: "🥕", category: "خضروات" },
+    { food: "بطاطا حلوة مهروسة", icon: "🥕", category: "خضروات" },
+    { food: "جزر مهروس", icon: "🥕", category: "خضروات" },
+    { food: "كوسا مهروسة", icon: "🥕", category: "خضروات" },
+    { food: "قرع مهروس", icon: "🥕", category: "خضروات" },
+    { food: "بروكلي مهروس", icon: "🥕", category: "خضروات" },
+    { food: "موز مهروس", icon: "🍎", category: "فواكه" },
+    { food: "تفاح مهروس", icon: "🍎", category: "فواكه" },
+    { food: "إجاص مهروس", icon: "🍎", category: "فواكه" },
+    { food: "أفوكادو مهروس", icon: "🍎", category: "فواكه" }
+  ],
+  7: [
+    { food: "أرز", icon: "🌾", category: "حبوب ونشويات" },
+    { food: "شوفان", icon: "🌾", category: "حبوب ونشويات" },
+    { food: "بطاطس", icon: "🌾", category: "حبوب ونشويات" },
+    { food: "بطاطا حلوة", icon: "🌾", category: "حبوب ونشويات" },
+    { food: "معكرونة مطبوخة ومهروسة", icon: "🌾", category: "حبوب ونشويات" },
+    { food: "جزر", icon: "🥕", category: "خضروات" },
+    { food: "كوسا", icon: "🥕", category: "خضروات" },
+    { food: "قرع", icon: "🥕", category: "خضروات" },
+    { food: "بروكلي", icon: "🥕", category: "خضروات" },
+    { food: "سبانخ", icon: "🥕", category: "خضروات" },
+    { food: "فاصوليا خضراء", icon: "🥕", category: "خضروات" },
+    { food: "موز", icon: "🍎", category: "فواكه" },
+    { food: "تفاح", icon: "🍎", category: "فواكه" },
+    { food: "إجاص", icon: "🍎", category: "فواكه" },
+    { food: "أفوكادو", icon: "🍎", category: "فواكه" },
+    { food: "مانجا", icon: "🍎", category: "فواكه" },
+    { food: "خوخ", icon: "🍎", category: "فواكه" },
+    { food: "دجاج مهروس", icon: "🍗", category: "بروتينات" },
+    { food: "لحم مهروس", icon: "🍗", category: "بروتينات" },
+    { food: "سمك أبيض مهروس", icon: "🍗", category: "بروتينات" },
+    { food: "صفار بيض", icon: "🍗", category: "بروتينات" }
+  ],
+  8: [
+    { food: "أرز", icon: "🌾", category: "حبوب ونشويات" },
+    { food: "شوفان", icon: "🌾", category: "حبوب ونشويات" },
+    { food: "بطاطس", icon: "🌾", category: "حبوب ونشويات" },
+    { food: "بطاطا حلوة", icon: "🌾", category: "حبوب ونشويات" },
+    { food: "معكرونة", icon: "🌾", category: "حبوب ونشويات" },
+    { food: "خبز محمص للأطفال", icon: "🌾", category: "حبوب ونشويات" },
+    { food: "جزر", icon: "🥕", category: "خضروات" },
+    { food: "كوسا", icon: "🥕", category: "خضروات" },
+    { food: "قرع", icon: "🥕", category: "خضروات" },
+    { food: "بروكلي", icon: "🥕", category: "خضروات" },
+    { food: "سبانخ", icon: "🥕", category: "خضروات" },
+    { food: "فاصوليا خضراء", icon: "🥕", category: "خضروات" },
+    { food: "بازلاء", icon: "🥕", category: "خضروات" },
+    { food: "موز", icon: "🍎", category: "فواكه" },
+    { food: "تفاح", icon: "🍎", category: "فواكه" },
+    { food: "إجاص", icon: "🍎", category: "فواكه" },
+    { food: "أفوكادو", icon: "🍎", category: "فواكه" },
+    { food: "مانجا", icon: "🍎", category: "فواكه" },
+    { food: "خوخ", icon: "🍎", category: "فواكه" },
+    { food: "بطيخ", icon: "🍎", category: "فواكه" },
+    { food: "شمام", icon: "🍎", category: "فواكه" },
+    { food: "دجاج مفروم", icon: "🍗", category: "بروتينات" },
+    { food: "لحم مفروم", icon: "🍗", category: "بروتينات" },
+    { food: "سمك أبيض", icon: "🍗", category: "بروتينات" },
+    { food: "صفار بيض", icon: "🍗", category: "بروتينات" },
+    { food: "عدس مهروس", icon: "🍗", category: "بروتينات" },
+    { food: "فول مهروس", icon: "🍗", category: "بروتينات" },
+    { food: "زبادي كامل الدسم", icon: "🥛", category: "ألبان" },
+    { food: "جبنة قريش", icon: "🥛", category: "ألبان" }
+  ]
+};
+
 const forbiddenFoods = [
   { name: "عسل", icon: "🍯", reason: "خطر التسمم البوتوليني" },
   { name: "حليب بقر", icon: "🥛", reason: "صعب الهضم وقد يسبب حساسية" },
@@ -120,59 +191,204 @@ const tips = [
   { icon: "🧼", text: "اغسلي يديكِ وأدوات الطفل جيداً قبل تحضير الطعام" }
 ];
 
-function renderUI() {
-  const stagesContainer = document.getElementById("stages-container");
-  const forbiddenContainer = document.getElementById("forbidden-foods");
-  const tipsContainer = document.getElementById("tips-container");
+const arabicMonths = ["يناير", "فبراير", "مارس", "أبريل", "مايو", "يونيو", "يوليو", "أغسطس", "سبتمبر", "أكتوبر", "نوفمبر", "ديسمبر"];
+const arabicDays = ["الأحد", "الاثنين", "الثلاثاء", "الأربعاء", "الخميس", "الجمعة", "السبت"];
 
-  stagesContainer.innerHTML = babyFoodData.map(stage => {
-    const categoriesHTML = stage.categories.map(cat => `
-      <div class="food-category-label">${cat.icon} ${cat.name}</div>
-      <div class="food-grid">
-        ${cat.foods.map(food => `<div class="food-item">${food}</div>`).join("")}
-      </div>
-    `).join("");
+function formatDate(date) {
+  return `${date.getDate()} ${arabicMonths[date.getMonth()]}`;
+}
 
-    const notesHTML = stage.notes.map(note => `<p>• ${note}</p>`).join("");
+function formatDateFull(date) {
+  return `${arabicDays[date.getDay()]} ${date.getDate()} ${arabicMonths[date.getMonth()]}`;
+}
 
-    return `
-      <div class="age-stage-card" data-month="${stage.month}">
-        <div class="stage-header">
-          <div class="stage-icon">${stage.icon}</div>
-          <div>
-            <div class="stage-title">${stage.title}</div>
-            <div class="stage-age">عمر ${stage.month} أشهر</div>
-          </div>
-          <div class="toggle-icon">▼</div>
-        </div>
-        <p class="stage-desc">${stage.description}</p>
-        <div class="stage-content">
-          ${categoriesHTML}
-          <div class="note-box">
-            <strong>📌 ملاحظات:</strong>
-            ${notesHTML}
-          </div>
-        </div>
-      </div>
-    `;
-  }).join("");
+function generateTimeline(age, startDate) {
+  const meals = mealSchedule[age];
+  const start = new Date(startDate + "T00:00:00");
 
-  forbiddenContainer.innerHTML = forbiddenFoods.map(food => `
+  return meals.map((meal, index) => {
+    const fromDate = new Date(start);
+    fromDate.setDate(fromDate.getDate() + index * 3);
+    const toDate = new Date(fromDate);
+    toDate.setDate(toDate.getDate() + 2);
+
+    return {
+      ...meal,
+      dayNumber: index + 1,
+      fromDate: formatDate(fromDate),
+      toDate: formatDate(toDate),
+      fromDateFull: formatDateFull(fromDate),
+      toDateFull: formatDateFull(toDate),
+      fromRaw: fromDate,
+      toRaw: toDate
+    };
+  });
+}
+
+function renderStaticSections() {
+  document.getElementById("forbidden-foods").innerHTML = forbiddenFoods.map(food => `
     <div class="food-item forbidden" title="${food.reason}">${food.icon} ${food.name}</div>
   `).join("");
 
-  tipsContainer.innerHTML = tips.map(tip => `
+  document.getElementById("tips-container").innerHTML = tips.map(tip => `
     <div class="tip-item">
       <span class="tip-icon">${tip.icon}</span>
       <span>${tip.text}</span>
     </div>
   `).join("");
+}
 
-  document.querySelectorAll(".age-stage-card").forEach(card => {
-    card.addEventListener("click", () => {
-      card.classList.toggle("active");
+function renderAgeSelector() {
+  const mainContent = document.getElementById("main-content");
+  const today = new Date().toISOString().split("T")[0];
+
+  mainContent.innerHTML = `
+    <div class="bento-card">
+      <h2 class="section-title">👶 اختاري عمر طفلكِ</h2>
+      <p class="selector-desc">اختاري المرحلة العمرية لطفلكِ لإنشاء جدول وجبات مخصص بتواريخ محددة</p>
+      <div class="age-options">
+        <div class="age-option" data-age="6">
+          <span class="age-option-icon">🥣</span>
+          <span class="age-option-label">الشهر السادس</span>
+          <span class="age-option-sub">بداية الطعام المهروس</span>
+        </div>
+        <div class="age-option" data-age="7">
+          <span class="age-option-icon">🥄</span>
+          <span class="age-option-label">الشهر السابع</span>
+          <span class="age-option-sub">تنويع وإدخال بروتينات</span>
+        </div>
+        <div class="age-option" data-age="8">
+          <span class="age-option-icon">🍽️</span>
+          <span class="age-option-label">الشهر الثامن</span>
+          <span class="age-option-sub">أطعمة متنوعة قطعية</span>
+        </div>
+      </div>
+      <div class="start-date-section">
+        <label class="date-label">📅 تاريخ البداية:</label>
+        <input type="date" id="start-date" class="date-input" value="${today}">
+      </div>
+      <button id="generate-btn" class="generate-btn" disabled>إنشاء جدول الوجبات 🗓️</button>
+    </div>
+  `;
+
+  let selectedAge = null;
+
+  document.querySelectorAll(".age-option").forEach(option => {
+    option.addEventListener("click", () => {
+      document.querySelectorAll(".age-option").forEach(o => o.classList.remove("selected"));
+      option.classList.add("selected");
+      selectedAge = parseInt(option.dataset.age);
+      document.getElementById("generate-btn").disabled = false;
     });
   });
+
+  document.getElementById("generate-btn").addEventListener("click", () => {
+    const startDate = document.getElementById("start-date").value;
+    if (selectedAge && startDate) {
+      localStorage.setItem("babyFoodSchedule", JSON.stringify({ age: selectedAge, startDate }));
+      renderTimelineView();
+    }
+  });
+}
+
+function renderTimelineView() {
+  const saved = JSON.parse(localStorage.getItem("babyFoodSchedule"));
+  if (!saved) { renderAgeSelector(); return; }
+
+  const schedule = generateTimeline(saved.age, saved.startDate);
+  const stage = babyFoodData.find(s => s.month === saved.age);
+  const mainContent = document.getElementById("main-content");
+
+  const today = new Date();
+  today.setHours(0, 0, 0, 0);
+
+  const timelineHTML = schedule.map(item => {
+    const isActive = today >= item.fromRaw && today <= item.toRaw;
+    const isPast = today > item.toRaw;
+    const statusClass = isActive ? "active" : isPast ? "past" : "future";
+
+    let statusBadge = "";
+    if (isActive) statusBadge = '<span class="timeline-badge now">اليوم ✅</span>';
+    else if (isPast) statusBadge = '<span class="timeline-badge done">تم ✓</span>';
+
+    return `
+      <div class="timeline-item ${statusClass}">
+        <div class="timeline-dot"></div>
+        <div class="timeline-card">
+          <div class="timeline-dates">
+            <span>${item.fromDate}</span>
+            <span class="dates-arrow">→</span>
+            <span>${item.toDate}</span>
+          </div>
+          <div class="timeline-food">${item.icon} ${item.food}</div>
+          <div class="timeline-category">${item.category}</div>
+          ${statusBadge}
+        </div>
+      </div>
+    `;
+  }).join("");
+
+  const totalDays = schedule.length * 3;
+  const endDate = new Date(schedule[schedule.length - 1].toRaw);
+
+  mainContent.innerHTML = `
+    <div class="bento-card">
+      <div class="timeline-header">
+        <div class="timeline-info">
+          <span class="timeline-stage-icon">${stage.icon}</span>
+          <div>
+            <h2 class="section-title" style="margin:0;border:none;padding:0">${stage.title}</h2>
+            <p style="color:var(--text-muted);font-size:0.9rem;margin-top:4px">${stage.description}</p>
+          </div>
+        </div>
+        <button id="reset-btn" class="reset-btn">🔄 تغيير</button>
+      </div>
+      <div class="timeline-summary">
+        <div class="summary-item">
+          <span class="summary-num">${schedule.length}</span>
+          <span class="summary-label">وجبة</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-num">${totalDays}</span>
+          <span class="summary-label">يوم</span>
+        </div>
+        <div class="summary-item">
+          <span class="summary-num">${formatDate(endDate)}</span>
+          <span class="summary-label">آخر يوم</span>
+        </div>
+      </div>
+      <div class="timeline">
+        ${timelineHTML}
+      </div>
+      <div class="note-box">
+        <strong>📌 ملاحظات:</strong>
+        ${stage.notes.map(n => `<p>• ${n}</p>`).join("")}
+      </div>
+    </div>
+  `;
+
+  document.getElementById("reset-btn").addEventListener("click", () => {
+    localStorage.removeItem("babyFoodSchedule");
+    renderAgeSelector();
+  });
+
+  const activeItem = document.querySelector(".timeline-item.active");
+  if (activeItem) {
+    setTimeout(() => {
+      activeItem.scrollIntoView({ behavior: "smooth", block: "center" });
+    }, 300);
+  }
+}
+
+function renderUI() {
+  renderStaticSections();
+
+  const saved = localStorage.getItem("babyFoodSchedule");
+  if (saved) {
+    renderTimelineView();
+  } else {
+    renderAgeSelector();
+  }
 }
 
 document.addEventListener("DOMContentLoaded", renderUI);
