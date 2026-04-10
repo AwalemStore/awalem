@@ -143,41 +143,41 @@
             #printArea, #printArea * { display: block !important; }
             #printArea { background: white; width: 100%; font-family: 'Tajawal', sans-serif; direction: rtl; }
             
-            .print-page { padding: 15px 20px; page-break-inside: avoid; }
+            .print-page { padding: 8px 12px; page-break-inside: avoid; }
 
-            .print-header { text-align: center; padding: 18px 20px; border-radius: 16px; background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); margin-bottom: 14px; }
-            .print-header h1 { font-size: 20px; font-weight: 900; color: #1d1d1f; margin: 0 0 4px 0; }
-            .print-header p { font-size: 10px; font-weight: 700; color: rgba(0,0,0,0.6); margin: 0; }
+            .print-header { text-align: center; padding: 10px 15px; border-radius: 12px; background: linear-gradient(135deg, #fbc2eb 0%, #a6c1ee 100%); margin-bottom: 8px; }
+            .print-header h1 { font-size: 16px; font-weight: 900; color: #1d1d1f; margin: 0 0 2px 0; }
+            .print-header p { font-size: 9px; font-weight: 700; color: rgba(0,0,0,0.6); margin: 0; }
 
-            .print-stage-bar { text-align: center; background: #F0EBF7; padding: 7px 12px; border-radius: 10px; margin-bottom: 12px; font-size: 11px; font-weight: 800; color: var(--awalem-purple); border: 1px solid rgba(106,76,156,0.15); }
+            .print-stage-bar { text-align: center; background: #F0EBF7; padding: 4px 10px; border-radius: 8px; margin-bottom: 8px; font-size: 9px; font-weight: 800; color: var(--awalem-purple); border: 1px solid rgba(106,76,156,0.15); }
 
-            .print-weeks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+            .print-weeks-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; margin-bottom: 8px; }
             
-            .print-week-card { background: #FBFBFD; border: 1px solid #E5E5E7; border-radius: 14px; padding: 10px; }
-            .print-week-title { font-size: 11px; font-weight: 900; color: var(--awalem-purple); margin-bottom: 7px; padding-bottom: 5px; border-bottom: 2px solid var(--awalem-purple); display: flex; justify-content: space-between; align-items: center; }
+            .print-week-card { background: #FBFBFD; border: 1px solid #E5E5E7; border-radius: 10px; padding: 7px; }
+            .print-week-title { font-size: 10px; font-weight: 900; color: var(--awalem-purple); margin-bottom: 4px; padding-bottom: 3px; border-bottom: 2px solid var(--awalem-purple); display: flex; justify-content: space-between; align-items: center; }
             
-            .print-meal { background: #fff; border: 1px solid #eee; border-radius: 10px; padding: 7px 9px; margin-bottom: 5px; }
-            .print-meal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-            .print-meal-name { font-size: 10px; font-weight: 800; color: #1d1d1f; }
-            .print-dates { font-size: 8px; font-family: 'Poppins', sans-serif; color: #999; direction: ltr; background: #F5F5F7; padding: 2px 6px; border-radius: 4px; }
+            .print-meal { background: #fff; border: 1px solid #eee; border-radius: 8px; padding: 4px 6px; margin-bottom: 3px; }
+            .print-meal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; }
+            .print-meal-name { font-size: 9px; font-weight: 800; color: #1d1d1f; }
+            .print-dates { font-size: 7px; font-family: 'Poppins', sans-serif; color: #999; direction: ltr; background: #F5F5F7; padding: 1px 4px; border-radius: 3px; }
             
-            .print-tracker-row { display: flex; gap: 6px; align-items: center; }
+            .print-tracker-row { display: flex; gap: 3px; align-items: center; }
             .print-t-label { font-size: 7px; font-weight: 700; color: #888; }
-            .print-t-boxes { display: flex; gap: 4px; }
-            .print-box { width: 12px; height: 12px; border: 1px solid #bbb; border-radius: 4px; display: inline-block; background: #fff; }
-            .print-box-text { font-size: 7px; margin-right: 2px; color: #888; }
+            .print-t-boxes { display: flex; gap: 3px; }
+            .print-box { width: 10px; height: 10px; border: 1px solid #bbb; border-radius: 3px; display: inline-block; background: #fff; }
+            .print-box-text { font-size: 6px; color: #888; }
 
-            .print-rules { display: flex; gap: 10px; padding-top: 10px; margin-top: 6px; }
-            .print-rules-col { flex: 1; padding: 10px; border-radius: 12px; }
+            .print-rules { display: flex; gap: 8px; padding-top: 6px; margin-top: 4px; }
+            .print-rules-col { flex: 1; padding: 6px 8px; border-radius: 10px; }
             .print-rules-col.forbidden-col { background: linear-gradient(135deg, rgba(255,59,48,0.04), rgba(255,59,48,0.08)); border: 1px solid rgba(255,59,48,0.12); }
             .print-rules-col.tips-col { background: linear-gradient(135deg, rgba(106,76,156,0.04), rgba(166,193,238,0.08)); border: 1px solid rgba(106,76,156,0.12); }
-            .print-rules-col h4 { font-size: 10px; margin-bottom: 5px; }
+            .print-rules-col h4 { font-size: 9px; margin-bottom: 3px; }
             .print-rules-col.forbidden-col h4 { color: #FF3B30; }
             .print-rules-col.tips-col h4 { color: var(--awalem-purple); }
-            .print-rules-col ul { margin: 0; padding-right: 14px; font-size: 8px; color: #333; line-height: 1.5; }
-            .print-rules-col ul li { margin-bottom: 2px; }
+            .print-rules-col ul { margin: 0; padding-right: 12px; font-size: 7px; color: #333; line-height: 1.4; }
+            .print-rules-col ul li { margin-bottom: 1px; }
 
-            .print-footer { text-align: center; margin-top: 10px; padding-top: 8px; border-top: 1px solid #E5E5E7; font-size: 8px; font-weight: 700; color: #aaa; }
+            .print-footer { text-align: center; margin-top: 6px; padding-top: 5px; border-top: 1px solid #E5E5E7; font-size: 7px; font-weight: 700; color: #aaa; }
         }
         @media (max-width: 768px) { .half { grid-column: span 12; } .inputs-row { grid-template-columns: 1fr; } .hero h1 { font-size: 2.2rem; } .btn-group { flex-direction: column; } }
 
@@ -766,9 +766,9 @@
                             <div class="print-tracker-row">
                                 <span class="print-t-label">${t('track', lang)}:</span>
                                 <div class="print-t-boxes">
-                                    <div><span class="print-box-text">D1</span><div class="print-box"></div></div>
-                                    <div><span class="print-box-text">D2</span><div class="print-box"></div></div>
-                                    <div><span class="print-box-text">D3</span><div class="print-box"></div></div>
+                                    <div style="display:flex;align-items:center;gap:1px;"><span class="print-box-text">1</span><div class="print-box"></div></div>
+                                    <div style="display:flex;align-items:center;gap:1px;"><span class="print-box-text">2</span><div class="print-box"></div></div>
+                                    <div style="display:flex;align-items:center;gap:1px;"><span class="print-box-text">3</span><div class="print-box"></div></div>
                                 </div>
                             </div>
                         </div>`;
