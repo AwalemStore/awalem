@@ -351,10 +351,21 @@
         }
 
         function calculateAge() {
-            const birth = new Date(document.getElementById('babyBirthDate').value);
-            ls('birthDate', document.getElementById('babyBirthDate').value);
+            const input = document.getElementById('babyBirthDate');
+            const birth = new Date(input.value);
+            ls('birthDate', input.value);
             const now = new Date();
             if(isNaN(birth)) return;
+            if(birth > now) {
+                input.style.borderColor = '#FF3B30';
+                document.getElementById('ageDiscoveryText').innerHTML = '⚠️ تاريخ الولادة لا يمكن أن يكون في المستقبل.';
+                document.getElementById('ageDiscoveryText').style.display = 'block';
+                document.getElementById('ageDiscoveryText').style.color = '#FF3B30';
+                calculatedAge = 0;
+                return;
+            }
+            input.style.borderColor = '';
+            document.getElementById('ageDiscoveryText').style.color = '';
             let months = (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
             if(now.getDate() < birth.getDate()) months--;
             calculatedAge = Math.max(0, months);
@@ -379,6 +390,11 @@
             const startStr = document.getElementById('planStartDate').value;
             const age = mode === 'birth' ? calculatedAge : parseInt(document.getElementById('manualAge').value);
             if(!startStr || !age) return alert(t('enterData','ar'));
+            if(mode === 'manual' && (isNaN(age) || age < 0 || age > 60)) return alert('⚠️ الرجاء إدخال عمر صحيح (0-60 شهر)');
+            if(mode === 'birth' && calculatedAge < 6) return alert('⚠️ عمر الطفل أقل من 6 أشهر. لا يُنصح بإدخال الأطعمة الصلبة قبل 6 أشهر.');
+            const startDate = new Date(startStr);
+            const today = new Date(); today.setHours(0,0,0,0);
+            if(startDate < today) return alert('⚠️ تاريخ البدء لا يمكن أن يكون في الماضي.');
 
             document.getElementById('plannerWorkspace').style.display = 'block';
             document.getElementById('printBtn').style.display = 'inline-block';
