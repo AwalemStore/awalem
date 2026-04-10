@@ -368,6 +368,7 @@
         let reactState = {};
         let bootstrapped = false;
         let allStageMeals = [];
+        let openWeeks = new Set([0]);
 
         function ls(key, val) {
             try {
@@ -593,6 +594,9 @@
         function toggleWeek(weekId) {
             const acc = document.getElementById(weekId);
             acc.classList.toggle('open');
+            const idx = parseInt(weekId.replace('weekAcc',''));
+            if (acc.classList.contains('open')) openWeeks.add(idx);
+            else openWeeks.delete(idx);
         }
 
         function toggleTracker(mealId, dayIdx, btn) {
@@ -643,7 +647,7 @@
                         </div>`;
                 });
 
-                const isOpen = w === 0 ? 'open' : '';
+                const isOpen = openWeeks.has(w) ? 'open' : '';
                 workspace.innerHTML += `
                     <div class="week-accordion ${isOpen}" id="weekAcc${w}">
                         <div class="week-header" onclick="toggleWeek('weekAcc${w}')">
