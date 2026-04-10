@@ -280,7 +280,7 @@
                     </div>
                     <div class="field">
                         <label>لغة المساعدة (اختياري)</label>
-                        <select id="workerLang" onchange="if(masterPlan.length) renderAllWeeks()">
+                        <select id="workerLang" onchange="handleLangChange(this.value)">
                             <option value="ar">عربي (الافتراضي)</option>
                             <option value="en">English (إنجليزي)</option>
                             <option value="tl">Tagalog (فلبيني)</option>
@@ -340,11 +340,25 @@
 
     <div id="printArea"></div>
 
+    <div id="google_translate_element" style="display:none;"></div>
+    <script>
+        function googleTranslateElementInit() {
+            new google.translate.TranslateElement({ pageLanguage: 'ar', autoDisplay: false }, 'google_translate_element');
+        }
+        function triggerTranslate(lang) {
+            var sel = document.querySelector('.goog-te-combo');
+            if (sel) { sel.value = lang; sel.dispatchEvent(new Event('change')); }
+        }
+    </script>
+    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
+
     <script src="data.js"></script>
     <script>
         const D = APP_DATA.dict;
         const S = APP_DATA.stages;
         const LS_KEY = 'awalem_babyfood';
+
+        function esc(s) { var d = document.createElement('div'); d.textContent = s; return d.innerHTML; }
 
         function t(key, lang) { return D[lang] ? D[lang][key] : (D["en"][key] || key); }
 
@@ -475,6 +489,17 @@
             document.getElementById('manualField').style.display = m === 'manual' ? 'flex' : 'none';
         }
 
+        function handleLangChange(lang) {
+            ls('lang', lang);
+            if (lang === 'ar') {
+                triggerTranslate('');
+                setTimeout(function(){ location.reload(); }, 300);
+            } else {
+                triggerTranslate(lang);
+            }
+            if(masterPlan.length) renderAllWeeks();
+        }
+
         function calculateAge() {
             const input = document.getElementById('babyBirthDate');
             const birth = new Date(input.value);
@@ -600,7 +625,7 @@
                     mealsHTML += `
                         <div class="meal-card">
                             <div class="meal-badge">${t('day','ar')} الـ 3 أيام القادمة</div>
-                            <h4>${b.icon} ${b.name}</h4>
+                            <h4>${b.icon} ${esc(b.name)}</h4>
                             <div class="action-row">
                                 <button class="badge-btn" onclick="openRecipe(${b.id})">${t('prep', lang)} 📖</button>
                                 <button class="badge-btn badge-swap" onclick="swapDish(${b.id})">🔄 ${t('alt', lang)}</button>
@@ -694,7 +719,7 @@
         function renderForbidden() {
             const container = document.getElementById('forbidden-container');
             container.innerHTML = APP_DATA.forbiddenFoods.map(f =>
-                `<div class="pill danger" title="${f.reason}"><span>${f.icon}</span> ${f.name}</div>`
+                `<div class="pill danger" title="${esc(f.reason)}"><span>${f.icon}</span> ${esc(f.name)}</div>`
             ).join('');
         }
 
@@ -703,7 +728,7 @@
             container.innerHTML = APP_DATA.tips.map(tip =>
                 `<div class="tip-box">
                     <div class="tip-icon">${tip.icon}</div>
-                    <div class="tip-text"><p>${tip.text}</p></div>
+                    <div class="tip-text"><p>${esc(tip.text)}</p></div>
                 </div>`
             ).join('');
         }
@@ -726,7 +751,7 @@
                     mealsHTML += `
                         <div class="print-meal">
                             <div class="print-meal-header">
-                                <span class="print-meal-name">${b.icon} ${b.name}</span>
+                                <span class="print-meal-name">${b.icon} ${esc(b.name)}</span>
                                 <span class="print-dates">${datesStr}</span>
                             </div>
                             <div class="print-tracker-row">
@@ -750,8 +775,8 @@
                     </div>`;
             });
 
-            const forbiddenHTML = APP_DATA.forbiddenFoods.map(f => `<li>${f.icon} ${f.name}: ${f.reason}</li>`).join('');
-            const tipsHTML = APP_DATA.tips.map(tip => `<li>${tip.icon} ${tip.text}</li>`).join('');
+            const forbiddenHTML = APP_DATA.forbiddenFoods.map(f => `<li>${f.icon} ${esc(f.name)}: ${esc(f.reason)}</li>`).join('');
+            const tipsHTML = APP_DATA.tips.map(tip => `<li>${tip.icon} ${esc(tip.text)}</li>`).join('');
 
             printArea.innerHTML = `
                 <div class="print-page">
