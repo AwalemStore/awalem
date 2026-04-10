@@ -1,4 +1,4 @@
-const CACHE_NAME = 'awalem-babyfood-v1';
+const CACHE_NAME = 'awalem-babyfood-v2';
 const ASSETS = [
     './',
     './index.html',
