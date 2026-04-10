@@ -356,6 +356,8 @@
         let currentStageKey = 6;
         let trackerState = {};
         let reactState = {};
+        let bootstrapped = false;
+        let allStageMeals = [];
 
         function ls(key, val) {
             try {
@@ -645,8 +647,6 @@
             });
         }
 
-        let allStageMeals = [];
-
         function collectAllMeals() {
             const stage = S[currentStageKey];
             const seen = new Set();
@@ -791,7 +791,6 @@
             window.print();
         }
 
-        let bootstrapped = false;
         function bootstrap() {
             if (bootstrapped) return;
             bootstrapped = true;
