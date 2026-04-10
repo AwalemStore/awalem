@@ -265,6 +265,7 @@
     <script>
         const D = APP_DATA.dict;
         const S = APP_DATA.stages;
+        const LS_KEY = 'awalem_babyfood';
 
         function t(key, lang) { return D[lang] ? D[lang][key] : (D["en"][key] || key); }
 
@@ -272,9 +273,19 @@
         let calculatedAge = 0;
         let masterPlan = [];
         let currentStageKey = 6;
+        let trackerState = {};
+        let reactState = {};
+
+        function ls(key, val) {
+            try {
+                if (val === undefined) return JSON.parse(localStorage.getItem(LS_KEY + '_' + key));
+                localStorage.setItem(LS_KEY + '_' + key, JSON.stringify(val));
+            } catch(e) {}
+        }
 
         function setMode(m) {
             mode = m;
+            ls('mode', m);
             document.getElementById('useBirthDate').classList.toggle('active', m === 'birth');
             document.getElementById('useManual').classList.toggle('active', m === 'manual');
             document.getElementById('birthField').style.display = m === 'birth' ? 'flex' : 'none';
@@ -283,6 +294,7 @@
 
         function calculateAge() {
             const birth = new Date(document.getElementById('babyBirthDate').value);
+            ls('birthDate', document.getElementById('babyBirthDate').value);
             const now = new Date();
             if(isNaN(birth)) return;
             let months = (now.getFullYear() - birth.getFullYear()) * 12 + (now.getMonth() - birth.getMonth());
@@ -330,11 +342,28 @@
                         name: meal.name,
                         icon: meal.icon,
                         prep: meal.prep,
-                        alt: meal.alt
+                        alt: meal.alt,
+                        origName: meal.name,
+                        origAlt: meal.alt
                     });
                     currentDay.setDate(currentDay.getDate() + 3);
                 });
             });
+
+            ls('startDate', startStr);
+            ls('age', age);
+
+            const savedSwaps = ls('swaps') || {};
+            Object.keys(savedSwaps).forEach(id => {
+                const idx = parseInt(id);
+                if (masterPlan[idx]) {
+                    masterPlan[idx].name = savedSwaps[id].name;
+                    masterPlan[idx].alt = savedSwaps[id].alt;
+                }
+            });
+
+            trackerState = ls('tracker') || {};
+            reactState = ls('reacts') || {};
 
             renderAllWeeks();
         }
@@ -344,8 +373,16 @@
             acc.classList.toggle('open');
         }
 
+        function toggleTracker(mealId, dayIdx, btn) {
+            const key = mealId + '_' + dayIdx;
+            trackerState[key] = !trackerState[key];
+            btn.classList.toggle('active', trackerState[key]);
+            ls('tracker', trackerState);
+        }
+
         function renderAllWeeks() {
             const lang = document.getElementById('workerLang').value;
+            ls('lang', lang);
             const workspace = document.getElementById('plannerWorkspace');
             const stage = S[currentStageKey];
             workspace.innerHTML = '';
@@ -356,10 +393,11 @@
                 week.forEach(meal => {
                     const b = masterPlan[blockIdx];
                     blockIdx++;
+                    const mealIdx = b.id;
                     mealsHTML += `
                         <div class="meal-card">
                             <div class="meal-badge">${t('day','ar')} الـ 3 أيام القادمة</div>
-                            <h4>${meal.icon} ${meal.name}</h4>
+                            <h4>${b.icon} ${b.name}</h4>
                             <div class="action-row">
                                 <button class="badge-btn" onclick="openRecipe(${b.id})">${t('prep', lang)} 📖</button>
                                 <button class="badge-btn badge-swap" onclick="swapDish(${b.id})">🔄 ${t('alt', lang)}</button>
@@ -367,16 +405,18 @@
                             <div class="tracker-section">
                                 <div class="tracker-title">${t('track', lang)}:</div>
                                 <div class="tracker-grid" style="display:grid; grid-template-columns:1fr 1fr 1fr; gap:8px;">
-                                    ${b.dates.map((d, i) => `
-                                        <div class="t-day-box">
+                                    ${b.dates.map((d, i) => {
+                                        const active = trackerState[mealIdx + '_' + i] ? 'active' : '';
+                                        return `<div class="t-day-box">
                                             <span class="t-date">${d.toLocaleDateString('en-GB', {day:'2-digit', month:'2-digit'})}</span>
-                                            <button class="t-btn" onclick="this.classList.toggle('active')">D ${i+1}</button>
-                                        </div>`).join('')}
+                                            <button class="t-btn ${active}" onclick="toggleTracker(${mealIdx}, ${i}, this)">D ${i+1}</button>
+                                        </div>`;
+                                    }).join('')}
                                 </div>
                             </div>
                             <div class="reactions">
-                                <button class="react-btn" onclick="setReact(this)">😍</button>
-                                <button class="react-btn" onclick="setReact(this)">🤢</button>
+                                <button class="react-btn ${reactState[mealIdx]==='love'?'active':''}" onclick="setReact(${mealIdx},'love',this)">😍</button>
+                                <button class="react-btn ${reactState[mealIdx]==='hate'?'active':''}" onclick="setReact(${mealIdx},'hate',this)">🤢</button>
                             </div>
                         </div>`;
                 });
@@ -400,12 +440,17 @@
             const temp = item.name;
             item.name = item.alt;
             item.alt = temp;
+            const swaps = ls('swaps') || {};
+            swaps[id] = { name: item.name, alt: item.alt };
+            ls('swaps', swaps);
             renderAllWeeks();
         }
 
-        function setReact(btn) {
+        function setReact(mealId, type, btn) {
             btn.parentElement.querySelectorAll('.react-btn').forEach(b => b.classList.remove('active'));
             btn.classList.add('active');
+            reactState[mealId] = type;
+            ls('reacts', reactState);
         }
 
         function openRecipe(id) {
@@ -454,7 +499,7 @@
                     mealsHTML += `
                         <div class="print-meal">
                             <div class="print-meal-header">
-                                <span class="print-meal-name">${meal.icon} ${meal.name}</span>
+                                <span class="print-meal-name">${b.icon} ${b.name}</span>
                                 <span class="print-dates">${datesStr}</span>
                             </div>
                             <div class="print-tracker-row">
@@ -511,6 +556,36 @@
 
             window.print();
         }
+
+        (function restoreState() {
+            const savedMode = ls('mode');
+            const savedBirth = ls('birthDate');
+            const savedManualAge = ls('manualAge');
+            const savedStart = ls('startDate');
+            const savedLang = ls('lang');
+            const savedAge = ls('age');
+
+            if (savedMode) {
+                setMode(savedMode);
+                if (savedMode === 'manual' && savedManualAge) {
+                    document.getElementById('manualAge').value = savedManualAge;
+                }
+            }
+            if (savedBirth) {
+                document.getElementById('babyBirthDate').value = savedBirth;
+                calculateAge();
+            }
+            if (savedStart) document.getElementById('planStartDate').value = savedStart;
+            if (savedLang) document.getElementById('workerLang').value = savedLang;
+
+            if (savedStart && savedAge) {
+                initPlan();
+            }
+        })();
+
+        document.getElementById('manualAge').addEventListener('input', function() {
+            ls('manualAge', this.value);
+        });
 
         renderForbidden();
         renderTips();
