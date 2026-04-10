@@ -1,4 +1,4 @@
-const CACHE_NAME = 'awalem-babyfood-v4';
+const CACHE_NAME = 'awalem-babyfood-v5';
 const ASSETS = [
     './',
     './index.html',
@@ -8,7 +8,9 @@ const ASSETS = [
 
 self.addEventListener('install', e => {
     e.waitUntil(
-        caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+        caches.keys().then(keys => Promise.all(keys.map(k => caches.delete(k)))).then(() =>
+            caches.open(CACHE_NAME).then(cache => cache.addAll(ASSETS))
+        )
     );
     self.skipWaiting();
 });
@@ -24,15 +26,12 @@ self.addEventListener('activate', e => {
 
 self.addEventListener('fetch', e => {
     e.respondWith(
-        caches.match(e.request).then(cached => {
-            const fetched = fetch(e.request).then(response => {
-                if (response && response.status === 200) {
-                    const clone = response.clone();
-                    caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
-                }
-                return response;
-            }).catch(() => cached);
-            return cached || fetched;
-        })
+        fetch(e.request).then(response => {
+            if (response && response.status === 200) {
+                const clone = response.clone();
+                caches.open(CACHE_NAME).then(cache => cache.put(e.request, clone));
+            }
+            return response;
+        }).catch(() => caches.match(e.request))
     );
 });
