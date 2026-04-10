@@ -357,14 +357,18 @@
             Object.keys(savedSwaps).forEach(id => {
                 const idx = parseInt(id);
                 if (masterPlan[idx]) {
-                    masterPlan[idx].name = savedSwaps[id].name;
-                    masterPlan[idx].alt = savedSwaps[id].alt;
+                    const s = savedSwaps[id];
+                    masterPlan[idx].name = s.name;
+                    masterPlan[idx].alt = s.alt;
+                    if (s.icon) masterPlan[idx].icon = s.icon;
+                    if (s.prep) masterPlan[idx].prep = s.prep;
                 }
             });
 
             trackerState = ls('tracker') || {};
             reactState = ls('reacts') || {};
 
+            collectAllMeals();
             renderAllWeeks();
         }
 
@@ -435,13 +439,37 @@
             });
         }
 
+        let allStageMeals = [];
+
+        function collectAllMeals() {
+            const stage = S[currentStageKey];
+            const seen = new Set();
+            allStageMeals = [];
+            stage.weeks.forEach(week => {
+                week.forEach(meal => {
+                    if (!seen.has(meal.name)) {
+                        seen.add(meal.name);
+                        allStageMeals.push({ name: meal.name, icon: meal.icon, prep: meal.prep, alt: meal.alt });
+                    }
+                    if (!seen.has(meal.alt)) {
+                        seen.add(meal.alt);
+                        allStageMeals.push({ name: meal.alt, icon: meal.icon, prep: meal.prep, alt: meal.name });
+                    }
+                });
+            });
+        }
+
         function swapDish(id) {
             const item = masterPlan[id];
-            const temp = item.name;
-            item.name = item.alt;
-            item.alt = temp;
+            const candidates = allStageMeals.filter(m => m.name !== item.name);
+            if (candidates.length === 0) return;
+            const pick = candidates[Math.floor(Math.random() * candidates.length)];
+            item.name = pick.name;
+            item.icon = pick.icon;
+            item.prep = pick.prep;
+            item.alt = pick.alt;
             const swaps = ls('swaps') || {};
-            swaps[id] = { name: item.name, alt: item.alt };
+            swaps[id] = { name: item.name, alt: item.alt, icon: item.icon, prep: item.prep };
             ls('swaps', swaps);
             renderAllWeeks();
         }
