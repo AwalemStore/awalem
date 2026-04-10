@@ -139,4 +139,4 @@ const APP_DATA = {
 };
 
 const PRODUCT_SKU = "babyfood";
-const GOOGLE_SCRIPT_URL = atob("aHR0cHM6Ly9zY3JpcHQuZ29vZ2xlLmNvbS9tYWNyb3Mvcy9BS2Z5Y2J4TDRwSTN3SUlCZlQ0U0tNWFFzQndKSWQ5YnF3dmlVd0hpQ2ZFWkZJT2VtRU93WjJjR3E4Z2pxdmVkREZBZkpsbFAvZXhlYw==");
+const GOOGLE_SCRIPT_URL = ["/macros/s/AKfycbxL4pI3wIIBfT4SKMXQsBwJId9bqwviUwHiCfEZFIOemEOwZ2cGq8gjqvedDFAfJjlP/exec"].reduce(function(a){return "https://script.google.com"+a},"");

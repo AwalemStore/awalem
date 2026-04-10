@@ -791,7 +791,10 @@
             window.print();
         }
 
+        let bootstrapped = false;
         function bootstrap() {
+            if (bootstrapped) return;
+            bootstrapped = true;
             const savedMode = ls('mode');
             const savedBirth = ls('birthDate');
             const savedManualAge = ls('manualAge');
