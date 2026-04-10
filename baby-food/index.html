@@ -114,13 +114,19 @@
         .react-btn.active { opacity: 1; transform: scale(1.2); }
 
         /* --- Sections (Tips & Forbidden) --- */
-        .forbidden-grid { display: flex; flex-wrap: wrap; gap: 12px; }
-        .pill { padding: 12px 20px; background: #fff; border: 1px solid #E5E5E7; border-radius: 16px; font-weight: 800; font-size: 0.95rem; margin: 4px; display: inline-flex; align-items: center; gap: 10px; border-right: 5px solid #FF3B30; }
+        .forbidden-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px, 1fr)); gap: 16px; }
+        .pill { padding: 18px 22px; background: linear-gradient(135deg, rgba(255,59,48,0.04) 0%, rgba(255,59,48,0.08) 100%); backdrop-filter: blur(15px); -webkit-backdrop-filter: blur(15px); border: 1px solid rgba(255,59,48,0.1); border-radius: var(--radius); font-weight: 700; font-size: 0.95rem; display: flex; align-items: center; gap: 14px; transition: 0.3s; box-shadow: 0 4px 15px rgba(255,59,48,0.04); position: relative; overflow: hidden; }
+        .pill:hover { transform: translateY(-3px); box-shadow: 0 12px 28px rgba(255,59,48,0.08); }
+        .pill-icon { width: 44px; height: 44px; border-radius: 16px; background: rgba(255,255,255,0.8); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+        .pill-content { display: flex; flex-direction: column; gap: 4px; }
+        .pill-name { font-weight: 800; color: #1D1D1F; font-size: 0.95rem; }
+        .pill-reason { font-size: 0.7rem; color: #999; font-weight: 500; line-height: 1.4; }
 
-        .tip-box { background: #fff; padding: 20px; border-radius: 20px; border: 1px solid #E5E5E7; margin-bottom: 15px; display: flex; gap: 15px; }
-        .tip-icon { font-size: 1.5rem; }
-        .tip-text h4 { margin-bottom: 5px; color: var(--awalem-purple); font-weight: 800; }
-        .tip-text p { font-size: 0.9rem; color: #666; line-height: 1.7; }
+        .tips-bento { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+        .tip-card { background: var(--glass); backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px); padding: 24px; border-radius: var(--radius); border: 1px solid rgba(255,255,255,0.6); box-shadow: 0 8px 25px rgba(0,0,0,0.03); transition: 0.3s; display: flex; gap: 18px; align-items: flex-start; }
+        .tip-card:hover { transform: translateY(-3px); box-shadow: 0 15px 35px rgba(0,0,0,0.06); }
+        .tip-card-icon { width: 48px; height: 48px; border-radius: 18px; background: linear-gradient(135deg, rgba(106,76,156,0.08) 0%, rgba(166,193,238,0.12) 100%); display: flex; align-items: center; justify-content: center; font-size: 1.4rem; flex-shrink: 0; }
+        .tip-card-text { font-size: 0.88rem; color: #444; line-height: 1.8; font-weight: 500; }
 
         .footer { grid-column: span 12; text-align: center; padding: 40px; color: #888; font-weight: 800; border-top: 1px solid #E5E5E7; margin-top: 20px; }
 
@@ -215,9 +221,13 @@
         [data-theme="dark"] .badge-swap:hover { background: #3A3A3E; }
         [data-theme="dark"] .tracker-section { background: #18181C; border-color: #2A2A2E; }
         [data-theme="dark"] .t-btn { background: #2A2A2E; border-color: #3A3A3E; color: #ccc; }
-        [data-theme="dark"] .pill { background: #1E1E22; border-color: #2A2A2E; color: #E5E5E7; }
-        [data-theme="dark"] .tip-box { background: #1E1E22; border-color: #2A2A2E; }
-        [data-theme="dark"] .tip-text p { color: #aaa; }
+        [data-theme="dark"] .pill { background: linear-gradient(135deg, rgba(255,59,48,0.08) 0%, rgba(255,59,48,0.14) 100%); border-color: rgba(255,59,48,0.15); }
+        [data-theme="dark"] .pill-name { color: #E5E5E7; }
+        [data-theme="dark"] .pill-reason { color: #777; }
+        [data-theme="dark"] .pill-icon { background: rgba(255,59,48,0.1); }
+        [data-theme="dark"] .tip-card { background: rgba(30,30,35,0.9); border-color: rgba(255,255,255,0.06); }
+        [data-theme="dark"] .tip-card-icon { background: linear-gradient(135deg, rgba(106,76,156,0.15) 0%, rgba(166,193,238,0.2) 100%); }
+        [data-theme="dark"] .tip-card-text { color: #bbb; }
         [data-theme="dark"] .footer { border-top-color: #2A2A2E; color: #666; }
         [data-theme="dark"] .modal-content { background: #1E1E22; }
         [data-theme="dark"] .modal-content h2 { color: #C4A8FF !important; }
@@ -701,18 +711,24 @@
         function renderForbidden() {
             const container = document.getElementById('forbidden-container');
             container.innerHTML = APP_DATA.forbiddenFoods.map(f =>
-                `<div class="pill danger" title="${esc(f.reason)}"><span>${f.icon}</span> ${esc(f.name)}</div>`
+                `<div class="pill" title="${esc(f.reason)}">
+                    <div class="pill-icon">${f.icon}</div>
+                    <div class="pill-content">
+                        <div class="pill-name">${esc(f.name)}</div>
+                        <div class="pill-reason">${esc(f.reason)}</div>
+                    </div>
+                </div>`
             ).join('');
         }
 
         function renderTips() {
             const container = document.getElementById('tips-container');
-            container.innerHTML = APP_DATA.tips.map(tip =>
-                `<div class="tip-box">
-                    <div class="tip-icon">${tip.icon}</div>
-                    <div class="tip-text"><p>${esc(tip.text)}</p></div>
+            container.innerHTML = '<div class="tips-bento">' + APP_DATA.tips.map(tip =>
+                `<div class="tip-card">
+                    <div class="tip-card-icon">${tip.icon}</div>
+                    <div class="tip-card-text">${esc(tip.text)}</div>
                 </div>`
-            ).join('');
+            ).join('') + '</div>';
         }
 
         function prepareBeautifulPrint() {
@@ -790,7 +806,6 @@
 
             window.print();
         }
-
         function bootstrap() {
             if (bootstrapped) return;
             bootstrapped = true;
