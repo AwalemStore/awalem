@@ -340,18 +340,6 @@
 
     <div id="printArea"></div>
 
-    <div id="google_translate_element" style="display:none;"></div>
-    <script>
-        function googleTranslateElementInit() {
-            new google.translate.TranslateElement({ pageLanguage: 'ar', autoDisplay: false }, 'google_translate_element');
-        }
-        function triggerTranslate(lang) {
-            var sel = document.querySelector('.goog-te-combo');
-            if (sel) { sel.value = lang; sel.dispatchEvent(new Event('change')); }
-        }
-    </script>
-    <script src="//translate.google.com/translate_a/element.js?cb=googleTranslateElementInit"></script>
-
     <script src="data.js"></script>
     <script>
         const D = APP_DATA.dict;
@@ -491,12 +479,6 @@
 
         function handleLangChange(lang) {
             ls('lang', lang);
-            if (lang === 'ar') {
-                triggerTranslate('');
-                setTimeout(function(){ location.reload(); }, 300);
-            } else {
-                triggerTranslate(lang);
-            }
             if(masterPlan.length) renderAllWeeks();
         }
 
