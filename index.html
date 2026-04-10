@@ -1,11 +1,186 @@
 <!DOCTYPE html>
-<html>
+<html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta http-equiv="refresh" content="0; url=main-page/">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>عوالم | Awalem</title>
+    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@400;500;700;800&family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --primary: #6A4C9C;
+            --secondary: #9982bb;
+            --bg-color: #F4F4F8;
+            --glass-bg: rgba(255, 255, 255, 0.8);
+            --border-light: rgba(106, 76, 156, 0.15);
+            --text-main: #2C2C2C;
+            --text-muted: #666;
+        }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body {
+            font-family: 'Tajawal', 'Poppins', sans-serif;
+            background: var(--bg-color);
+            color: var(--text-main);
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            padding: 40px 20px;
+        }
+        .hero {
+            text-align: center;
+            margin-bottom: 50px;
+            background: linear-gradient(135deg, #6A4C9C, #9982bb);
+            color: white;
+            padding: 50px 30px;
+            border-radius: 30px;
+            max-width: 900px;
+            width: 100%;
+            box-shadow: 0 15px 35px rgba(106, 76, 156, 0.15);
+        }
+        .hero h1 {
+            font-size: 2.8rem;
+            font-weight: 800;
+            margin-bottom: 12px;
+        }
+        .hero p {
+            font-size: 1.15rem;
+            font-weight: 500;
+            color: #E8E0F5;
+            line-height: 1.7;
+        }
+        .cards {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 25px;
+            justify-content: center;
+            max-width: 900px;
+            width: 100%;
+        }
+        .card {
+            background: rgba(255,255,255,0.85);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border: 1px solid var(--border-light);
+            border-radius: 28px;
+            padding: 40px 30px;
+            width: 260px;
+            text-align: center;
+            text-decoration: none;
+            color: inherit;
+            transition: transform 0.25s, box-shadow 0.25s;
+            box-shadow: 0 4px 24px rgba(106, 76, 156, 0.08);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .card:hover {
+            transform: translateY(-6px);
+            box-shadow: 0 12px 40px rgba(106, 76, 156, 0.18);
+            border-color: var(--secondary);
+        }
+        .card .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            width: 70px;
+            height: 70px;
+            border-radius: 20px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .card h2 {
+            font-size: 1.2rem;
+            color: var(--primary);
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        .card p {
+            font-size: 0.9rem;
+            color: var(--text-muted);
+            line-height: 1.6;
+        }
+        .card .tag {
+            margin-top: 15px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            color: white;
+            padding: 8px 20px;
+            border-radius: 50px;
+            font-size: 0.85rem;
+            font-weight: 600;
+        }
+        .footer {
+            margin-top: auto;
+            padding-top: 50px;
+            text-align: center;
+            color: var(--text-muted);
+            font-size: 0.95rem;
+            font-weight: 600;
+        }
+        .whatsapp-float {
+            position: fixed;
+            bottom: 25px;
+            left: 25px;
+            z-index: 99998;
+            background: #25D366;
+            color: white;
+            width: 56px;
+            height: 56px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            box-shadow: 0 4px 15px rgba(37,211,102,0.4);
+            text-decoration: none;
+            font-size: 28px;
+            transition: transform 0.2s;
+        }
+        .whatsapp-float:hover { transform: scale(1.1); }
+        @media (max-width: 700px) {
+            .cards { flex-direction: column; align-items: center; }
+            .card { width: 100%; max-width: 350px; }
+            .hero { padding: 35px 20px; border-radius: 20px; }
+            .hero h1 { font-size: 2rem; }
+        }
+    </style>
 </head>
 <body>
-    <script>window.location.href = "main-page/";</script>
+
+    <div class="hero">
+        <h1>عوالم ✨</h1>
+        <p>أدوات ذكية مصممة خصيصاً لتسهيل التواصل والتنظيم<br>بين ربة المنزل والعاملة المنزلية</p>
+    </div>
+
+    <div class="cards">
+        <a href="routine/app/" class="card">
+            <div class="icon">🗓️</div>
+            <h2>الروتين الذكي</h2>
+            <p>نظّمي الروتين اليومي وصمّمي جدول مهام مخصص بـ 11 لغة</p>
+            <span class="tag">ابدئي الآن</span>
+        </a>
+        <a href="dictionary/app/" class="card">
+            <div class="icon">📖</div>
+            <h2>القاموس العام</h2>
+            <p>أكثر من 200 كلمة يومية مترجمة بـ 11 لغة مختلفة</p>
+            <span class="tag">ابدئي الآن</span>
+        </a>
+        <a href="food-dictionary/" class="card">
+            <div class="icon">🍽️</div>
+            <h2>قاموس المطبخ</h2>
+            <p>250 كلمة للمطبخ والوجبات والمقادير بـ 11 لغة</p>
+            <span class="tag">ابدئي الآن</span>
+        </a>
+        <a href="baby-food/babyfood/" class="card">
+            <div class="icon">👶</div>
+            <h2>تغذية طفلك</h2>
+            <p>جدول تغذية مخصص لطفلك حسب عمره مع نصائح طبية لـ 4 أسابيع</p>
+            <span class="tag">ابدئي الآن</span>
+        </a>
+    </div>
+
+    <a href="https://wa.me/966553388257" target="_blank" class="whatsapp-float">💬</a>
+
+    <div class="footer">صنع من قبل عوالم Awalem</div>
+
 </body>
 </html>
