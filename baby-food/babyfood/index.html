@@ -163,9 +163,51 @@
             .print-footer { text-align: center; margin-top: 10px; font-size: 9px; font-weight: 800; color: #aaa; }
         }
         @media (max-width: 768px) { .half { grid-column: span 12; } .inputs-row { grid-template-columns: 1fr; } .hero h1 { font-size: 2.2rem; } .btn-group { flex-direction: column; } }
+
+        /* --- Dark Mode Toggle --- */
+        .dm-toggle { position:fixed; top:20px; left:20px; z-index:1000; width:44px; height:44px; border-radius:50%; border:1px solid #E5E5E7; background:#fff; cursor:pointer; font-size:1.2rem; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.06); transition:0.3s; }
+        .dm-toggle:hover { transform:scale(1.1); }
+
+        /* --- Dark Mode --- */
+        [data-theme="dark"] { --bg: #0D0D0F; --glass: rgba(30, 30, 35, 0.9); --shadow: 0 20px 50px rgba(0,0,0,0.3); }
+        [data-theme="dark"] body { background: var(--bg); color: #E5E5E7; }
+        [data-theme="dark"] .hero h1 { color: #fff; }
+        [data-theme="dark"] .hero p { color: rgba(255,255,255,0.7); }
+        [data-theme="dark"] .bento { background: var(--glass); border-color: rgba(255,255,255,0.08); }
+        [data-theme="dark"] .selector-container { background: #2A2A2E; }
+        [data-theme="dark"] .selector-btn { color: #999; }
+        [data-theme="dark"] .selector-btn.active { background: #3A3A3E; color: #C4A8FF; box-shadow: 0 4px 15px rgba(0,0,0,0.2); }
+        [data-theme="dark"] .field label { color: #999; }
+        [data-theme="dark"] .field input, [data-theme="dark"] .field select { background: #2A2A2E; border-color: #3A3A3E; color: #E5E5E7; }
+        [data-theme="dark"] .field input:focus, [data-theme="dark"] .field select:focus { border-color: var(--awalem-purple); box-shadow: 0 0 0 4px rgba(106, 76, 156, 0.2); }
+        [data-theme="dark"] .age-discovery { background: rgba(106,76,156,0.15); border-color: rgba(106,76,156,0.3); }
+        [data-theme="dark"] .btn { background: #C4A8FF; color: #0D0D0F; }
+        [data-theme="dark"] .btn:hover { box-shadow: 0 10px 20px rgba(196,168,255,0.2); }
+        [data-theme="dark"] .btn-print { color: #0D0D0F; }
+        [data-theme="dark"] .week-accordion { background: #1E1E22; border-color: #2A2A2E; }
+        [data-theme="dark"] .week-header { background: #1E1E22; }
+        [data-theme="dark"] .week-header:hover { background: #252528; }
+        [data-theme="dark"] .week-content { background: #18181C; }
+        [data-theme="dark"] .meal-card { background: #1E1E22; border-color: #2A2A2E; }
+        [data-theme="dark"] .meal-card:hover { box-shadow: 0 15px 35px rgba(0,0,0,0.2); }
+        [data-theme="dark"] .meal-badge { background: #2A2A2E; color: #C4A8FF; }
+        [data-theme="dark"] .badge-swap { background: #2A2A2E; color: #999; }
+        [data-theme="dark"] .badge-swap:hover { background: #3A3A3E; }
+        [data-theme="dark"] .tracker-section { background: #18181C; border-color: #2A2A2E; }
+        [data-theme="dark"] .t-btn { background: #2A2A2E; border-color: #3A3A3E; color: #ccc; }
+        [data-theme="dark"] .pill { background: #1E1E22; border-color: #2A2A2E; color: #E5E5E7; }
+        [data-theme="dark"] .tip-box { background: #1E1E22; border-color: #2A2A2E; }
+        [data-theme="dark"] .tip-text p { color: #aaa; }
+        [data-theme="dark"] .footer { border-top-color: #2A2A2E; color: #666; }
+        [data-theme="dark"] .modal-content { background: #1E1E22; }
+        [data-theme="dark"] .modal-content h2 { color: #C4A8FF !important; }
+        [data-theme="dark"] #modal { background: rgba(0,0,0,0.7); }
+        [data-theme="dark"] .dm-toggle { background: #2A2A2E; border-color: #3A3A3E; }
     </style>
 </head>
 <body>
+
+    <button class="dm-toggle" onclick="toggleDark()" id="dmBtn">🌙</button>
 
     <a href="/awalem/" style="position:fixed; top:20px; right:20px; background:var(--awalem-purple); color:white; padding:10px 22px; border-radius:50px; font-weight:800; font-size:0.9rem; text-decoration:none; z-index:1000; box-shadow:0 8px 20px rgba(106,76,156,0.3); transition:0.3s; display:flex; align-items:center; gap:8px;">🏠 عوالم</a>
 
@@ -282,6 +324,22 @@
                 localStorage.setItem(LS_KEY + '_' + key, JSON.stringify(val));
             } catch(e) {}
         }
+
+        function toggleDark() {
+            const html = document.documentElement;
+            const isDark = html.getAttribute('data-theme') === 'dark';
+            html.setAttribute('data-theme', isDark ? 'light' : 'dark');
+            document.getElementById('dmBtn').textContent = isDark ? '🌙' : '☀️';
+            ls('dark', !isDark);
+        }
+
+        (function initDark() {
+            const saved = ls('dark');
+            if (saved) {
+                document.documentElement.setAttribute('data-theme', 'dark');
+                document.getElementById('dmBtn').textContent = '☀️';
+            }
+        })();
 
         function setMode(m) {
             mode = m;
