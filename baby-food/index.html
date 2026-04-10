@@ -172,6 +172,22 @@
         .dm-toggle { position:fixed; top:20px; left:20px; z-index:1000; width:44px; height:44px; border-radius:50%; border:1px solid #E5E5E7; background:#fff; cursor:pointer; font-size:1.2rem; display:flex; align-items:center; justify-content:center; box-shadow:0 4px 12px rgba(0,0,0,0.06); transition:0.3s; }
         .dm-toggle:hover { transform:scale(1.1); }
 
+        /* --- Auth Screen --- */
+        #auth-screen { position:fixed; top:0; left:0; width:100%; height:100%; background:var(--bg); display:flex; flex-direction:column; align-items:center; justify-content:center; z-index:99999; font-family:'Tajawal','Poppins',sans-serif; direction:rtl; padding:20px; box-sizing:border-box; }
+        .auth-card { background:rgba(255,255,255,0.7); backdrop-filter:blur(20px); -webkit-backdrop-filter:blur(20px); border-radius:var(--radius); padding:40px 30px; box-shadow:0 10px 40px rgba(106,76,156,0.08); border:1px solid rgba(255,255,255,0.5); text-align:center; width:100%; max-width:400px; box-sizing:border-box; }
+        .auth-card h2 { font-size:1.6rem; font-weight:800; background:linear-gradient(135deg,#6A4C9C,#a6c1ee); -webkit-background-clip:text; -webkit-text-fill-color:transparent; margin:0 0 10px 0; }
+        .auth-card p { font-size:0.9rem; color:#666; margin:0 0 30px 0; line-height:1.6; }
+        .auth-input { width:100%; padding:18px; border-radius:20px; border:1.5px solid #E1E1E7; background:rgba(255,255,255,0.9); font-family:'Poppins',sans-serif; font-size:1rem; outline:none; transition:0.3s; box-sizing:border-box; text-align:center; letter-spacing:2px; }
+        .auth-input:focus { border-color:var(--awalem-purple); box-shadow:0 0 0 4px rgba(106,76,156,0.1); }
+        .auth-label { display:block; margin-bottom:8px; font-weight:700; font-size:0.85rem; color:var(--awalem-purple); text-align:right; }
+        .auth-btn { background:linear-gradient(135deg,#6A4C9C,#a6c1ee); color:#fff; border:none; width:100%; padding:18px; border-radius:20px; font-family:'Tajawal',sans-serif; font-weight:700; font-size:1rem; cursor:pointer; box-shadow:0 8px 20px rgba(106,76,156,0.2); transition:0.3s; margin-top:10px; }
+        .auth-btn:hover { transform:translateY(-2px); box-shadow:0 12px 25px rgba(106,76,156,0.3); }
+        .auth-btn:disabled { opacity:0.7; cursor:default; transform:none; }
+        .auth-error { color:#d35400; font-size:0.85rem; margin-top:15px; font-weight:600; display:none; }
+        .auth-footer { text-align:center; color:#888; font-size:0.75rem; margin-top:25px; font-weight:500; }
+        .auth-loader { border:3px solid rgba(106,76,156,0.2); border-top:3px solid var(--awalem-purple); border-radius:50%; width:20px; height:20px; animation:spin 1s linear infinite; display:none; margin:0 auto; }
+        @keyframes spin { 0%{transform:rotate(0deg)} 100%{transform:rotate(360deg)} }
+
         /* --- Dark Mode --- */
         [data-theme="dark"] { --bg: #0D0D0F; --glass: rgba(30, 30, 35, 0.9); --shadow: 0 20px 50px rgba(0,0,0,0.3); }
         [data-theme="dark"] body { background: var(--bg); color: #E5E5E7; }
@@ -210,6 +226,23 @@
     </style>
 </head>
 <body>
+
+    <div id="auth-screen">
+        <div class="auth-card">
+            <h2>تغذية طفلك 👶</h2>
+            <p>أدخلي رقم الجوال المسجل في طلبك للدخول إلى منصتك</p>
+            <div style="text-align:right; margin-bottom:20px;">
+                <label class="auth-label">رقم الجوال</label>
+                <input type="tel" id="authPhone" class="auth-input" placeholder="05XXXXXXXX" maxlength="10" autocomplete="tel">
+            </div>
+            <button onclick="handleLogin()" id="authBtn" class="auth-btn">
+                <span id="authBtnText">تسجيل الدخول</span>
+                <div class="auth-loader" id="authLoader"></div>
+            </button>
+            <p id="authError" class="auth-error"></p>
+        </div>
+        <div class="auth-footer">صنع من قبل عوالم Awalem</div>
+    </div>
 
     <button class="dm-toggle" onclick="toggleDark()" id="dmBtn">🌙</button>
 
@@ -312,6 +345,7 @@
         const D = APP_DATA.dict;
         const S = APP_DATA.stages;
         const LS_KEY = 'awalem_babyfood';
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxL4pI3wIIBfT4SKMXQsBwJId9bqwviUwHiCfEZFIOemEOwZ2cGq8gjqvedDFAfJjlP/exec";
 
         function t(key, lang) { return D[lang] ? D[lang][key] : (D["en"][key] || key); }
 
@@ -343,6 +377,94 @@
                 document.documentElement.setAttribute('data-theme', 'dark');
                 document.getElementById('dmBtn').textContent = '☀️';
             }
+        })();
+
+        function getOrCreateDeviceId() {
+            try {
+                let id = localStorage.getItem('awalem_device_id');
+                if (!id) { id = 'AW-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now(); localStorage.setItem('awalem_device_id', id); }
+                return id;
+            } catch(e) { return 'AW-FALLBACK-' + Date.now(); }
+        }
+
+        function handleLogin() {
+            const btn = document.getElementById('authBtn');
+            const btnText = document.getElementById('authBtnText');
+            const loader = document.getElementById('authLoader');
+            const errorMsg = document.getElementById('authError');
+            let phone = document.getElementById('authPhone').value.trim().replace(/[\s\-\(\)\+]/g, '');
+
+            errorMsg.style.display = 'none';
+            btnText.style.display = 'none';
+            loader.style.display = 'block';
+            btn.disabled = true;
+
+            if (phone.startsWith('00966')) phone = phone.substring(5);
+            if (phone.startsWith('966')) phone = phone.substring(3);
+            if (phone.startsWith('0')) phone = phone.substring(1);
+
+            if (!phone || phone.length < 8) {
+                errorMsg.innerText = 'يرجى إدخال رقم جوال صحيح';
+                errorMsg.style.display = 'block';
+                btnText.style.display = 'inline';
+                loader.style.display = 'none';
+                btn.disabled = false;
+                return;
+            }
+
+            var cbName = 'awalem_cb_' + Date.now();
+            var timeout = setTimeout(function() {
+                delete window[cbName];
+                errorMsg.innerText = 'انتهت مهلة الاتصال، حاولي مرة أخرى';
+                errorMsg.style.display = 'block';
+                btnText.style.display = 'inline';
+                loader.style.display = 'none';
+                btn.disabled = false;
+            }, 15000);
+
+            window[cbName] = function(data) {
+                clearTimeout(timeout);
+                delete window[cbName];
+                if (data.success === true || data.status === 'success') {
+                    try { localStorage.setItem('awalem_babyfood_logged_in', 'true'); } catch(e){}
+                    document.getElementById('auth-screen').style.display = 'none';
+                    bootstrap();
+                } else {
+                    errorMsg.innerText = data.message || 'الرقم غير مسجل في المتجر';
+                    errorMsg.style.display = 'block';
+                    btnText.style.display = 'inline';
+                    loader.style.display = 'none';
+                    btn.disabled = false;
+                }
+            };
+
+            var s = document.createElement('script');
+            s.src = GOOGLE_SCRIPT_URL + '?phone=' + encodeURIComponent(phone) + '&deviceId=' + encodeURIComponent(getOrCreateDeviceId()) + '&sku=' + PRODUCT_SKU + '&callback=' + cbName;
+            s.onerror = function() {
+                clearTimeout(timeout);
+                delete window[cbName];
+                errorMsg.innerText = 'حدث خطأ في الاتصال، حاولي مرة أخرى';
+                errorMsg.style.display = 'block';
+                btnText.style.display = 'inline';
+                loader.style.display = 'none';
+                btn.disabled = false;
+            };
+            document.head.appendChild(s);
+        }
+
+        document.getElementById('authPhone').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') handleLogin();
+        });
+
+        (function checkAuth() {
+            try {
+                if (localStorage.getItem('awalem_babyfood_logged_in') === 'true') {
+                    document.getElementById('auth-screen').style.display = 'none';
+                }
+            } catch(e) {
+                document.getElementById('auth-screen').style.display = 'none';
+            }
+            bootstrap();
         })();
 
         function setMode(m) {
@@ -663,7 +785,7 @@
             window.print();
         }
 
-        (function restoreState() {
+        function bootstrap() {
             const savedMode = ls('mode');
             const savedBirth = ls('birthDate');
             const savedManualAge = ls('manualAge');
@@ -687,14 +809,14 @@
             if (savedStart && savedAge) {
                 initPlan();
             }
-        })();
 
-        document.getElementById('manualAge').addEventListener('input', function() {
-            ls('manualAge', this.value);
-        });
+            document.getElementById('manualAge').addEventListener('input', function() {
+                ls('manualAge', this.value);
+            });
 
-        renderForbidden();
-        renderTips();
+            renderForbidden();
+            renderTips();
+        }
 
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js').catch(() => {});
