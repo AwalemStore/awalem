@@ -664,9 +664,190 @@
             .day-pill { background: #f0f0f5 !important; padding: 3px; font-size: 8.5px !important; border-radius: 4px; text-align: center; color: #000 !important; }
             .day-pill .number-font { font-size: 8.5px !important; }
         }
+        #auth-screen {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(135deg, #e0c3fc 0%, #d4f0f0 50%, #8ec5fc 100%);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 99999;
+            font-family: var(--primary-font);
+            direction: rtl;
+            padding: 20px;
+        }
+        [data-theme="dark"] #auth-screen { background: linear-gradient(135deg, #1a1a2e 0%, #16213e 50%, #0f3460 100%); }
+        .auth-card {
+            background: rgba(255, 255, 255, 0.7);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 28px;
+            padding: 40px 30px;
+            box-shadow: 0 10px 40px rgba(43, 58, 103, 0.1);
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            text-align: center;
+            width: 100%;
+            max-width: 400px;
+        }
+        .auth-title {
+            font-size: 26px;
+            font-weight: 800;
+            background: linear-gradient(135deg, #2b3a67, #8fa4d4);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 0 0 10px 0;
+        }
+        .auth-subtitle {
+            font-size: 14px;
+            color: #666;
+            margin: 0 0 30px 0;
+            line-height: 1.5;
+        }
+        .auth-input {
+            width: 100%;
+            padding: 18px;
+            border-radius: 20px;
+            border: 1.5px solid #e1e1e7;
+            background: rgba(255, 255, 255, 0.9);
+            font-family: var(--number-font);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.3s ease;
+            text-align: center;
+            letter-spacing: 2px;
+            direction: ltr;
+        }
+        .auth-input:focus { border-color: #2b3a67; box-shadow: 0 0 0 4px rgba(43, 58, 103, 0.1); }
+        .auth-label {
+            display: block;
+            margin-bottom: 8px;
+            font-weight: 700;
+            font-size: 13px;
+            color: #2b3a67;
+            padding-right: 5px;
+            text-align: right;
+        }
+        .auth-btn {
+            background: linear-gradient(135deg, #2b3a67, #4a5a8a);
+            color: white;
+            border: none;
+            width: 100%;
+            padding: 18px;
+            border-radius: 20px;
+            font-family: var(--primary-font);
+            font-weight: 700;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 8px 20px rgba(43, 58, 103, 0.2);
+            transition: all 0.3s ease;
+        }
+        .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 10px 25px rgba(43, 58, 103, 0.3); }
+        .auth-error { color: #d35400; font-size: 13px; margin-top: 15px; font-weight: 600; display: none; }
+        .auth-footer { text-align: center; color: #888; font-size: 12px; margin-top: 25px; font-weight: 500; }
+
+        @media print { #auth-screen { display: none !important; } }
     </style>
 </head>
 <body>
+
+    <div id="auth-screen">
+        <div class="auth-card">
+            <div style="font-size: 3rem; margin-bottom: 10px;">👶</div>
+            <h2 class="auth-title">تغذية طفلك</h2>
+            <p class="auth-subtitle">أدخلي رقم الجوال المسجل في طلبك للدخول إلى منصتك</p>
+            <div style="text-align: right; margin-bottom: 24px;">
+                <label class="auth-label">رقم الجوال</label>
+                <input type="tel" id="userPhone" placeholder="05XXXXXXXX" maxlength="10" autocomplete="tel" class="auth-input">
+            </div>
+            <button onclick="handleLogin()" id="verify-btn" class="auth-btn">تسجيل الدخول</button>
+            <p id="error-msg" class="auth-error"></p>
+        </div>
+        <div class="auth-footer">صنع من قبل عوالم Awalem</div>
+    </div>
+
+    <script>
+        const PRODUCT_SKU = "babyfood";
+        const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxL4pI3wIIBfT4SKMXQsBwJId9bqwviUwHiCfEZFIOemEOwZ2cGq8gjqvedDFAfJjlP/exec";
+
+        function getOrCreateDeviceId() {
+            try {
+                let id = localStorage.getItem('awalem_babyfood_device_id');
+                if (!id) { id = 'AW-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now(); localStorage.setItem('awalem_babyfood_device_id', id); }
+                return id;
+            } catch(e) { return 'AW-FALLBACK-' + Date.now(); }
+        }
+
+        async function handleLogin() {
+            const btn = document.getElementById("verify-btn");
+            const errorMsg = document.getElementById("error-msg");
+            let phoneInput = document.getElementById("userPhone").value.trim();
+
+            errorMsg.style.display = "none";
+            btn.innerText = "...جاري التحقق";
+            btn.style.opacity = "0.7";
+
+            if (!/^(05|5)\d{8}$/.test(phoneInput)) {
+                errorMsg.innerText = "يرجى إدخال رقم جوال صحيح";
+                errorMsg.style.display = "block";
+                btn.innerText = "تسجيل الدخول";
+                btn.style.opacity = "1";
+                return;
+            }
+
+            if (phoneInput.startsWith('0')) {
+                phoneInput = phoneInput.substring(1);
+            }
+
+            var cbName = 'awalem_cb_' + Date.now();
+            var timeout = setTimeout(function() {
+                delete window[cbName];
+                errorMsg.innerText = "انتهت مهلة الاتصال، حاولي مرة أخرى.";
+                errorMsg.style.display = "block";
+                btn.innerText = "تسجيل الدخول";
+                btn.style.opacity = "1";
+            }, 15000);
+            window[cbName] = function(data) {
+                clearTimeout(timeout);
+                delete window[cbName];
+                if (data.success === true) {
+                    document.getElementById("auth-screen").style.display = "none";
+                    try { localStorage.setItem("awalem_babyfood_logged_in", "true"); } catch(e){}
+                } else {
+                    errorMsg.innerText = data.message || "الرقم غير مسجل في المتجر";
+                    errorMsg.style.display = "block";
+                    btn.innerText = "تسجيل الدخول";
+                    btn.style.opacity = "1";
+                }
+            };
+            var s = document.createElement('script');
+            s.src = GOOGLE_SCRIPT_URL + '?phone=' + encodeURIComponent(phoneInput) + '&deviceId=' + encodeURIComponent(getOrCreateDeviceId()) + '&sku=' + PRODUCT_SKU + '&callback=' + cbName;
+            s.onerror = function() {
+                clearTimeout(timeout);
+                delete window[cbName];
+                errorMsg.innerText = "حدث خطأ في الاتصال، حاولي مرة أخرى.";
+                errorMsg.style.display = "block";
+                btn.innerText = "تسجيل الدخول";
+                btn.style.opacity = "1";
+            };
+            document.head.appendChild(s);
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            try {
+                if (localStorage.getItem("awalem_babyfood_logged_in") === "true") {
+                    document.getElementById("auth-screen").style.display = "none";
+                }
+            } catch (e) {}
+            initTheme();
+            setMaxDate();
+            loadSavedData();
+        });
+    </script>
 
     <div class="toast-container" id="toastContainer"></div>
 
@@ -1145,11 +1326,6 @@
             if (savedDob) document.getElementById('childDob').value = savedDob;
         }
 
-        document.addEventListener('DOMContentLoaded', function() {
-            initTheme();
-            setMaxDate();
-            loadSavedData();
-        });
     </script>
 </body>
 </html>
