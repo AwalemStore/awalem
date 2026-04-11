@@ -138,6 +138,7 @@
         #printArea { display: none; }
         @media print {
             * { -webkit-print-color-adjust: exact !important; print-color-adjust: exact !important; }
+            a[href*="wa.me"], .whatsapp-float, .dm-toggle { display: none !important; }
             
             body * { display: none !important; }
             #printArea, #printArea * { display: block !important; }

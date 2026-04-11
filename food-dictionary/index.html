@@ -145,6 +145,7 @@
         
         /* ---------------- إعدادات الطباعة الأنيقة ---------------- */
         @media print {
+            a[href*="wa.me"] { display: none !important; }
             @page { margin: 1.2cm; size: A4 portrait; }
             body { background: white !important; color: #1d1d1f !important; padding: 0 !important; margin: 0 !important; }
             .bento-container { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; gap: 0 !important; }
