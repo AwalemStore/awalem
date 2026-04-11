@@ -298,18 +298,18 @@ document.addEventListener('DOMContentLoaded', () => {
         <div class="input-group" style="flex: 1; min-width: 200px;">
             <label>🌐 لغة المساعدة (للترجمة):</label>
             <select id="workerLang" class="name-input" style="display:block; width: 100%;">
-                <option value="en">الإنجليزية (English)</option>
-                <option value="tl">الفلبينية (Tagalog)</option>
-                <option value="id">الإندونيسية (Indonesian)</option>
-                <option value="am">الأمهرية (Amharic)</option>
-                <option value="or">الأورومو (Oromo)</option>
-                <option value="sw">السواحيلية (Swahili)</option>
-                <option value="lg">اللوغندا (Luganda)</option>
-                <option value="so">الصومالية (Somali)</option>
-                <option value="bn">البنغالية (Bengali)</option>
-                <option value="hi">الهندية (Hindi)</option>
-                <option value="fr">الفرنسية (French)</option>
-                <option value="ar">العربية (بدون ترجمة)</option>
+                <option value="en">الإنجليزية - English (أمريكا / بريطانيا)</option>
+                <option value="tl">الفلبينية - Tagalog (الفلبين)</option>
+                <option value="id">الإندونيسية - Indonesian (إندونيسيا)</option>
+                <option value="am">الأمهرية - Amharic (إثيوبيا)</option>
+                <option value="om">الأورومو - Oromo (إثيوبيا)</option>
+                <option value="sw">السواحيلية - Swahili (تنزانيا / كينيا)</option>
+                <option value="lg">اللوغندا - Luganda (أوغندا)</option>
+                <option value="so">الصومالية - Somali (الصومال)</option>
+                <option value="bn">البنغالية - Bengali (بنغلاديش)</option>
+                <option value="hi">الهندية - Hindi (الهند)</option>
+                <option value="fr">الفرنسية - French (فرنسا)</option>
+                <option value="ar">العربية - Arabic (بدون ترجمة)</option>
             </select>
         </div>
         
@@ -612,16 +612,20 @@ document.addEventListener('DOMContentLoaded', () => {
     async function translateText(text, targetLang) {
         if (!text || targetLang === 'ar') return "";
         try {
-            const res = await fetch(`https://api.mymemory.translated.net/get?q=${encodeURIComponent(text)}&langpair=ar|${targetLang}`);
+            const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=ar&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+            const res = await fetch(url);
             const data = await res.json();
-            if (data && data.responseData && data.responseData.translatedText) {
-                return data.responseData.translatedText;
+            
+            if (data && data[0] && data[0][0] && data[0][0][0]) {
+                return data[0][0][0];
             }
             return text; 
         } catch (e) {
-            return "Translation Error";
+            console.error("Translation Error:", e);
+            return text; 
         }
     }
+/* صنع من قبل عوالم Awalem */
 
     async function generateSchedule() {
         const targetLang = document.getElementById('workerLang').value;
