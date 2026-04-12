@@ -142,7 +142,7 @@
         
         /* ---------------- إعدادات الطباعة الأنيقة جداً ---------------- */
         @media print {
-            a[href*="wa.me"] { display: none !important; }
+            a[href*="wa.me"], .awalem-home-btn { display: none !important; }
             @page { margin: 1.2cm; size: A4 portrait; }
             body { background: white !important; color: #1d1d1f !important; padding: 0 !important; margin: 0 !important; }
             .bento-container { width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; gap: 0 !important; }
@@ -194,6 +194,8 @@
             }
         };
     </script>
+
+    <a href="/awalem/" class="awalem-home-btn" style="position:fixed; top:20px; right:20px; background:#6A4C9C; color:white; padding:10px 22px; border-radius:28px; font-weight:800; font-size:0.9rem; text-decoration:none; z-index:1000; box-shadow:0 8px 20px rgba(106,76,156,0.3); transition:0.3s; display:flex; align-items:center; gap:8px;">🏠 عوالم</a>
 
     <div class="bento-container" id="appContainer">
         
