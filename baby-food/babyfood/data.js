@@ -143,5 +143,5 @@ const APP_DATA = {
 };
 
 const PRODUCT_SKU = "babyfood";
-var _a="scrip",_b="t.google",_c="/macros/s/AKfycbxL4pI3wIIBfT4SKMXQsBwJId9bqwviUwHiCfEZFIOemEOwZ2cGq8gjqvedDFAfJjlP/exec";
+var _a="scrip",_b="t.google.com",_c="/macros/s/AKfycbxL4pI3wIIBfT4SKMXQsBwJId9bqwviUwHiCfEZFIOemEOwZ2cGq8gjqvedDFAfJjlP/exec";
 const GOOGLE_SCRIPT_URL = "https://"+_a+_b+_c;
