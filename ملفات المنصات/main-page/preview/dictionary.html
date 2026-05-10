@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>القاموس العام | عوالم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Tajawal', sans-serif; background: #FBF5F7; color: #1d1d1f; min-height: 100vh; padding: 20px 16px; }
+        .back { position: fixed; top: 16px; right: 16px; background: linear-gradient(135deg, #A55166, #D38C9D); color: white; padding: 10px 20px; border-radius: 50px; font-weight: 800; font-size: 0.85rem; text-decoration: none; z-index: 100; display: flex; align-items: center; gap: 6px; }
+        .page { max-width: 480px; margin: 0 auto; }
+        .phone-frame { background: white; border-radius: 36px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.1); border: 8px solid #1d1d1f; position: relative; }
+        .phone-notch { background: #1d1d1f; height: 28px; border-radius: 0 0 18px 18px; margin: 0 60px; }
+        .phone-scroll { max-height: 480px; overflow: hidden; position: relative; }
+        .hero { background: linear-gradient(135deg, #A55166, #D38C9D); color: white; padding: 28px 22px; text-align: center; }
+        .hero h1 { font-size: 1.5rem; font-weight: 700; margin-bottom: 4px; }
+        .hero p { font-size: 0.85rem; opacity: 0.9; line-height: 1.5; }
+        .fake-card { background: rgba(255,255,255,0.9); border: 1px solid rgba(226,180,193,0.3); border-radius: 22px; margin: 12px; padding: 18px; }
+        .fake-card h3 { color: #A55166; font-size: 0.95rem; margin-bottom: 10px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .fake-card h3 .icon { width: 24px; height: 24px; background: rgba(165,81,102,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; }
+        .fake-table { width: 100%; border-collapse: collapse; }
+        .fake-table th { color: #A55166; font-size: 0.75rem; padding: 8px; border-bottom: 2px solid #E2B4C1; text-align: center; }
+        .fake-table td { padding: 8px; border-bottom: 1px solid rgba(226,180,193,0.2); font-size: 0.85rem; text-align: center; }
+        .blur-cell { color: transparent; text-shadow: 0 0 8px rgba(165,81,102,0.3); font-family: 'Poppins', sans-serif; }
+        .fake-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+        .fake-tag { background: #F7DAE7; color: #A55166; padding: 5px 11px; border-radius: 16px; font-size: 0.72rem; font-weight: 600; border: 1px solid #E2B4C1; }
+        .fade-bottom { position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to top, white, transparent); z-index: 5; }
+        .info-section { margin-top: 24px; }
+        .info-section h2 { font-size: 1.2rem; font-weight: 800; color: #A55166; margin-bottom: 14px; }
+        .feature { display: flex; gap: 12px; margin-bottom: 14px; padding: 16px; background: white; border-radius: 18px; border: 1px solid rgba(226,180,193,0.2); }
+        .feature-num { width: 36px; height: 36px; background: linear-gradient(135deg, #A55166, #D38C9D); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.95rem; flex-shrink: 0; }
+        .feature-text h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 4px; }
+        .feature-text p { font-size: 0.82rem; color: #666; line-height: 1.55; }
+        .how-it-works { margin-top: 24px; padding: 20px; background: linear-gradient(135deg, rgba(165,81,102,0.06), rgba(165,81,102,0.02)); border-radius: 20px; border: 1px solid rgba(165,81,102,0.1); }
+        .how-it-works h3 { font-size: 1rem; font-weight: 800; color: #A55166; margin-bottom: 12px; }
+        .step { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
+        .step-dot { width: 8px; height: 8px; background: #A55166; border-radius: 50%; margin-top: 7px; flex-shrink: 0; }
+        .step span { font-size: 0.85rem; color: #444; line-height: 1.5; }
+        .buy-card { margin-top: 24px; background: linear-gradient(135deg, #A55166, #D38C9D); border-radius: 24px; padding: 28px 24px; text-align: center; color: white; }
+        .buy-card h3 { font-size: 1.15rem; font-weight: 800; margin-bottom: 4px; }
+        .buy-card .sub { font-size: 0.85rem; opacity: 0.7; margin-bottom: 12px; }
+        .buy-card .price-row { display: flex; align-items: center; justify-content: center; gap: 10px; margin-bottom: 16px; }
+        .buy-card .old { text-decoration: line-through; opacity: 0.4; font-size: 1rem; }
+        .buy-card .new { font-size: 2rem; font-weight: 800; }
+        .buy-card .cur { font-size: 0.85rem; font-weight: 500; opacity: 0.7; }
+        .buy-btn { display: inline-flex; align-items: center; gap: 8px; background: white; color: #A55166; padding: 14px 40px; border-radius: 14px; font-family: 'Tajawal', sans-serif; font-size: 1rem; font-weight: 800; text-decoration: none; transition: transform 0.2s; }
+        .buy-btn:hover { transform: scale(1.04); }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m12 5 7 7-7 7"/><path d="M19 12H5"/></svg>
+        عوالم
+    </a>
+
+    <div class="page">
+
+        <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-scroll">
+                <div class="hero">
+                    <h1>القاموس العام</h1>
+                    <p>+200 كلمة يومية مترجمة مع نطق صحيح باللغة الأم</p>
+                </div>
+
+                <div class="fake-card">
+                    <h3><span class="icon">📂</span> الأقسام</h3>
+                    <div class="fake-tags">
+                        <span class="fake-tag">المنزل</span>
+                        <span class="fake-tag">المطبخ</span>
+                        <span class="fake-tag">الحمام</span>
+                        <span class="fake-tag">الأثاث</span>
+                        <span class="fake-tag">الملابس</span>
+                        <span class="fake-tag">الجسم</span>
+                        <span class="fake-tag">الألوان</span>
+                        <span class="fake-tag">الأرقام</span>
+                    </div>
+                </div>
+
+                <div class="fake-card">
+                    <h3><span class="icon">📝</span> مثال على الكلمات</h3>
+                    <table class="fake-table">
+                        <thead><tr><th>العربية</th><th>الترجمة</th><th>النطق</th></tr></thead>
+                        <tbody>
+                            <tr><td>باب</td><td class="blur-cell">XXXXXX</td><td class="blur-cell">XXXX</td></tr>
+                            <tr><td>نافذة</td><td class="blur-cell">XXXXXXX</td><td class="blur-cell">XXXXX</td></tr>
+                            <tr><td>سقف</td><td class="blur-cell">XXXXX</td><td class="blur-cell">XXX</td></tr>
+                            <tr><td>كرسي</td><td class="blur-cell">XXXXX</td><td class="blur-cell">XXXX</td></tr>
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="fade-bottom"></div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>وش تسوي المنصة؟</h2>
+
+            <div class="feature">
+                <div class="feature-num">١</div>
+                <div class="feature-text">
+                    <h4>+200 كلمة مصنفة</h4>
+                    <p>كلمات يومية منظمة بأقسام واضحة: المنزل، المطبخ، الحمام، الملابس، الجسم، الألوان والأرقام.</p>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-num">٢</div>
+                <div class="feature-text">
+                    <h4>نطق باللغة الأم</h4>
+                    <p>كل كلمة فيها نطق مكتوب بلغة العاملة (أورومو/أمهرية/غيرها) عشان تنطقها صح من أول مرة.</p>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-num">٣</div>
+                <div class="feature-text">
+                    <h4>بحث فوري</h4>
+                    <p>دوّري أي كلمة بالعربي أو بالترجمة وتلاقينها فوراً بدون انتظار.</p>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-num">٤</div>
+                <div class="feature-text">
+                    <h4>أرشيف الكلمات المتعلمة</h4>
+                    <p>حددي الكلمات اللي العاملة تعلمتها وحفظيها في أرشيف عشان تراجعينها لاحقاً.</p>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-num">٥</div>
+                <div class="feature-text">
+                    <h4>طباعة وتصدير</h4>
+                    <p>اختاري الكلمات اللي تبغينها واطبعيها كملف مرتب أو صدّريها كصورة.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="how-it-works">
+            <h3>كيف تستخدمينها؟</h3>
+            <div class="step"><div class="step-dot"></div><span>اختاري القسم اللي تبغين تعلّميه للعاملة</span></div>
+            <div class="step"><div class="step-dot"></div><span>اضغطي على الكلمات اللي تبغين تعلّمينها</span></div>
+            <div class="step"><div class="step-dot"></div><span>اعرضي الجدول وشوّفي العاملة النطق الصحيح</span></div>
+            <div class="step"><div class="step-dot"></div><span>اطبعي القائمة أو ارسليها صورة بالواتساب</span></div>
+            <div class="step"><div class="step-dot"></div><span>حددي الكلمات المتعلمة وأرشيفيها</span></div>
+        </div>
+
+        <div class="buy-card">
+            <h3>افتحي القاموس العام</h3>
+            <div class="sub">+200 كلمة جاهزة — تفعيل فوري بعد الدفع</div>
+            <div class="price-row">
+                <span class="old">22 ر.س</span>
+                <span class="new">18 <span class="cur">ر.س</span></span>
+            </div>
+            <a href="#MOYASAR_LINK_DICTIONARY" class="buy-btn">
+                اشتري الآن
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>

@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تغذية الطفل | عوالم</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&family=Tajawal:wght@400;500;700;800&display=swap" rel="stylesheet">
+    <style>
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Tajawal', sans-serif; background: #F0F7F0; color: #1d1d1f; min-height: 100vh; padding: 20px 16px; }
+        .back { position: fixed; top: 16px; right: 16px; background: linear-gradient(135deg, #2E7D32, #66BB6A); color: white; padding: 10px 20px; border-radius: 50px; font-weight: 800; font-size: 0.85rem; text-decoration: none; z-index: 100; display: flex; align-items: center; gap: 6px; }
+        .page { max-width: 480px; margin: 0 auto; }
+        .phone-frame { background: white; border-radius: 36px; overflow: hidden; box-shadow: 0 20px 60px rgba(0,0,0,0.1); border: 8px solid #1d1d1f; position: relative; }
+        .phone-notch { background: #1d1d1f; height: 28px; border-radius: 0 0 18px 18px; margin: 0 60px; }
+        .phone-scroll { max-height: 480px; overflow: hidden; position: relative; }
+        .hero { background: linear-gradient(135deg, #2E7D32, #66BB6A); color: white; padding: 28px 22px; text-align: center; }
+        .hero h1 { font-size: 1.5rem; font-weight: 800; margin-bottom: 4px; }
+        .hero p { font-size: 0.85rem; opacity: 0.9; line-height: 1.5; }
+        .fake-card { background: rgba(255,255,255,0.9); border: 1px solid rgba(46,125,50,0.1); border-radius: 22px; margin: 12px; padding: 18px; }
+        .fake-card h3 { color: #2E7D32; font-size: 0.95rem; margin-bottom: 10px; font-weight: 700; display: flex; align-items: center; gap: 6px; }
+        .fake-card h3 .icon { width: 24px; height: 24px; background: rgba(46,125,50,0.1); border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.75rem; }
+        .fake-line { height: 12px; background: linear-gradient(90deg, #e8f5e9 25%, #f1f8f1 50%, #e8f5e9 75%); border-radius: 6px; margin-bottom: 8px; background-size: 200% 100%; animation: shimmer 1.5s infinite; }
+        @keyframes shimmer { 0% { background-position: 200% 0; } 100% { background-position: -200% 0; } }
+        .fake-tags { display: flex; gap: 5px; flex-wrap: wrap; }
+        .fake-tag { background: #E8F5E9; color: #2E7D32; padding: 5px 11px; border-radius: 16px; font-size: 0.72rem; font-weight: 600; border: 1px solid #C8E6C9; }
+        .fake-meal { display: flex; gap: 10px; margin-bottom: 10px; }
+        .fake-meal-icon { width: 40px; height: 40px; background: #E8F5E9; border-radius: 12px; flex-shrink: 0; }
+        .fade-bottom { position: absolute; bottom: 0; left: 0; right: 0; height: 100px; background: linear-gradient(to top, white, transparent); z-index: 5; }
+        .info-section { margin-top: 24px; }
+        .info-section h2 { font-size: 1.2rem; font-weight: 800; color: #2E7D32; margin-bottom: 14px; }
+        .feature { display: flex; gap: 12px; margin-bottom: 14px; padding: 16px; background: white; border-radius: 18px; border: 1px solid rgba(46,125,50,0.1); }
+        .feature-num { width: 36px; height: 36px; background: linear-gradient(135deg, #2E7D32, #66BB6A); color: white; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 0.95rem; flex-shrink: 0; }
+        .feature-text h4 { font-size: 0.92rem; font-weight: 700; margin-bottom: 4px; }
+        .feature-text p { font-size: 0.82rem; color: #666; line-height: 1.55; }
+        .how-it-works { margin-top: 24px; padding: 20px; background: linear-gradient(135deg, rgba(46,125,50,0.06), rgba(46,125,50,0.02)); border-radius: 20px; border: 1px solid rgba(46,125,50,0.1); }
+        .how-it-works h3 { font-size: 1rem; font-weight: 800; color: #2E7D32; margin-bottom: 12px; }
+        .step { display: flex; gap: 10px; margin-bottom: 10px; align-items: flex-start; }
+        .step-dot { width: 8px; height: 8px; background: #2E7D32; border-radius: 50%; margin-top: 7px; flex-shrink: 0; }
+        .step span { font-size: 0.85rem; color: #444; line-height: 1.5; }
+        .buy-card { margin-top: 24px; background: linear-gradient(135deg, #2E7D32, #66BB6A); border-radius: 24px; padding: 28px 24px; text-align: center; color: white; }
+        .buy-card h3 { font-size: 1.15rem; font-weight: 800; margin-bottom: 4px; }
+        .buy-card .sub { font-size: 0.85rem; opacity: 0.7; margin-bottom: 16px; }
+        .buy-card .price { font-size: 2rem; font-weight: 800; margin-bottom: 16px; }
+        .buy-card .price .cur { font-size: 0.85rem; font-weight: 500; opacity: 0.7; }
+        .buy-btn { display: inline-flex; align-items: center; gap: 8px; background: white; color: #2E7D32; padding: 14px 40px; border-radius: 14px; font-family: 'Tajawal', sans-serif; font-size: 1rem; font-weight: 800; text-decoration: none; transition: transform 0.2s; }
+        .buy-btn:hover { transform: scale(1.04); }
+    </style>
+</head>
+<body>
+    <a href="../index.html" class="back">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="m12 5 7 7-7 7"/><path d="M19 12H5"/></svg>
+        عوالم
+    </a>
+
+    <div class="page">
+
+        <div class="phone-frame">
+            <div class="phone-notch"></div>
+            <div class="phone-scroll">
+                <div class="hero">
+                    <h1>تغذية الطفل</h1>
+                    <p>وجبات صحية وخطط أسبوعية حسب المرحلة العمرية</p>
+                </div>
+
+                <div class="fake-card">
+                    <h3><span class="icon">👶</span> المراحل العمرية</h3>
+                    <div class="fake-tags">
+                        <span class="fake-tag">6-8 أشهر</span>
+                        <span class="fake-tag">8-10 أشهر</span>
+                        <span class="fake-tag">10-12 شهر</span>
+                        <span class="fake-tag">سنة فأكثر</span>
+                    </div>
+                </div>
+
+                <div class="fake-card">
+                    <h3><span class="icon">🍽️</span> خطة الوجبات</h3>
+                    <div class="fake-meal"><div class="fake-meal-icon"></div><div style="flex:1"><div class="fake-line" style="width:70%"></div><div class="fake-line" style="width:45%"></div></div></div>
+                    <div class="fake-meal"><div class="fake-meal-icon"></div><div style="flex:1"><div class="fake-line" style="width:60%"></div><div class="fake-line" style="width:75%"></div></div></div>
+                    <div class="fake-meal"><div class="fake-meal-icon"></div><div style="flex:1"><div class="fake-line" style="width:80%"></div><div class="fake-line" style="width:35%"></div></div></div>
+                </div>
+
+                <div class="fake-card">
+                    <h3><span class="icon">💡</span> نصائح التغذية</h3>
+                    <div class="fake-line" style="width:90%"></div>
+                    <div class="fake-line" style="width:70%"></div>
+                    <div class="fake-line" style="width:80%"></div>
+                </div>
+
+                <div class="fade-bottom"></div>
+            </div>
+        </div>
+
+        <div class="info-section">
+            <h2>وش تسوي المنصة؟</h2>
+
+            <div class="feature">
+                <div class="feature-num">١</div>
+                <div class="feature-text">
+                    <h4>وجبات حسب المرحلة العمرية</h4>
+                    <p>خطط غذائية مصممة لكل مرحلة: 6-8 أشهر، 8-10 أشهر، 10-12 شهر، وسنة فأكثر — كل مرحلة لها وجبات مناسبة.</p>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-num">٢</div>
+                <div class="feature-text">
+                    <h4>قوائم أسبوعية جاهزة</h4>
+                    <p>خطة وجبات أسبوعية كاملة (فطار، غداء، عشاء) محسوبة عشان توفرين الوقت والتفكير.</p>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-num">٣</div>
+                <div class="feature-text">
+                    <h4>نصائح تغذوية من اختصاصيات</h4>
+                    <p>إرشادات عن الأطعمة المسموحة والممنوعة لكل عمر، ومتى تبدئين بإدخال أطعمة جديدة.</p>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-num">٤</div>
+                <div class="feature-text">
+                    <h4>وصفات سهلة وسريعة</h4>
+                    <p>وصفات بسيطة بمكونات متوفرة في أي بيت — ما تحتاجين مكونات غريبة أو معقدة.</p>
+                </div>
+            </div>
+
+            <div class="feature">
+                <div class="feature-num">٥</div>
+                <div class="feature-text">
+                    <h4>طباعة وحفظ</h4>
+                    <p>اطبعي الخطة الأسبوعية وعلّقيها في المطبخ عشان تكونين متذكّرة دايم.</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="how-it-works">
+            <h3>كيف تستخدمينها؟</h3>
+            <div class="step"><div class="step-dot"></div><span>اختاري مرحلة طفلك العمرية</span></div>
+            <div class="step"><div class="step-dot"></div><span>تصفّحي الوجبات والوصفات المناسبة لعمره</span></div>
+            <div class="step"><div class="step-dot"></div><span>اختاري الخطة الأسبوعية اللي تناسبك</span></div>
+            <div class="step"><div class="step-dot"></div><span>اطبعيها أو احفظيها في جوالك للرجوع لها</span></div>
+            <div class="step"><div class="step-dot"></div><span>تابعي نصائح التغذية عشان تبدين بأطعمة جديدة بأمان</span></div>
+        </div>
+
+        <div class="buy-card">
+            <h3>افتحي منصة تغذية الطفل</h3>
+            <div class="sub">وجبات صحية وخطط أسبوعية — تفعيل فوري</div>
+            <div class="price">17 <span class="cur">ر.س</span></div>
+            <a href="#MOYASAR_LINK_BABY" class="buy-btn">
+                اشتري الآن
+                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
+            </a>
+        </div>
+
+    </div>
+</body>
+</html>
