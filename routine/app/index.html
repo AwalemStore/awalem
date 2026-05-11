@@ -1,0 +1,1129 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>الروتين الذكي | SmartRoutine</title>
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+        :root {
+            --primary: #5B3F8C;
+            --primary-light: #8A68C8;
+            --accent: #C4A8FF;
+            --accent-warm: #F2E8FF;
+            --bg: #F7F5FB;
+            --card-bg: #FFFFFF;
+            --border: rgba(91, 63, 140, 0.12);
+            --border-strong: rgba(91, 63, 140, 0.25);
+            --text: #1E1730;
+            --text-muted: #6B6080;
+            --text-light: #A89DC2;
+            --success: #3DAB7A;
+            --shadow-sm: 0 2px 12px rgba(91,63,140,0.06);
+            --shadow-md: 0 8px 32px rgba(91,63,140,0.1);
+            --shadow-lg: 0 20px 60px rgba(91,63,140,0.14);
+            --radius-sm: 12px;
+            --radius-md: 20px;
+            --radius-lg: 28px;
+        }
+
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+
+        body {
+            background: var(--bg);
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            color: var(--text);
+            min-height: 100vh;
+            -webkit-print-color-adjust: exact;
+            print-color-adjust: exact;
+            overflow-x: hidden;
+        }
+
+        /* ===== HERO ===== */
+        .hero {
+            background: linear-gradient(140deg, #5B3F8C 0%, #8A68C8 55%, #A889E0 100%);
+            border-radius: var(--radius-lg);
+            padding: 52px 40px;
+            margin-bottom: 28px;
+            position: relative; overflow: hidden; color: white;
+        }
+        .hero::before {
+            content: ''; position: absolute; inset: 0;
+            background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.04'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+            pointer-events: none;
+        }
+        .hero-badge {
+            display: inline-flex; align-items: center; gap: 6px;
+            background: rgba(255,255,255,0.18); border: 1px solid rgba(255,255,255,0.3);
+            border-radius: 50px; padding: 6px 16px; font-size: 13px; font-weight: 600;
+            margin-bottom: 18px; backdrop-filter: blur(4px); position: relative;
+            margin-left: auto; margin-right: auto;
+        }
+        .hero h1 {
+            font-size: 2.2rem; font-weight: 800; margin-bottom: 12px;
+            line-height: 1.25; letter-spacing: -0.5px; position: relative;
+            text-align: center;
+        }
+        .hero-sub {
+            font-size: 1.05rem; color: rgba(255,255,255,0.85);
+            line-height: 1.65; max-width: 540px; position: relative; text-align: center; margin-left: auto; margin-right: auto;
+        }
+        .hero-stats { display: flex; gap: 24px; margin-top: 28px; flex-wrap: wrap; position: relative; justify-content: center; }
+        .hero-stat {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 14px; color: rgba(255,255,255,0.9);
+            background: rgba(255,255,255,0.1); border: 1px solid rgba(255,255,255,0.18);
+            border-radius: 50px; padding: 8px 16px; backdrop-filter: blur(4px);
+            transition: all 0.25s;
+        }
+        .hero-stat:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+        .hero-stat span { font-size: 18px; }
+
+        /* ===== CARDS ===== */
+        .card {
+            background: var(--card-bg); border-radius: var(--radius-lg);
+            padding: 28px; margin-bottom: 20px;
+            border: 1px solid var(--border); box-shadow: var(--shadow-sm);
+            transition: box-shadow 0.3s, transform 0.3s;
+        }
+        .card:hover { box-shadow: var(--shadow-md); transform: translateY(-2px); }
+
+        .card-title {
+            font-size: 1.15rem; font-weight: 800; color: var(--primary);
+            display: flex; align-items: center; gap: 10px;
+            padding-bottom: 16px; border-bottom: 2px solid var(--accent-warm);
+            margin-bottom: 20px;
+        }
+        .card-title .icon-wrap {
+            width: 36px; height: 36px; background: var(--accent-warm);
+            border-radius: 10px; display: flex; align-items: center; justify-content: center;
+            font-size: 18px; flex-shrink: 0;
+        }
+
+        /* ===== GUIDE ===== */
+        .guide-card { background: var(--card-bg); border-radius: var(--radius-lg); padding: 28px; margin-bottom: 20px; border: 1px solid var(--border); box-shadow: var(--shadow-sm); }
+        .guide-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-top: 20px; }
+        .guide-step {
+            background: var(--accent-warm); border-radius: var(--radius-md); padding: 20px; text-align: center;
+            border: 1px solid rgba(91,63,140,0.12); transition: all 0.3s;
+        }
+        .guide-step:hover { transform: translateY(-4px); border-color: var(--primary); box-shadow: 0 12px 30px rgba(91,63,140,0.1); }
+        .step-num {
+            width: 36px; height: 36px; background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+            font-weight: 800; font-size: 15px; margin: 0 auto 12px;
+        }
+        .step-title { font-weight: 700; font-size: 15px; color: var(--primary); margin-bottom: 6px; }
+        .step-body { font-size: 13px; color: var(--text-muted); line-height: 1.55; }
+        .step-highlight { color: var(--primary); font-weight: 700; background: rgba(91,63,140,0.08); padding: 1px 6px; border-radius: 4px; }
+
+        /* ===== FORM ===== */
+        .field-label { display: block; font-weight: 700; font-size: 13px; color: var(--primary); margin-bottom: 8px; }
+        .field-input {
+            width: 100%; padding: 14px 16px; border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border); font-family: 'IBM Plex Sans Arabic', sans-serif;
+            font-size: 15px; color: var(--text); background: #FDFCFF; outline: none; transition: 0.2s;
+        }
+        .field-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(91,63,140,0.07); }
+        input[type="date"], input[type="time"] { text-align: right; direction: ltr; font-family: 'IBM Plex Sans Arabic', sans-serif; }
+        .field-select {
+            width: 100%; padding: 14px 16px; border-radius: var(--radius-sm);
+            border: 1.5px solid var(--border); font-family: 'IBM Plex Sans Arabic', sans-serif;
+            font-size: 15px; color: var(--primary); background: #FDFCFF; font-weight: 600;
+            outline: none; cursor: pointer; appearance: none;
+            background-image: url("data:image/svg+xml,%3Csvg width='12' height='8' viewBox='0 0 12 8' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M1 1L6 7L11 1' stroke='%235B3F8C' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+            background-repeat: no-repeat; background-position: left 16px center;
+        }
+        .field-select option { background: white; color: var(--text); }
+        .fields-row { display: flex; gap: 14px; flex-wrap: wrap; }
+        .field-group { flex: 1; min-width: 200px; }
+
+        /* ===== ITEM ROWS ===== */
+        .item-row {
+            display: flex; align-items: center; justify-content: space-between;
+            padding: 14px 16px; background: #FDFCFF; border-radius: var(--radius-sm);
+            margin-bottom: 8px; border: 1.5px solid transparent; transition: 0.2s;
+        }
+        .item-row:hover { border-color: var(--border-strong); background: white; }
+        .item-row:has(input[type="checkbox"]:checked) {
+            background: var(--accent-warm); border-color: rgba(91,63,140,0.2);
+        }
+        .cb-wrapper { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; flex-grow: 1; }
+        input[type="checkbox"] { width: 20px; height: 20px; accent-color: var(--primary); cursor: pointer; margin-top: 3px; flex-shrink: 0; border-radius: 6px; }
+        .label-content { display: flex; flex-direction: column; width: 100%; }
+        .editable-ar {
+            font-weight: 600; font-size: 14px; line-height: 1.55; color: var(--text);
+            border-bottom: 1px dashed transparent; outline: none; transition: 0.2s;
+            cursor: text; display: inline-block; word-break: break-word; width: 100%;
+        }
+        .editable-ar:hover { border-bottom-color: rgba(91,63,140,0.25); }
+        .editable-ar:focus { border-bottom-color: var(--primary); background: rgba(91,63,140,0.02); border-radius: 2px; }
+        .editable-ar:empty::before { content: attr(placeholder); color: #C5BAD8; font-weight: 400; }
+        .custom-input {
+            border: none; background: transparent; font-family: 'IBM Plex Sans Arabic', sans-serif;
+            font-size: 14px; color: var(--primary); width: 95%; outline: none; padding: 3px 0;
+            font-weight: 600; border-bottom: 1px dashed rgba(91,63,140,0.3);
+        }
+
+        /* ===== FREQ UI ===== */
+        .task-freq { display: none; flex-basis: 100%; margin-top: 8px; }
+        .freq-container { width: 100%; }
+        .freq-pills { display: flex; gap: 6px; flex-wrap: wrap; }
+        .freq-pill {
+            padding: 7px 14px; border-radius: 20px; border: 1.5px solid #E0D6ED;
+            background: white; color: #9982bb; font-family: 'IBM Plex Sans Arabic', sans-serif;
+            font-size: 0.82rem; font-weight: 700; cursor: pointer; transition: all 0.2s;
+            white-space: nowrap; -webkit-tap-highlight-color: transparent;
+            user-select: none; -webkit-user-select: none; min-height: 36px;
+            display: inline-flex; align-items: center; justify-content: center;
+        }
+        .freq-pill:hover { border-color: var(--primary); color: var(--primary); }
+        .freq-pill.active {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white; border-color: transparent; box-shadow: 0 3px 10px rgba(91,63,140,0.2);
+        }
+        .days-picker { display: none; gap: 5px; margin-top: 8px; flex-wrap: wrap; }
+        .day-chip {
+            padding: 5px 11px; border-radius: 10px; border: 1px solid #E0D6ED;
+            background: #FAFAFE; font-size: 0.78rem; font-weight: 700; cursor: pointer;
+            color: var(--text-muted); transition: all 0.2s; font-family: 'IBM Plex Sans Arabic', sans-serif;
+            -webkit-tap-highlight-color: transparent; user-select: none; -webkit-user-select: none;
+            min-height: 34px; display: inline-flex; align-items: center; justify-content: center;
+        }
+        .day-chip:hover { border-color: var(--primary); color: var(--primary); }
+        .day-chip.selected { background: var(--primary); color: white; border-color: var(--primary); }
+        .task-days-tag {
+            display: inline-block; background: rgba(91,63,140,0.08); color: var(--primary);
+            padding: 2px 8px; border-radius: 8px; font-size: 0.78rem; font-weight: 600; margin-top: 4px;
+        }
+
+        /* ===== BUTTONS ===== */
+        .btn-primary {
+            background: linear-gradient(135deg, var(--primary), var(--primary-light));
+            color: white; border: none; padding: 20px 32px;
+            font-family: 'IBM Plex Sans Arabic', sans-serif;
+            font-size: 1.15rem; font-weight: 800; border-radius: var(--radius-md);
+            cursor: pointer; width: 100%; box-shadow: 0 10px 28px rgba(91,63,140,0.25);
+            transition: 0.3s; letter-spacing: 0.3px;
+        }
+        .btn-primary:hover:not(:disabled) { transform: translateY(-3px); box-shadow: 0 14px 36px rgba(91,63,140,0.35); }
+        .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+
+        .btn-add {
+            background: transparent; color: var(--primary);
+            border: 2px dashed rgba(91,63,140,0.3); padding: 12px;
+            border-radius: var(--radius-sm); font-family: 'IBM Plex Sans Arabic', sans-serif;
+            font-weight: 700; font-size: 14px; cursor: pointer; width: 100%;
+            transition: 0.25s; margin-top: 8px;
+        }
+        .btn-add:hover { background: var(--accent-warm); border-color: var(--primary); }
+
+        /* ===== HOURS PANEL ===== */
+        .hours-panel {
+            display: none; margin-top: 14px; flex-wrap: wrap; gap: 14px; padding: 18px;
+            background: var(--accent-warm); border-radius: var(--radius-sm);
+            border: 1px dashed rgba(91,63,140,0.25);
+        }
+
+        /* ===== CB EXAMPLE ===== */
+        .cb-example {
+            margin-top: 12px; background: var(--accent-warm); padding: 12px 16px;
+            border-radius: 10px; font-size: 13px; color: var(--primary); font-weight: 500;
+            border: 1px dashed rgba(91,63,140,0.2);
+        }
+
+        /* ===== GENERATE SECTION ===== */
+        .generate-section { margin: 8px 0 32px; }
+        .generate-note {
+            text-align: center; font-size: 13px; color: var(--text-muted); margin-top: 12px;
+            display: flex; align-items: center; justify-content: center; gap: 6px;
+        }
+
+        /* ===== RESULT SECTION ===== */
+        #result-section { display: none; width: 100%; }
+        .result-header {
+            background: linear-gradient(135deg, #3DAB7A, #4CC78F);
+            border-radius: var(--radius-lg); padding: 24px 28px; color: white;
+            margin-bottom: 20px; display: flex; align-items: center; gap: 16px;
+            animation: successPop 0.6s cubic-bezier(0.34,1.56,0.64,1) both;
+        }
+        @keyframes successPop { from { transform: scale(0.95) translateY(10px); opacity: 0; } to { transform: scale(1) translateY(0); opacity: 1; } }
+        .result-header-icon { font-size: 36px; }
+        .result-header-text h3 { font-size: 1.2rem; font-weight: 800; margin-bottom: 4px; }
+        .result-header-text p { font-size: 14px; opacity: 0.9; }
+
+        .print-page {
+            background: white; padding: 48px; border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-md); margin-bottom: 20px;
+        }
+        .welcome-banner { border: 1.5px solid rgba(91,63,140,0.2); padding: 24px; border-radius: 18px; margin-bottom: 20px; background: #FDFBFF; }
+        .welcome-banner strong { color: var(--primary); font-size: 1.15rem; }
+        .msg-text { font-size: 1rem; line-height: 1.75; margin-top: 10px; font-weight: 500; }
+        .msg-translated { font-family: 'Playfair Display', sans-serif; font-size: 0.88rem; color: #666; direction: ltr; text-align: left; margin-top: 12px; line-height: 1.55; }
+
+        .work-details-banner { background: #F9F8FC; border: 1px solid var(--border); padding: 20px; border-radius: 16px; margin-bottom: 24px; }
+        .detail-row { display: flex; margin-bottom: 8px; font-size: 1rem; gap: 8px; }
+        .detail-row strong { color: var(--primary); min-width: 120px; }
+
+        .print-title { color: var(--primary); font-size: 1.2rem; border-bottom: 2px solid var(--accent-warm); padding-bottom: 10px; margin-top: 24px; margin-bottom: 18px; font-weight: 800; }
+        .rules-ul { padding-right: 20px; font-size: 1rem; line-height: 1.65; }
+        .rules-ul li { margin-bottom: 14px; }
+        .rules-ul span { display: block; font-family: 'Playfair Display', sans-serif; font-size: 0.83rem; color: var(--text-muted); direction: ltr; text-align: left; margin-top: 3px; }
+
+        .table-responsive { width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+        .tracker-table { width: 100%; border-collapse: collapse; margin-top: 16px; min-width: 580px; }
+        .tracker-table th { background: var(--accent-warm); color: var(--primary); padding: 12px 14px; text-align: right; font-weight: 800; border: 1px solid #E8E2F5; font-size: 0.9rem; }
+        .tracker-table td { padding: 12px 14px; border: 1px solid #EDE8F8; vertical-align: middle; }
+        .check-boxes { display: flex; gap: 6px; direction: ltr; justify-content: flex-end; flex-wrap: wrap; }
+        .box { width: 17px; height: 17px; border: 1.5px solid #BDB3D8; border-radius: 4px; background: white; flex-shrink: 0; }
+        .print-footer-note { text-align: center; color: var(--text-muted); font-size: 13px; margin-top: 18px; }
+
+        /* ===== PRINT BTN ===== */
+        .print-btn-wrap { text-align: center; margin-top: 16px; padding: 28px; background: white; border-radius: var(--radius-lg); border: 1px solid var(--border); }
+        .btn-print { background: var(--text); color: white; border: none; padding: 16px 44px; border-radius: var(--radius-sm); font-family: 'IBM Plex Sans Arabic', sans-serif; font-size: 1.05rem; font-weight: 800; cursor: pointer; box-shadow: 0 8px 20px rgba(0,0,0,0.15); transition: 0.25s; display: inline-flex; align-items: center; gap: 10px; }
+        .btn-print:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(0,0,0,0.2); }
+
+        /* ===== FOOTER ===== */
+        .page-footer { text-align: center; padding: 24px 0 8px; font-size: 13px; color: var(--text-light); display: flex; align-items: center; justify-content: center; gap: 8px; }
+        .page-footer a { color: var(--primary); text-decoration: none; font-weight: 600; }
+
+        /* ===== POPUP ===== */
+        #welcomePopup { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: flex; align-items: center; justify-content: center; z-index: 1000; backdrop-filter: blur(6px); padding: 20px; }
+        .popup-inner {
+            background: white; border-radius: var(--radius-lg); padding: 44px 36px;
+            max-width: 480px; width: 100%; text-align: center; box-shadow: var(--shadow-lg);
+            border: 1.5px solid rgba(91,63,140,0.15); animation: popIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes popIn { from { opacity: 0; transform: scale(0.88); } to { opacity: 1; transform: scale(1); } }
+        .popup-emoji { font-size: 48px; margin-bottom: 16px; display: block; }
+        .popup-title { font-size: 22px; font-weight: 700; color: var(--primary); margin-bottom: 16px; }
+        .popup-body { font-size: 1rem; line-height: 1.75; color: var(--text-muted); margin-bottom: 28px; }
+        .popup-body b { color: var(--primary); }
+        .popup-features { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 28px; }
+        .popup-feat { background: var(--accent-warm); border-radius: var(--radius-sm); padding: 12px; font-size: 13px; font-weight: 600; color: var(--primary); }
+
+        /* ===== AUTH SCREEN ===== */
+        #auth-screen { position: fixed; inset: 0; background: linear-gradient(145deg, #F0EBF9, #E8E0F5, #DDD6F0); display: flex; flex-direction: column; align-items: center; justify-content: center; z-index: 99999; padding: 24px; }
+        .auth-card {
+            background: rgba(255,255,255,0.92); backdrop-filter: blur(24px);
+            border-radius: var(--radius-lg); padding: 48px 36px; width: 100%; max-width: 420px;
+            text-align: center; box-shadow: var(--shadow-lg); border: 1px solid rgba(255,255,255,0.7);
+            animation: slideUp 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+        @keyframes slideUp { from { opacity: 0; transform: translateY(28px) scale(0.97); } to { opacity: 1; transform: translateY(0) scale(1); } }
+        .auth-logo { width: 72px; height: 72px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); border-radius: 20px; display: flex; align-items: center; justify-content: center; font-size: 32px; margin: 0 auto 24px; box-shadow: 0 8px 24px rgba(91,63,140,0.3); }
+        .auth-title { font-size: 26px; font-weight: 700; color: var(--primary); margin-bottom: 6px; }
+        .auth-sub { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 32px; }
+        .auth-field-label { display: block; text-align: right; font-size: 13px; font-weight: 600; color: var(--primary); margin-bottom: 8px; }
+        .auth-input { width: 100%; padding: 16px 20px; border-radius: var(--radius-sm); border: 2px solid var(--border); background: #FDFCFF; font-family: 'IBM Plex Sans Arabic', sans-serif; font-size: 17px; text-align: center; letter-spacing: 3px; color: var(--text); outline: none; transition: 0.25s; margin-bottom: 20px; }
+        .auth-input:focus { border-color: var(--primary); box-shadow: 0 0 0 4px rgba(91,63,140,0.08); }
+        .auth-btn { width: 100%; padding: 16px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; border: none; border-radius: var(--radius-sm); font-family: 'IBM Plex Sans Arabic', sans-serif; font-size: 16px; font-weight: 700; cursor: pointer; box-shadow: 0 8px 20px rgba(91,63,140,0.25); transition: 0.25s; }
+        .auth-btn:hover { transform: translateY(-2px); box-shadow: 0 12px 28px rgba(91,63,140,0.3); }
+        #error-msg { color: #C0392B; font-size: 13px; margin-top: 14px; font-weight: 600; display: none; padding: 10px 14px; background: rgba(192,57,43,0.06); border-radius: 8px; border: 1px solid rgba(192,57,43,0.15); }
+        .auth-footer { margin-top: 20px; font-size: 12px; color: var(--text-light); }
+
+        /* ===== WA BTN ===== */
+        .wa-btn { position: fixed; bottom: 24px; left: 24px; z-index: 99998; background: #25D366; color: white; width: 54px; height: 54px; border-radius: 50%; display: flex; align-items: center; justify-content: center; box-shadow: 0 4px 16px rgba(37,211,102,0.45); text-decoration: none; font-size: 26px; transition: 0.2s; }
+        .wa-btn:hover { transform: scale(1.1); }
+
+        /* ===== HOME BTN ===== */
+        .home-btn { position: fixed; top: 20px; right: 20px; background: linear-gradient(135deg, var(--primary), var(--primary-light)); color: white; padding: 10px 20px; border-radius: 50px; font-weight: 800; font-size: 14px; text-decoration: none; z-index: 1000; box-shadow: 0 8px 20px rgba(91,63,140,0.3); transition: 0.25s; display: flex; align-items: center; gap: 7px; }
+        .home-btn:hover { transform: translateY(-2px); }
+
+        /* ===== MAIN LAYOUT ===== */
+        .page-wrap { max-width: 880px; margin: 0 auto; padding: 32px 20px 60px; }
+
+        /* ===== RESPONSIVE ===== */
+        @media (max-width: 720px) {
+            body { font-size: 15px; }
+            .hero { padding: 32px 24px; border-radius: 20px; }
+            .hero h1 { font-size: 1.65rem; }
+            .guide-steps { grid-template-columns: 1fr; }
+            .card { padding: 20px; border-radius: 20px; }
+            .item-row { flex-direction: column; align-items: stretch; gap: 10px; }
+            .task-freq { margin-top: 5px; }
+            .freq-pill { padding: 6px 11px; font-size: 0.78rem; }
+            .days-picker { gap: 4px; }
+            .day-chip { padding: 4px 9px; font-size: 0.72rem; }
+            .print-page { padding: 20px; }
+            .detail-row { flex-direction: column; gap: 3px; }
+            .auth-card { padding: 36px 24px; }
+            .home-btn { display: none; }
+        }
+
+        /* ===== PRINT ===== */
+        @media print {
+            a[href*="wa.me"], .wa-btn, .home-btn { display: none !important; }
+            body { background: white; padding: 0; }
+            .no-print { display: none !important; }
+            #result-section { display: block !important; max-width: 100%; margin: 0; }
+            .print-page { box-shadow: none; border-radius: 0; margin: 0; padding: 20px; }
+            .page-break { page-break-after: always; }
+            .tracker-table th { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+            .task-days-tag { font-size: 8pt; }
+        }
+    </style>
+</head>
+<body>
+
+<!-- WhatsApp Button -->
+<a href="https://wa.me/966553388257" target="_blank" class="wa-btn no-print">💬</a>
+
+<!-- Home Button -->
+<a href="/awalem/" class="home-btn no-print">🏠 عوالم</a>
+
+<!-- ========== AUTH SCREEN ========== -->
+<div id="auth-screen" class="no-print">
+    <div class="auth-card">
+        <div class="auth-logo">🌸</div>
+        <h2 class="auth-title">الروتين الذكي</h2>
+        <p class="auth-sub">أدخلي رقم الجوال المسجّل في طلبك للدخول إلى منصتك الخاصة</p>
+        <div style="text-align: right; margin-bottom: 4px;">
+            <label class="auth-field-label">📱 رقم الجوال</label>
+            <input type="tel" id="userPhone" class="auth-input" placeholder="05XXXXXXXX" maxlength="10" autocomplete="tel">
+        </div>
+        <button onclick="handleLogin()" id="verify-btn" class="auth-btn">تسجيل الدخول</button>
+        <p id="error-msg"></p>
+    </div>
+    <div class="auth-footer">صُنع بعناية من قِبَل <strong>عوالم Awalem</strong></div>
+</div>
+
+<!-- ========== WELCOME POPUP ========== -->
+<div id="welcomePopup" onclick="this.style.display='none'">
+    <div class="popup-inner" onclick="event.stopPropagation()">
+        <span class="popup-emoji">🌸</span>
+        <h2 class="popup-title">أهلاً بكِ في الروتين الذكي</h2>
+        <p class="popup-body">أداة ذكية لتنظيم مهام منزلكِ وتوضيح التوقعات لمساعدتكِ بشكل واضح ومحترم.</p>
+        <div class="popup-features">
+            <div class="popup-feat">✏️ تعديل مباشر على النصوص</div>
+            <div class="popup-feat">🌐 ترجمة لـ 12 لغة</div>
+            <div class="popup-feat">🗓️ جداول قابلة للتخصيص</div>
+            <div class="popup-feat">🖨️ طباعة جاهزة فوراً</div>
+        </div>
+        <button class="btn-primary" style="border-radius: 14px;" onclick="document.getElementById('welcomePopup').style.display='none'">ابدئي تصميم الجدول ✨</button>
+    </div>
+</div>
+
+<!-- ========== MAIN CONTENT ========== -->
+<div class="page-wrap no-print">
+
+    <!-- HERO -->
+    <div class="hero">
+        <div class="hero-badge">✨ الروتين الذكي — SmartRoutine</div>
+        <h1>جدول مساعدتكِ المنزلية<br>جاهز في دقيقتين 🌸</h1>
+        <p class="hero-sub">خصّصي قوانين منزلكِ ومهام مساعدتكِ، وسيُترجم الجدول تلقائياً للغتها — كل شيء واضح وجاهز للطباعة.</p>
+        <div class="hero-stats">
+            <div class="hero-stat"><span>🌐</span> ترجمة لـ 12 لغة</div>
+            <div class="hero-stat"><span>✏️</span> نصوص قابلة للتعديل</div>
+            <div class="hero-stat"><span>🖨️</span> جاهز للطباعة فوراً</div>
+        </div>
+    </div>
+
+    <!-- GUIDE -->
+    <div class="guide-card">
+        <div class="card-title">
+            <div class="icon-wrap">💡</div>
+            كيف تستخدمين المنصة؟
+        </div>
+        <div class="guide-steps">
+            <div class="guide-step">
+                <div class="step-num">١</div>
+                <div class="step-title">أدخلي البيانات</div>
+                <div class="step-body">اسم المساعدة، لغتها، أوقات العمل ويوم الإجازة</div>
+            </div>
+            <div class="guide-step">
+                <div class="step-num">٢</div>
+                <div class="step-title">اختاري وعدّلي</div>
+                <div class="step-body">ضعي علامة على القوانين والمهام. <span class="step-highlight">اضغطي على أي نص لتعديله!</span></div>
+            </div>
+            <div class="guide-step">
+                <div class="step-num">٣</div>
+                <div class="step-title">استخرجي وأطبعي</div>
+                <div class="step-body">يُرتّب النظام كل شيء ويترجمه ويجهّزه للطباعة مباشرةً</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- BASIC INFO -->
+    <div class="card">
+        <div class="card-title"><div class="icon-wrap">✍️</div> المعلومات الأساسية</div>
+        <div class="fields-row" style="margin-bottom: 16px;">
+            <div class="field-group">
+                <label class="field-label">اسم المساعدة المنزلية</label>
+                <input type="text" id="workerName" class="field-input" placeholder="مثال: جين / Jane">
+            </div>
+            <div class="field-group">
+                <label class="field-label">🌐 لغة المساعدة (للترجمة)</label>
+                <select id="workerLang" class="field-select">
+                    <option value="en">الإنجليزية - English</option>
+                    <option value="tl">الفلبينية - Tagalog</option>
+                    <option value="id">الإندونيسية - Indonesian</option>
+                    <option value="am">الأمهرية - Amharic (إثيوبيا)</option>
+                    <option value="om">الأورومو - Oromo (إثيوبيا)</option>
+                    <option value="sw">السواحيلية - Swahili</option>
+                    <option value="lg">اللوغندا - Luganda (أوغندا)</option>
+                    <option value="so">الصومالية - Somali</option>
+                    <option value="bn">البنغالية - Bengali</option>
+                    <option value="hi">الهندية - Hindi</option>
+                    <option value="fr">الفرنسية - French</option>
+                    <option value="ar">عربية فقط (بدون ترجمة)</option>
+                </select>
+            </div>
+        </div>
+        <div class="field-group">
+            <label class="field-label">✅ مربعات المتابعة اليومية</label>
+            <select id="includeCheckboxes" class="field-select">
+                <option value="yes">نعم — أضيفي مربعات إنجاز بجانب كل مهمة</option>
+                <option value="no">لا — الجدول للقراءة فقط (بدون مربعات)</option>
+            </select>
+            <div class="cb-example">
+                📌 <strong>مثال (نعم):</strong> تنظيف المطبخ &nbsp;&nbsp;
+                <span style="display:inline-flex; gap:4px; vertical-align:middle; margin-right:4px;">
+                    <span style="display:inline-block; width:13px; height:13px; border:1.5px solid #9982bb; border-radius:3px; background:#fff;"></span>
+                    <span style="display:inline-block; width:13px; height:13px; border:1.5px solid #9982bb; border-radius:3px; background:#fff;"></span>
+                    <span style="display:inline-block; width:13px; height:13px; border:1.5px solid #9982bb; border-radius:3px; background:#fff;"></span>
+                </span>
+            </div>
+        </div>
+    </div>
+
+    <!-- WORK DETAILS -->
+    <div class="card">
+        <div class="card-title"><div class="icon-wrap">⏱️</div> تفاصيل العمل والجدول</div>
+        <div class="fields-row" style="margin-bottom: 16px;">
+            <div class="field-group">
+                <label class="field-label">📅 مدة الجدول</label>
+                <select id="scheduleType" class="field-select" onchange="document.getElementById('dateInputs').style.display = this.value === 'specific' ? 'flex' : 'none'">
+                    <option value="general">جدول عام (مستمر)</option>
+                    <option value="specific">فترة محددة (من - إلى)</option>
+                </select>
+            </div>
+            <div class="field-group">
+                <label class="field-label">🌴 يوم الإجازة</label>
+                <select id="dayOff" class="field-select">
+                    <option value="بدون إجازة / حسب الاتفاق">بدون إجازة / حسب الاتفاق</option>
+                    <option value="الجمعة">الجمعة</option>
+                    <option value="السبت">السبت</option>
+                    <option value="الأحد">الأحد</option>
+                    <option value="الاثنين">الاثنين</option>
+                    <option value="الثلاثاء">الثلاثاء</option>
+                    <option value="الأربعاء">الأربعاء</option>
+                    <option value="الخميس">الخميس</option>
+                </select>
+            </div>
+        </div>
+        <div id="dateInputs" style="display:none; gap:12px; margin-bottom: 16px;" class="fields-row">
+            <div class="field-group"><label class="field-label">من تاريخ:</label><input type="date" id="startDate" class="field-input"></div>
+            <div class="field-group"><label class="field-label">إلى تاريخ:</label><input type="date" id="endDate" class="field-input"></div>
+        </div>
+        <div class="field-group">
+            <label class="field-label">⏰ أوقات العمل</label>
+            <select id="workHoursType" class="field-select" onchange="toggleWorkHours()">
+                <option value="general">عام / حسب الاتفاق المسبق</option>
+                <option value="fixed">توقيت ثابت يومياً</option>
+                <option value="custom">مخصص (كتابة تفصيلية)</option>
+            </select>
+        </div>
+        <div id="fixedHours" class="hours-panel">
+            <div class="field-group" style="min-width: 140px; flex:1;"><label class="field-label" style="font-size:13px;">يبدأ العمل:</label><input type="time" id="startTime" class="field-input"></div>
+            <div class="field-group" style="min-width: 140px; flex:1;"><label class="field-label" style="font-size:13px;">ينتهي العمل:</label><input type="time" id="endTime" class="field-input"></div>
+            <div class="field-group" style="min-width: 220px; flex:2;"><label class="field-label" style="font-size:13px;">فترة الراحة:</label><input type="text" id="breakTime" class="field-input" placeholder="مثال: من 2 ظهراً إلى 4 عصراً"></div>
+        </div>
+        <div id="customHours" style="display:none; margin-top:14px;">
+            <textarea id="customHoursText" class="field-input" placeholder="اكتبي نظام أوقات العمل بالتفصيل..." rows="3" style="resize: vertical;"></textarea>
+        </div>
+    </div>
+
+    <!-- RULES & TASKS -->
+    <div class="card">
+        <div class="card-title"><div class="icon-wrap">📌</div> قوانين المنزل العامة</div>
+        <div id="general-rules-container"></div>
+        <button class="btn-add" onclick="addCustomRuleRow('general-rules-container')">+ إضافة قانون مخصص</button>
+    </div>
+
+    <div class="card">
+        <div class="card-title"><div class="icon-wrap">👶</div> قوانين العناية بالأطفال / كبار السن</div>
+        <div id="dependent-rules-container"></div>
+        <button class="btn-add" onclick="addCustomRuleRow('dependent-rules-container')">+ إضافة قانون مخصص للعناية</button>
+    </div>
+
+    <div class="card">
+        <div class="card-title"><div class="icon-wrap">🍽️</div> مهام المطبخ والمخزن</div>
+        <div id="kitchen-container"></div>
+        <button class="btn-add" onclick="addCustomTaskRow('kitchen-container')">+ إضافة مهمة مخصصة للمطبخ</button>
+    </div>
+
+    <div class="card">
+        <div class="card-title"><div class="icon-wrap">🛋️</div> مهام الغرف والصالات</div>
+        <div id="rooms-container"></div>
+        <button class="btn-add" onclick="addCustomTaskRow('rooms-container')">+ إضافة مهمة مخصصة للغرف</button>
+    </div>
+
+    <div class="card">
+        <div class="card-title"><div class="icon-wrap">🛁</div> مهام الحمامات</div>
+        <div id="bathrooms-container"></div>
+        <button class="btn-add" onclick="addCustomTaskRow('bathrooms-container')">+ إضافة مهمة مخصصة للحمامات</button>
+    </div>
+
+    <div class="card">
+        <div class="card-title"><div class="icon-wrap">🧺</div> الغسيل والتنظيف العام</div>
+        <div id="laundry-container"></div>
+        <button class="btn-add" onclick="addCustomTaskRow('laundry-container')">+ إضافة مهمة مخصصة للغسيل</button>
+    </div>
+
+    <!-- GENERATE -->
+    <div class="generate-section">
+        <button class="btn-primary" id="generateBtn" onclick="generateSchedule()">إنشاء الجدول والترجمة الآلية 📄</button>
+        <div class="generate-note">🔒 بياناتكِ آمنة ولا تُرفع لأي خادم — كل شيء يتم على جهازكِ مباشرةً</div>
+    </div>
+
+</div><!-- end page-wrap -->
+
+<!-- ========== RESULT SECTION ========== -->
+<div id="result-section" class="page-wrap" style="padding-top: 0;">
+    <div class="result-header no-print">
+        <div class="result-header-icon">✅</div>
+        <div class="result-header-text">
+            <h3>تم إنشاء الجدول بنجاح!</h3>
+            <p>راجعيه أدناه ثم اضغطي طباعة لحفظه كـ PDF</p>
+        </div>
+    </div>
+    <div id="result-content"></div>
+    <div class="print-btn-wrap no-print">
+        <button class="btn-print" onclick="window.print()">🖨️ طباعة الجدول (PDF)</button>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 14px;">عند الطباعة، اختاري "حفظ كـ PDF" لتحصلي على ملف جاهز للمشاركة</p>
+    </div>
+</div>
+
+<!-- Footer -->
+<div class="page-footer no-print">صُنع بعناية من قِبَل <a href="/awalem/">عوالم Awalem</a></div>
+
+<!-- ========== AUTH SCRIPT ========== -->
+<script>
+    const PRODUCT_SKU = "routaine";
+    const GOOGLE_SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxL4pI3wIIBfT4SKMXQsBwJId9bqwviUwHiCfEZFIOemEOwZ2cGq8gjqvedDFAfJjlP/exec";
+
+    function getOrCreateDeviceId() {
+        try {
+            let id = localStorage.getItem('awalem_device_id');
+            if (!id) { id = 'AW-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now(); localStorage.setItem('awalem_device_id', id); }
+            return id;
+        } catch(e) { return 'AW-FALLBACK-' + Date.now(); }
+    }
+
+    async function handleLogin() {
+        const btn = document.getElementById("verify-btn");
+        const errorMsg = document.getElementById("error-msg");
+        let phoneInput = document.getElementById("userPhone").value.trim();
+
+        errorMsg.style.display = "none";
+        btn.innerText = "⏳ جاري التحقق...";
+        btn.style.opacity = "0.75";
+
+        if (!/^(05|5)\d{8}$/.test(phoneInput)) {
+            errorMsg.innerText = "يرجى إدخال رقم جوال سعودي صحيح (05XXXXXXXX)";
+            errorMsg.style.display = "block";
+            btn.innerText = "تسجيل الدخول";
+            btn.style.opacity = "1";
+            return;
+        }
+
+        if (phoneInput.startsWith('0')) phoneInput = phoneInput.substring(1);
+
+        var cbName = 'awalem_cb_' + Date.now();
+        var timeout = setTimeout(function() {
+            delete window[cbName];
+            errorMsg.innerText = "انتهت مهلة الاتصال، يرجى المحاولة مرة أخرى.";
+            errorMsg.style.display = "block";
+            btn.innerText = "تسجيل الدخول";
+            btn.style.opacity = "1";
+        }, 15000);
+
+        window[cbName] = function(data) {
+            clearTimeout(timeout);
+            delete window[cbName];
+            if (data.success === true) {
+                document.getElementById("auth-screen").style.display = "none";
+                try { localStorage.setItem("smart_routine_logged_in", "true"); } catch(e){}
+            } else {
+                errorMsg.innerText = data.message || "الرقم غير مسجّل. يرجى التأكد من الرقم أو التواصل معنا.";
+                errorMsg.style.display = "block";
+                btn.innerText = "تسجيل الدخول";
+                btn.style.opacity = "1";
+            }
+        };
+
+        var s = document.createElement('script');
+        s.src = GOOGLE_SCRIPT_URL + '?phone=' + encodeURIComponent(phoneInput)
+              + '&deviceId=' + encodeURIComponent(getOrCreateDeviceId())
+              + '&sku=' + PRODUCT_SKU
+              + '&callback=' + cbName;
+        s.onerror = function() {
+            clearTimeout(timeout);
+            delete window[cbName];
+            errorMsg.innerText = "حدث خطأ في الاتصال، يرجى المحاولة مرة أخرى.";
+            errorMsg.style.display = "block";
+            btn.innerText = "تسجيل الدخول";
+            btn.style.opacity = "1";
+        };
+        document.head.appendChild(s);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        try {
+            if (localStorage.getItem("smart_routine_logged_in") === "true") {
+                document.getElementById("auth-screen").style.display = "none";
+            }
+        } catch(e) {}
+        init();
+
+        const phoneInput = document.getElementById("userPhone");
+        if (phoneInput) {
+            phoneInput.addEventListener("keydown", (e) => {
+                if (e.key === "Enter") handleLogin();
+            });
+        }
+    });
+</script>
+
+<!-- ========== APP SCRIPT ========== -->
+<script>
+    function escapeHTML(str) {
+        if (!str) return '';
+        const d = document.createElement('div');
+        d.textContent = str;
+        return d.innerHTML;
+    }
+
+    function toggleWorkHours() {
+        const type = document.getElementById('workHoursType').value;
+        document.getElementById('fixedHours').style.display = type === 'fixed' ? 'flex' : 'none';
+        document.getElementById('customHours').style.display = type === 'custom' ? 'block' : 'none';
+    }
+
+    const generalRules = [
+        { ar: "استخدام الجوال: يرجى ترك الجوال في الغرفة أثناء العمل، والاستمتاع باستخدامه في أوقات الراحة (يُفضل على الوضع الصامت).", en: "Mobile Phone: Please keep your phone in your room during work hours, and enjoy using it on your breaks." },
+        { ar: "الصدق والأمانة: نحن نقدر الصدق؛ لا تترددي في إخبارنا فوراً إذا انكسر أو تلف أي شيء بالخطأ، ولا داعي لإخفاء الأخطاء.", en: "Honesty: We appreciate honesty; please tell us immediately if anything breaks by mistake." },
+        { ar: "الخصوصية: خصوصيتك وخصوصيتنا مهمة؛ يرجى طرق الباب دائماً قبل الدخول، ونرجو عدم تصوير أي جزء من المنزل أو العائلة.", en: "Privacy: Always knock before entering. Strictly no photos of the house or family." },
+        { ar: "السؤال عند الشك: نحن هنا لمساعدتك؛ اسألينا دائماً قبل تشغيل أي جهاز أو استخدام منظف جديد.", en: "Ask When Unsure: Do not operate new appliances or use new cleaners without asking first." },
+        { ar: "الأمان والسلامة: لسلامتك وسلامتنا؛ يرجى عدم فتح الباب الخارجي لأي غريب بدون إذن. ويجب التأكد من إغلاق الغاز وفصل الأجهزة.", en: "Safety: Do not open the door for strangers. Ensure gas and appliances are turned off after use." },
+        { ar: "النظافة الشخصية: نقدر اهتمامك بنظافتك الشخصية اليومية وغسل اليدين باستمرار للحفاظ على صحتك.", en: "Hygiene: Maintain daily personal hygiene and wash hands frequently with soap and water." },
+        { ar: "التبليغ عن الأعطال والنواقص: إخبارنا فوراً بأي تسريب، لمبة محترقة، أو تسجيل نواقص المطبخ لنوفرها.", en: "Reporting: Immediately report leaks, burnt bulbs, or note down missing supplies." },
+        { ar: "ترشيد الاستهلاك: شكراً لتعاونك في إطفاء الأنوار والمكيفات عند الخروج من الغرف.", en: "Energy Saving: Turn off lights/AC when leaving rooms. Do not waste water." },
+        { ar: "تهوية المنزل: الحرص على فتح النوافذ بانتظام لتجديد الهواء، مع الانتباه لإغلاقها بعد فترة.", en: "Ventilation: Open windows regularly to ventilate the house, but remember to close them later." },
+        { ar: "الصحة والمرض: صحتك تهمنا جداً؛ إذا شعرتِ بأي تعب أو مرض، أخبرينا فوراً لترتاحي وتحصلي على العلاج.", en: "Health: If you feel sick, inform us immediately so you can rest and get treated." }
+    ];
+
+    const dependentRules = [
+        { ar: "الطعام: غذاء أطفالنا/كبار السن أمانة؛ يرجى تحضير وجبات طبيعية وصحية بالمنزل 100%. (يُمنع الأكل الجاهز).", en: "Food: Meals must be 100% natural, healthy, and homemade (No ready-made food)." },
+        { ar: "التعقيم: لحمايتهم، يرجى غسل وتعقيم الرضاعات أو أدوات الأكل بانتظام.", en: "Sterilization: Regularly wash and sterilize feeding bottles and eating utensils." },
+        { ar: "النظافة قبل التعامل: شكراً لغسل يديك جيداً بالصابون دائماً قبل تحضير وجباتهم أو التعامل معهم.", en: "Hygiene: Always wash hands well with soap before preparing their food or interacting with them." },
+        { ar: "أمان المحيط: إبقاء الأرضية خالية من القطع الصغيرة الخطيرة، ومسح المنطقة، وترتيب الأدوات باستمرار.", en: "Environment Safety: Keep the floor free of small dangerous items, wipe the area, and tidy items constantly." },
+        { ar: "الأدوات الحادة والخطرة: التأكد دائماً من إبعاد السكاكين والمنظفات والأكواب عن متناول أيديهم.", en: "Hazards: Always keep knives, glass cups, and cleaners away from their reach." }
+    ];
+
+    const kitchenTasks = [
+        { ar: "غسيل الأطباق والأواني بلطف بعد كل وجبة.", en: "Gently wash dishes after every meal." },
+        { ar: "تنظيف المطبخ ومسحه فوراً بعد كل وجبة.", en: "Clean and wipe the kitchen immediately after every meal." },
+        { ar: "مسح أسطح العمل (الرخام) والطاولات.", en: "Wipe countertops and tables." },
+        { ar: "مسح الفرن من الداخل والخارج وتنظيف الشفاط.", en: "Wipe oven (inside/out) and clean the exhaust fan/hood." },
+        { ar: "تنظيف وتلميع حوض الغسيل (المغسلة).", en: "Clean and polish the kitchen sink." },
+        { ar: "مسح الثلاجة والمايكروويف والأجهزة الكهربائية.", en: "Wipe the fridge, microwave, and electrical appliances." },
+        { ar: "التخلص من الأطعمة التالفة وتنظيم الثلاجة بانتظام.", en: "Discard spoiled food and organize the fridge regularly." },
+        { ar: "مسح دواليب المطبخ من الخارج.", en: "Wipe kitchen cabinets from the outside." },
+        { ar: "تفريغ الدواليب لمسحها من الداخل وإعادة ترتيبها.", en: "Empty cabinets to wipe inside and reorganize." },
+        { ar: "ترتيب وتنظيف ركن القهوة.", en: "Organize and clean the coffee corner." },
+        { ar: "كنس ومسح المخزن وترتيب أرففه.", en: "Sweep, mop, and organize the pantry shelves." },
+        { ar: "ترتيب المقاضي عند شرائها ووضع كل شيء في مكانه المخصص.", en: "Organize groceries upon arrival and put everything in its designated place." },
+        { ar: "تعقيم إسفنجات المطبخ وألواح التقطيع.", en: "Sanitize kitchen sponges and cutting boards." },
+        { ar: "تفريغ سلات المهملات وتغيير الأكياس.", en: "Empty trash bins and replace bags." },
+        { ar: "غسل وتعقيم سلات المهملات.", en: "Wash and sanitize trash bins." },
+        { ar: "إخراج القمامة ليلاً.", en: "Take trash out at night." }
+    ];
+
+    const roomTasks = [
+        { ar: "الترتيب اللطيف والمستمر للصالات وإعادة الألعاب والأشياء لأماكنها المخصصة.", en: "Continuously tidy living areas and put items back in their places." },
+        { ar: "ترتيب الأسرة وتنظيم المخدات.", en: "Make beds and organize pillows." },
+        { ar: "تغيير الملاءات والشراشف وغسلها بانتظام.", en: "Regularly change and wash bed sheets." },
+        { ar: "ترتيب دواليب الملابس.", en: "Organize wardrobes." },
+        { ar: "مسح داخل الأدراج والرفوف.", en: "Wipe inside drawers and shelves." },
+        { ar: "مسح أعلى الخزانات والأثاث العالي.", en: "Wipe tops of cabinets and tall furniture." },
+        { ar: "كنس ومسح الأرضيات والمداخل.", en: "Sweep and mop floors and entrances." },
+        { ar: "الكنس بعمق أسفل الكنب والأسرة وتحت السجاد.", en: "Deep vacuum under sofas, beds, and carpets." },
+        { ar: "مسح الغبار برفق عن الأثاث والتحف والأسطح الزجاجية.", en: "Gently dust furniture, decor, and glass surfaces." },
+        { ar: "مسح شاشات التلفزيون.", en: "Wipe TV screens." },
+        { ar: "مسح زجاج النوافذ من الداخل.", en: "Wipe indoor windows." },
+        { ar: "كنس مجاري الألمنيوم للنوافذ.", en: "Vacuum aluminum window tracks." },
+        { ar: "تنظيف الأبواب والمقابض.", en: "Clean doors and handles." },
+        { ar: "مسح مراوح السقف والثريات والأباجورات.", en: "Wipe ceiling fans, chandeliers, and lampshades." },
+        { ar: "تنظيف فلاتر مكيفات الهواء.", en: "Clean AC filters." },
+        { ar: "تنظيف الستائر.", en: "Clean curtains." },
+        { ar: "مسح البقع عن الجدران برفق عند ملاحظتها.", en: "Gently wipe any spots on the walls when noticed." }
+    ];
+
+    const bathTasks = [
+        { ar: "غسيل وتنظيف الحمامات جيداً وبشكل مستمر.", en: "Continuously wash and clean the bathrooms thoroughly." },
+        { ar: "تنظيف المراحيض بعمق من الداخل والخارج.", en: "Deep clean toilets (inside and outside)." },
+        { ar: "فرك حوض الاستحمام (البانيو).", en: "Scrub the bathtub." },
+        { ar: "تلميع الخلاطات (الحنفيات) والمرايا.", en: "Polish faucets and mirrors." },
+        { ar: "مسح داخل أدراج ورفوف الحمام.", en: "Wipe inside bathroom drawers and shelves." },
+        { ar: "مسح وتلميع السخان.", en: "Wipe and polish the water heater." },
+        { ar: "تنظيف مراوح الشفط والنوافذ.", en: "Clean exhaust fans and windows." },
+        { ar: "تغيير وغسيل مناشف الحمام.", en: "Change and wash bathroom towels." },
+        { ar: "تغيير وغسيل دعاسات الأرضية.", en: "Change and wash floor mats." },
+        { ar: "غسل جدران الحمامات.", en: "Wash bathroom walls." },
+        { ar: "إزالة الشوائب من مصارف المياه (الصفايات).", en: "Clear drains from debris." }
+    ];
+
+    const laundryTasks = [
+        { ar: "غسيل الملابس بعناية.", en: "Wash clothes carefully." },
+        { ar: "كيّ الملابس.", en: "Iron clothes." },
+        { ar: "طيّ الملابس وترتيبها في الدواليب.", en: "Fold clothes and organize them in wardrobes." },
+        { ar: "فحص جيوب جميع الملابس قبل غسلها وفصل البيضاء عن الملونة.", en: "Check pockets before washing and separate white clothes from colored ones." },
+        { ar: "غسيل ملابس ومناشف الأطفال الرضع منفصلة بمنظف خاص.", en: "Wash babies' clothes/towels completely separate using baby detergent." },
+        { ar: "استخدام النشافة (Dryer) فقط لمفارش السرير، وباقي الملابس تُنشر لتجف طبيعياً.", en: "Use the dryer ONLY for bed sheets; hang other clothes to dry naturally." },
+        { ar: "عمل دورة تنظيف لغسالة الملابس للمحافظة عليها.", en: "Run a cleaning cycle for the washing machine to maintain it." },
+        { ar: "تعبئة الزجاجات الفارغة من منظفات التنظيف.", en: "Refill empty cleaning bottles." },
+        { ar: "تنظيف المكنسة والممسحة بعد الانتهاء منها.", en: "Clean the vacuum and mop after use." },
+        { ar: "كنس أو غسيل الحوش الخارجي والأبواب الخارجية (إن وجدت).", en: "Sweep or wash the outdoor yard and exterior doors (if any)." }
+    ];
+
+    function buildFreqUI(id) {
+        return `<div class="freq-container"><div class="freq-pills"><button type="button" class="freq-pill active" onclick="setFreq(${id},'daily',this)">يومي</button><button type="button" class="freq-pill" onclick="setFreq(${id},'weekly',this)">أسبوعي</button><button type="button" class="freq-pill" onclick="setFreq(${id},'monthly',this)">شهري</button><button type="button" class="freq-pill" onclick="setFreq(${id},'asneeded',this)">حسب الحاجة</button><button type="button" class="freq-pill" onclick="setFreq(${id},'specific',this)">أيام محددة</button></div><div id="days-${id}" class="days-picker"><span class="day-chip" onclick="toggleDay(this)" data-day="أحد">أحد</span><span class="day-chip" onclick="toggleDay(this)" data-day="اثنين">اثنين</span><span class="day-chip" onclick="toggleDay(this)" data-day="ثلاثاء">ثلاثاء</span><span class="day-chip" onclick="toggleDay(this)" data-day="أربعاء">أربعاء</span><span class="day-chip" onclick="toggleDay(this)" data-day="خميس">خميس</span><span class="day-chip" onclick="toggleDay(this)" data-day="جمعة">جمعة</span><span class="day-chip" onclick="toggleDay(this)" data-day="سبت">سبت</span></div></div><input type="hidden" id="sel-${id}" value="daily">`;
+    }
+
+    let elementIdCounter = 0;
+
+    function init() {
+        renderRules('general-rules-container', generalRules);
+        renderRules('dependent-rules-container', dependentRules);
+        renderTasks('kitchen-container', kitchenTasks);
+        renderTasks('rooms-container', roomTasks);
+        renderTasks('bathrooms-container', bathTasks);
+        renderTasks('laundry-container', laundryTasks);
+    }
+
+    function renderRules(containerId, rulesArray) {
+        const container = document.getElementById(containerId);
+        rulesArray.forEach(r => {
+            let id = elementIdCounter++;
+            container.innerHTML += `
+                <div class="item-row">
+                    <label class="cb-wrapper" style="align-items:center;">
+                        <input type="checkbox" class="rule-cb" id="cb-${id}" data-orig-ar="${escapeHTML(r.ar)}" data-orig-en="${escapeHTML(r.en)}">
+                        <div class="label-content">
+                            <div contenteditable="true" class="editable-ar" id="txt-${id}" title="اضغطي للتعديل">${escapeHTML(r.ar)}</div>
+                        </div>
+                    </label>
+                </div>
+            `;
+        });
+    }
+
+    function renderTasks(containerId, tasksArray) {
+        const container = document.getElementById(containerId);
+        tasksArray.forEach(t => {
+            let id = elementIdCounter++;
+            container.innerHTML += `
+                <div class="item-row">
+                    <label class="cb-wrapper" style="align-items:center;">
+                        <input type="checkbox" class="task-cb" id="cb-${id}" data-type="predef" data-orig-ar="${escapeHTML(t.ar)}" data-orig-en="${escapeHTML(t.en)}" onchange="toggleSelect(${id})">
+                        <div class="label-content">
+                            <div contenteditable="true" class="editable-ar" id="txt-${id}" title="اضغطي للتعديل">${escapeHTML(t.ar)}</div>
+                        </div>
+                    </label>
+                    <div id="freq-${id}" class="task-freq">${buildFreqUI(id)}</div>
+                </div>
+            `;
+        });
+    }
+
+    function addCustomRuleRow(containerId) {
+        let id = elementIdCounter++;
+        document.getElementById(containerId).insertAdjacentHTML('beforeend', `
+            <div class="item-row" style="border: 1.5px dashed rgba(91,63,140,0.3); background:#FDFBFF;">
+                <label class="cb-wrapper" style="align-items:center;">
+                    <input type="checkbox" class="rule-cb custom" id="cb-${id}" onchange="autoCheckRule(this, ${id})">
+                    <div class="label-content">
+                        <input type="text" id="txt-${id}" class="custom-input" placeholder="اكتبي القانون المخصص هنا..." oninput="autoCheckRule(document.getElementById('cb-${id}'), ${id})">
+                    </div>
+                </label>
+            </div>
+        `);
+    }
+
+    function addCustomTaskRow(containerId) {
+        let id = elementIdCounter++;
+        document.getElementById(containerId).insertAdjacentHTML('beforeend', `
+            <div class="item-row" style="border: 1.5px dashed rgba(91,63,140,0.3); background:#FDFBFF;">
+                <label class="cb-wrapper" style="align-items:center;">
+                    <input type="checkbox" class="task-cb custom" id="cb-${id}" onchange="toggleSelect(${id})">
+                    <div class="label-content">
+                        <input type="text" id="txt-${id}" class="custom-input" placeholder="اكتبي المهمة هنا وسيتم ترجمتها آلياً..." oninput="autoCheck(this, ${id})">
+                    </div>
+                </label>
+                <div id="freq-${id}" class="task-freq">${buildFreqUI(id)}</div>
+            </div>
+        `);
+    }
+
+    function toggleSelect(id) {
+        const freq = document.getElementById(`freq-${id}`);
+        if(freq) freq.style.display = document.getElementById(`cb-${id}`).checked ? 'block' : 'none';
+    }
+
+    function setFreq(id, freq, btn) {
+        document.getElementById(`sel-${id}`).value = freq;
+        const pills = btn.closest('.freq-pills');
+        pills.querySelectorAll('.freq-pill').forEach(p => p.classList.remove('active'));
+        btn.classList.add('active');
+        const daysPicker = document.getElementById(`days-${id}`);
+        if(daysPicker) {
+            daysPicker.style.display = freq === 'specific' ? 'flex' : 'none';
+            if(freq !== 'specific') daysPicker.querySelectorAll('.day-chip').forEach(c => c.classList.remove('selected'));
+        }
+    }
+
+    function toggleDay(chip) { chip.classList.toggle('selected'); }
+
+    function getSelectedDays(id) {
+        const picker = document.getElementById(`days-${id}`);
+        if(!picker) return [];
+        return Array.from(picker.querySelectorAll('.day-chip.selected')).map(c => c.dataset.day);
+    }
+
+    function autoCheck(inputEl, id) {
+        const cb = document.getElementById(`cb-${id}`);
+        const hasValue = inputEl.value.trim().length > 0;
+        if(cb.checked !== hasValue) { cb.checked = hasValue; toggleSelect(id); }
+    }
+
+    function autoCheckRule(cbEl, id) {
+        const txtEl = document.getElementById(`txt-${id}`);
+        const hasValue = txtEl ? txtEl.value.trim().length > 0 : false;
+        cbEl.checked = hasValue;
+    }
+
+    function getBoxes(freq, selectedDays) {
+        if(freq === 'asneeded') return '';
+        let count;
+        if(freq === 'daily') count = 7;
+        else if(freq === 'weekly') count = 4;
+        else if(freq === 'monthly') count = 1;
+        else if(freq === 'specific') count = (selectedDays && selectedDays.length) || 0;
+        else count = 1;
+        if(count === 0) return '';
+        return `<div class="check-boxes">` + `<div class="box"></div>`.repeat(count) + `</div>`;
+    }
+
+    async function translateText(text, targetLang) {
+        if (!text || targetLang === 'ar') return "";
+        try {
+            const url = `https://translate.googleapis.com/translate_a/single?client=gtx&sl=ar&tl=${targetLang}&dt=t&q=${encodeURIComponent(text)}`;
+            const res = await fetch(url);
+            const data = await res.json();
+            if (data && data[0] && data[0][0] && data[0][0][0]) return data[0][0][0];
+            return text;
+        } catch(e) { return text; }
+    }
+
+    async function generateSchedule() {
+        const targetLang = document.getElementById('workerLang').value;
+        const includeCheckboxes = document.getElementById('includeCheckboxes').value === 'yes';
+        const workerNameInput = document.getElementById('workerName').value.trim();
+        const workerName = workerNameInput !== "" ? workerNameInput : "عزيزتي";
+
+        const checkedRules = document.querySelectorAll('.rule-cb:checked');
+        const checkedTasks = document.querySelectorAll('.task-cb:checked');
+
+        let validRules = [];
+        for(let cb of checkedRules) {
+            const txtEl = document.getElementById(cb.id.replace('cb-', 'txt-'));
+            const val = txtEl.tagName === 'INPUT' ? txtEl.value.trim() : txtEl.innerText.trim();
+            if(val.length > 0) validRules.push(cb);
+        }
+
+        let validTasks = [];
+        for(let cb of checkedTasks) {
+            const txtEl = document.getElementById(cb.id.replace('cb-', 'txt-'));
+            const val = txtEl.tagName === 'INPUT' ? txtEl.value.trim() : txtEl.innerText.trim();
+            if(val.length > 0) validTasks.push(cb);
+        }
+
+        if(validRules.length === 0 && validTasks.length === 0) {
+            alert("يرجى اختيار قانون واحد أو مهمة واحدة على الأقل لإنشاء الجدول.");
+            return;
+        }
+
+        const btn = document.getElementById('generateBtn');
+        btn.innerHTML = "⏳ جاري معالجة الجدول والترجمة...";
+        btn.disabled = true;
+
+        let html = '';
+        const hasTasks = validTasks.length > 0;
+
+        const schedType = document.getElementById('scheduleType').value;
+        const sDate = document.getElementById('startDate').value;
+        const eDate = document.getElementById('endDate').value;
+        const dayOffTextAr = document.getElementById('dayOff').value;
+        const whType = document.getElementById('workHoursType').value;
+
+        let showDuration = (schedType === 'specific' && sDate && eDate);
+        let showDayOff = (dayOffTextAr !== 'بدون إجازة / حسب الاتفاق');
+        let showWorkHours = (whType !== 'general');
+
+        let durationTextAr = showDuration ? `من ${sDate} إلى ${eDate}` : "";
+        let hoursTextAr = "";
+
+        if (whType === 'fixed') {
+            const st = document.getElementById('startTime').value || '--:--';
+            const et = document.getElementById('endTime').value || '--:--';
+            const bt = document.getElementById('breakTime').value || 'غير محدد';
+            hoursTextAr = `يبدأ ${st}، وينتهي ${et} (الراحة: ${bt})`;
+        } else if (whType === 'custom') {
+            hoursTextAr = document.getElementById('customHoursText').value.trim() || "غير محدد";
+        }
+
+        let welcomeAr = `نحن سعداء جداً بوجودك معنا ونقدر مجهودك. تم تصميم هذا الجدول خصيصاً من أجلكِ، لتسهيل عملكِ وتوضيح مهامكِ بكل وضوح — لتكوني مرتاحة ونقلل من التوجيهات المتكررة. نتمنى لكِ وقتاً سعيداً معنا!`;
+
+        let plainDetailsToTranslate = [];
+        if(showDuration) plainDetailsToTranslate.push(`مدة الجدول: ${durationTextAr}`);
+        if(showDayOff) plainDetailsToTranslate.push(`يوم الإجازة: ${dayOffTextAr}`);
+        if(showWorkHours) plainDetailsToTranslate.push(`أوقات العمل: ${hoursTextAr}`);
+        let detailsStringAr = plainDetailsToTranslate.join(" | ");
+
+        let welcomeTranslated = "", detailsTranslated = "";
+        if(targetLang !== 'ar') {
+            welcomeTranslated = await translateText(welcomeAr, targetLang);
+            if(detailsStringAr) detailsTranslated = await translateText(detailsStringAr, targetLang);
+        }
+
+        if(validRules.length > 0) {
+            html += `<div class="print-page ${hasTasks ? 'page-break' : ''}" id="page-rules">`;
+            html += `
+                <div class="welcome-banner">
+                    <strong>مرحباً بكِ في منزلنا يا ${escapeHTML(workerName)} 🌸</strong>
+                    <div class="msg-text">${escapeHTML(welcomeAr)}</div>
+                    ${targetLang !== 'ar' ? `<div class="msg-translated" dir="ltr">${escapeHTML(welcomeTranslated)}</div>` : ''}
+                </div>
+            `;
+
+            if(showDuration || showDayOff || showWorkHours) {
+                html += `<div class="work-details-banner">
+                    <div style="font-weight:800; color:var(--primary); margin-bottom:12px; font-size:1.05rem;">⏱️ تفاصيل العمل والجدول / Work & Schedule Details:</div>
+                `;
+                if(showDuration) html += `<div class="detail-row"><strong>📅 مدة الجدول:</strong> <span>${escapeHTML(durationTextAr)}</span></div>`;
+                if(showDayOff) html += `<div class="detail-row"><strong>🌴 الإجازة:</strong> <span>${escapeHTML(dayOffTextAr)}</span></div>`;
+                if(showWorkHours) html += `<div class="detail-row"><strong>⏰ أوقات العمل:</strong> <span>${escapeHTML(hoursTextAr)}</span></div>`;
+                if(targetLang !== 'ar' && detailsTranslated) {
+                    html += `<div class="msg-translated" style="margin-top:14px; border-top:1px dashed #ccc; padding-top:10px;" dir="ltr">${escapeHTML(detailsTranslated)}</div>`;
+                }
+                html += `</div>`;
+            }
+
+            html += `<div class="print-title">📌 قوانين المنزل الأساسية / House Rules</div>`;
+            html += `<ul class="rules-ul">`;
+            for(let cb of validRules) {
+                let id = cb.id.replace('cb-', '');
+                let txtEl = document.getElementById(`txt-${id}`);
+                let currentAr = txtEl.tagName === 'INPUT' ? txtEl.value.trim() : txtEl.innerText.trim();
+                let enText = "";
+                if(!cb.classList.contains('custom') && targetLang === 'en' && currentAr === cb.dataset.origAr) {
+                    enText = cb.dataset.origEn;
+                } else if(targetLang !== 'ar') {
+                    enText = await translateText(currentAr, targetLang);
+                }
+                html += `<li><b>${escapeHTML(currentAr)}</b>${targetLang !== 'ar' ? `<span dir="ltr">${escapeHTML(enText)}</span>` : ''}</li>`;
+            }
+            html += `</ul></div>`;
+        }
+
+        if(hasTasks) {
+            html += `<div class="print-page" id="page-tracker">`;
+            html += `<div class="print-title">🗓️ جدول توزيع المهام / Tasks Schedule</div>`;
+
+            let sortedTasks = { daily: [], weekly: [], monthly: [], asneeded: [], specific: [] };
+            let freqTitles = {
+                daily: "مهام يومية / Daily Tasks",
+                weekly: "مهام أسبوعية / Weekly Tasks",
+                monthly: "مهام شهرية / Monthly Tasks",
+                asneeded: "حسب الحاجة / As Needed",
+                specific: "أيام محددة / Specific Days"
+            };
+
+            for(let cb of validTasks) {
+                let id = cb.id.replace('cb-', '');
+                let freqId = document.getElementById(`sel-${id}`).value;
+                let txtEl = document.getElementById(`txt-${id}`);
+                let currentAr = txtEl.tagName === 'INPUT' ? txtEl.value.trim() : txtEl.innerText.trim();
+                let enText = "";
+                if(!cb.classList.contains('custom') && targetLang === 'en' && currentAr === cb.dataset.origAr) {
+                    enText = cb.dataset.origEn;
+                } else if(targetLang !== 'ar') {
+                    enText = await translateText(currentAr, targetLang);
+                }
+
+                let daysHtml = '';
+                let selDays = [];
+                if(freqId === 'specific') {
+                    selDays = getSelectedDays(id);
+                    if(selDays.length > 0) daysHtml = `<div class="task-days-tag">${selDays.join(' ، ')}</div>`;
+                }
+
+                sortedTasks[freqId].push({ ar: currentAr, en: enText, daysHtml: daysHtml, selDays: selDays, freq: freqId });
+            }
+
+            ["daily", "weekly", "monthly", "specific", "asneeded"].forEach(f => {
+                if(sortedTasks[f].length === 0) return;
+
+                let sectionTitle = freqTitles[f];
+                if(f === 'specific') {
+                    let allDays = new Set();
+                    sortedTasks[f].forEach(t => t.selDays.forEach(d => allDays.add(d)));
+                    if(allDays.size > 0) sectionTitle = `أيام محددة: ${Array.from(allDays).join(' ، ')} / Specific Days`;
+                }
+
+                html += `
+                    <h3 style="color:var(--primary); margin-top:22px; font-size:1rem;">${sectionTitle}</h3>
+                    <div class="table-responsive">
+                        <table class="tracker-table">
+                            <tr>
+                                <th>المهمة / Task</th>
+                                ${includeCheckboxes && f !== 'asneeded' ? `<th style="width:160px;">التقييم / Check</th>` : ''}
+                            </tr>
+                `;
+
+                sortedTasks[f].forEach(task => {
+                    html += `
+                        <tr>
+                            <td>
+                                <div style="font-weight:700;">${escapeHTML(task.ar)}</div>
+                                ${targetLang !== 'ar' ? `<div style="display:block; font-family:'Playfair Display',sans-serif; font-size:0.85rem; color:#555; direction:ltr; text-align:left; margin-top:4px;">${escapeHTML(task.en)}</div>` : ''}
+                                ${task.daysHtml}
+                            </td>
+                            ${includeCheckboxes && f !== 'asneeded' ? `<td style="width:160px; text-align:left;">${getBoxes(f, task.selDays)}</td>` : ''}
+                        </tr>
+                    `;
+                });
+
+                html += `</table></div>`;
+            });
+
+            if(includeCheckboxes) {
+                html += `<div class="print-footer-note">يرجى وضع علامة (✓) في المربع عند إنجاز المهمة / Please check the box when the task is done.</div>`;
+            }
+            html += `</div>`;
+        }
+
+        document.getElementById('result-content').innerHTML = html;
+        document.getElementById('result-section').style.display = 'block';
+        document.getElementById('result-section').scrollIntoView({ behavior: 'smooth' });
+
+        btn.innerHTML = "تحديث الجدول 🔄";
+        btn.disabled = false;
+    }
+</script>
+
+</body>
+</html>
