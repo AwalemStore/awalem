@@ -76,6 +76,14 @@
         .intro-section { display: flex; flex-direction: column; gap: 12px; text-align: right; }
         .intro-section h2 { font-size: 1.1rem; color: var(--ruby-petals); margin-bottom: 5px; }
         .intro-steps { font-size: 0.95rem; line-height: 1.8; margin-bottom: 10px; padding-right: 20px; }
+        .guide-steps { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; margin-top: 12px; }
+        .guide-step { background: #FFF0F3; border-radius: 18px; padding: 18px; text-align: center; border: 1px solid rgba(165,81,102,0.12); transition: all 0.3s; }
+        .guide-step:hover { transform: translateY(-3px); border-color: var(--ruby-petals); box-shadow: 0 8px 20px rgba(165,81,102,0.1); }
+        .step-num { width: 34px; height: 34px; background: linear-gradient(135deg, var(--ruby-petals), var(--cherry-soda)); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; margin: 0 auto 10px; }
+        .step-title { font-weight: 700; font-size: 14px; color: var(--ruby-petals); margin-bottom: 4px; }
+        .step-body { font-size: 12px; color: #86868b; line-height: 1.5; }
+        .step-highlight { color: var(--ruby-petals); font-weight: 700; }
+        @media (max-width: 480px) { .guide-steps { grid-template-columns: 1fr; } }
         
         .scientific-tip { 
             background: linear-gradient(to left, rgba(247, 218, 231, 0.3), transparent);
@@ -224,11 +232,23 @@
 
             <div class="bento-card intro-section" style="margin-bottom: 15px;">
                 <h2>💡 كيف تستخدمين المنصة؟</h2>
-                <ol class="intro-steps">
-                    <li>حددي لغة العاملة من القائمة بالأسفل.</li>
-                    <li>اختاري الكلمات المراد التركيز عليها من البنك لتضاف للجدول مباشرة.</li>
-                    <li>اضغطي طباعة، وسيتم تجهيز الجدول بشكل نظيف وأنيق!</li>
-                </ol>
+                <div class="guide-steps">
+                    <div class="guide-step">
+                        <div class="step-num">١</div>
+                        <div class="step-title">حددي اللغة</div>
+                        <div class="step-body">اختاري لغة العاملة من القائمة بالأسفل</div>
+                    </div>
+                    <div class="guide-step">
+                        <div class="step-num">٢</div>
+                        <div class="step-title">اختاري الكلمات</div>
+                        <div class="step-body">اضغطي على الكلمات من البنك لتضاف للجدول مباشرة</div>
+                    </div>
+                    <div class="guide-step">
+                        <div class="step-num">٣</div>
+                        <div class="step-title">اطبعي الجدول</div>
+                        <div class="step-body">اضغطي طباعة وسيتم تجهيز الجدول بشكل نظيف وأنيق!</div>
+                    </div>
+                </div>
                 <div class="scientific-tip">
                     🧠 <strong>نصيحة علمية:</strong> لتسريع عملية الحفظ وتجنب تشتيت العاملة، يُنصح باختيار <strong>5 إلى 10 كلمات أسبوعياً</strong> فقط. خياراتك تُحفظ هنا تلقائياً لتعودي وتُحدّثيها متى شئتِ.
                 </div>

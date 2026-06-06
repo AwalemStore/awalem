@@ -68,6 +68,17 @@
         .hero h1 { font-size: 2.6rem; font-weight: 900; margin-bottom: 15px; color: #4A2E3A; letter-spacing: -0.5px; }
         .hero p { font-size: 1.2rem; font-weight: 500; color: rgba(74,46,58,0.7); max-width: 750px; margin: 0 auto; line-height: 1.9; }
 
+        /* --- Guide Steps --- */
+        .guide-card { background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px); border-radius: var(--radius); padding: 28px; border: 1px solid rgba(255,255,255,0.7); box-shadow: var(--shadow); grid-column: span 12; margin-bottom: 5px; }
+        .guide-card-title { font-size: 1.1rem; font-weight: 700; color: var(--main-dark); margin-bottom: 16px; text-align: right; }
+        .guide-steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; }
+        .guide-step { background: #FFF0F3; border-radius: 18px; padding: 18px; text-align: center; border: 1px solid rgba(196,136,154,0.12); transition: all 0.3s; }
+        .guide-step:hover { transform: translateY(-3px); border-color: var(--main); box-shadow: 0 8px 20px rgba(196,136,154,0.15); }
+        .step-num { width: 34px; height: 34px; background: linear-gradient(135deg, var(--main), var(--main-dark)); color: white; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-weight: 800; font-size: 14px; margin: 0 auto 10px; }
+        .step-title { font-weight: 700; font-size: 14px; color: var(--main-dark); margin-bottom: 4px; }
+        .step-body { font-size: 12px; color: #86868b; line-height: 1.5; }
+        .step-highlight { color: var(--main-dark); font-weight: 700; }
+
         /* --- Bento System --- */
         .bento {
             background: var(--glass); backdrop-filter: blur(25px); -webkit-backdrop-filter: blur(25px);
@@ -212,6 +223,7 @@
             .hero::before, .hero::after { font-size: 1.5rem; }
             .btn-group { flex-direction: column; }
             .bento { padding: 25px; }
+            .guide-steps { grid-template-columns: repeat(2, 1fr); }
         }
 
         #result-section { display: none; width: 100%; max-width: 900px; margin: 30px auto 0 auto; box-sizing: border-box; }
@@ -289,6 +301,32 @@
         <div class="hero">
             <h1>دليل غذاء الطفل الذكي | منصة عوالم</h1>
             <p>منصة التغذية الطبيعية المتكاملة: جدول 4 أسابيع، تتبع الحساسية، وترجمة فورية لمساعدتكِ.</p>
+        </div>
+
+        <div class="guide-card no-print">
+            <div class="guide-card-title">💡 كيف تستخدمين المنصة؟</div>
+            <div class="guide-steps">
+                <div class="guide-step">
+                    <div class="step-num">١</div>
+                    <div class="step-title">أدخلي عمر الطفل</div>
+                    <div class="step-body">اختاري تاريخ الولادة أو أدخلي العمر يدوياً</div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-num">٢</div>
+                    <div class="step-title">حددي تاريخ البدء</div>
+                    <div class="step-body">اختاري يوم بداية خطة التغذية</div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-num">٣</div>
+                    <div class="step-title">استكشفي الخطة</div>
+                    <div class="step-body">تصفحي وجبات 4 أسابيع مع تتبع الحساسية</div>
+                </div>
+                <div class="guide-step">
+                    <div class="step-num">٤</div>
+                    <div class="step-title">اطبعي أو شاركي</div>
+                    <div class="step-body">اضغطي طباعة لنسخة جاهزة أو شاركيها!</div>
+                </div>
+            </div>
         </div>
 
         <div class="bento full">
