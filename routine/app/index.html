@@ -597,7 +597,7 @@
     </div>
     <div id="result-content"></div>
     <div class="print-btn-wrap no-print">
-        <button class="btn-print" onclick="window.print()">🖨️ طباعة الجدول (PDF)</button>
+        <button class="btn-print" onclick="printResult()">🖨️ طباعة الجدول (PDF)</button>
         <p style="font-size: 13px; color: var(--text-muted); margin-top: 14px;">عند الطباعة، اختاري "حفظ كـ PDF" لتحصلي على ملف جاهز للمشاركة</p>
     </div>
 </div>
@@ -1134,6 +1134,14 @@
 
         btn.innerHTML = "تحديث الجدول 🔄";
         btn.disabled = false;
+    }
+
+    function printResult() {
+        var content = document.getElementById('result-content');
+        var html = '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>الروتين الذكي - طباعة</title><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:"IBM Plex Sans Arabic",sans-serif;direction:rtl;padding:20px;color:#1d1d1f}.print-page{background:white;padding:30px;margin-bottom:20px}.print-title{color:#6A4C9C;font-size:1.2rem;border-bottom:2px solid #E8E0F0;padding-bottom:10px;margin-top:24px;margin-bottom:18px;font-weight:800}.rules-ul{list-style:none;padding:0}.rules-ul li{padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13px;line-height:1.6}.rules-ul span{display:block;font-family:"Playfair Display",sans-serif;font-size:0.85rem;color:#555;direction:ltr;text-align:left;margin-top:3px}.tracker-table{width:100%;border-collapse:collapse;margin-top:12px}.tracker-table th{background:#6A4C9C;color:white;padding:10px;font-size:12px;text-align:center}.tracker-table td{border:1px solid #e0e0e0;padding:8px;text-align:center;font-size:13px}.print-footer-note{text-align:center;color:#888;font-size:12px;margin-top:18px}@media print{@page{margin:1cm;size:A4 portrait}}</style></head><body>' + content.innerHTML + '<script>setTimeout(function(){window.print()},500)<\/script></body></html>';
+        var w = window.open('', '_blank');
+        w.document.write(html);
+        w.document.close();
     }
 </script>
 

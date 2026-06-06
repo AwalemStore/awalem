@@ -267,7 +267,7 @@
                         <option value="hi">الهندية - Hindi</option>
                         <option value="fr">الفرنسية - French</option>
                     </select>
-                    <button class="btn-print" onclick="window.print()">🖨️ طباعة الجدول</button>
+                    <button class="btn-print" onclick="printTable()">🖨️ طباعة الجدول</button>
                 </div>
             </div>
 
@@ -282,7 +282,7 @@
                     <tbody id="tableBody"></tbody>
                 </table>
                 <div style="margin-top: 20px; display: flex; justify-content: center;">
-                    <button class="btn-print" style="max-width: 250px;" onclick="window.print()">🖨️ طباعة الجدول</button>
+                    <button class="btn-print" style="max-width: 250px;" onclick="printTable()">🖨️ طباعة الجدول</button>
                 </div>
             </div>
             
@@ -817,6 +817,16 @@
                 }
             });
             tbody.innerHTML = htmlContent;
+        }
+
+        function printTable() {
+            var table = document.getElementById('dictionaryTable');
+            var lang = document.getElementById('languageSelect');
+            var langName = lang.options[lang.selectedIndex].text;
+            var html = '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>القاموس الذكي - طباعة</title><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:"IBM Plex Sans Arabic",sans-serif;direction:rtl;padding:20px;color:#1d1d1f}h2{text-align:center;color:#A55166;font-size:20px;margin-bottom:15px}table{width:100%;border-collapse:collapse}th{color:#A55166;border-bottom:2px solid #A55166;padding:10px 8px;font-size:13px;text-align:center}td{border-bottom:1px solid rgba(211,140,157,0.3);padding:10px 8px;font-size:13px}.category-row td{background:#FDF4F7;color:#A55166;font-weight:600;text-align:center;font-size:12px}@media print{@page{margin:1cm;size:A4 portrait}}</style></head><body><h2>القاموس الذكي للعاملات - ' + langName + '</h2>' + table.outerHTML + '<script>setTimeout(function(){window.print()},500)<\/script></body></html>';
+            var w = window.open('', '_blank');
+            w.document.write(html);
+            w.document.close();
         }
     </script>
 </body>
