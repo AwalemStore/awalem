@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>الروتين الذكي | SmartRoutine</title>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
     <style>
         :root {
             --primary: #5B3F8C;
@@ -597,7 +597,7 @@
     </div>
     <div id="result-content"></div>
     <div class="print-btn-wrap no-print">
-        <button class="btn-print" onclick="downloadPDF('result-content','الروتين_الذكي.pdf',this)">📄 تحميل PDF</button>
+        <button class="btn-print" onclick="window.print()">🖨️ طباعة الجدول (PDF)</button>
         <p style="font-size: 13px; color: var(--text-muted); margin-top: 14px;">عند الطباعة، اختاري "حفظ كـ PDF" لتحصلي على ملف جاهز للمشاركة</p>
     </div>
 </div>
@@ -1128,23 +1128,6 @@
 
         btn.innerHTML = "تحديث الجدول 🔄";
         btn.disabled = false;
-    }
-
-    function downloadPDF(elId, fileName, btn) {
-        var orig = btn.innerHTML;
-        btn.innerHTML = '⏳ جاري التحضير...';
-        btn.disabled = true;
-        var el = document.getElementById(elId);
-        html2pdf().set({
-            margin: [8, 8, 8, 8],
-            filename: fileName,
-            image: { type: 'jpeg', quality: 0.98 },
-            html2canvas: { scale: 2, useCORS: true, logging: false },
-            jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait' }
-        }).from(el).save().then(function() {
-            btn.innerHTML = orig;
-            btn.disabled = false;
-        });
     }
 </script>
 
