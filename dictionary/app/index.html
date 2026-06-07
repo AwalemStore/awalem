@@ -103,6 +103,10 @@
         button:active { transform: scale(0.98); }
         .btn-print { flex: 1; min-width: 120px; }
 
+        .print-fab { position: fixed; bottom: 90px; right: 20px; z-index: 9999; width: 56px; height: 56px; border-radius: 50%; background: linear-gradient(135deg, var(--ruby-petals), var(--cherry-soda)); color: white; border: none; font-size: 1.5rem; display: none; align-items: center; justify-content: center; box-shadow: 0 6px 20px rgba(165,81,102,0.4); cursor: pointer; padding: 0; }
+        .print-fab.visible { display: flex; }
+        .print-fab:active { transform: scale(0.92); }
+
         .word-bank-section { text-align: right;}
         .word-bank-section h3 { font-size: 1.1rem; color: var(--ruby-petals); margin-bottom: 15px; display: flex; justify-content: space-between; align-items: center;}
         .btn-select-all { width: auto; background: var(--pink-mist); border: none; color: var(--ruby-petals); padding: 8px 15px; font-size: 0.85rem; border-radius: 12px; font-weight: 600; }
@@ -174,7 +178,7 @@
             .bento-container { display: block !important; width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; gap: 0 !important; }
             .bento-card { border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; background: white !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
             
-            #loginView, .hero-banner, .intro-section, .controls-header, .word-bank-section, #learnedArchive, .btn-print, .footer { display: none !important; }
+            #loginView, .hero-banner, .intro-section, .controls-header, .word-bank-section, #learnedArchive, .btn-print, .footer, .print-fab { display: none !important; }
             #dictionaryView { display: block !important; width: 100% !important; }
             
             table { width: 100% !important; border-collapse: collapse !important; border: none !important; }
@@ -312,6 +316,8 @@
         </div>
 
         <div class="footer">صنع من قبل عوالم Awalem</div>
+
+        <button class="print-fab" id="printFab" onclick="printTable()">🖨️</button>
     </div>
 
     <script>
@@ -809,7 +815,9 @@
             let htmlContent = '';
 
             if (selectedWords.length === 0) {
-                tbody.innerHTML = `<tr><td colspan="3" class="empty-state">الجدول فارغ. اختاري الكلمات من البنك في الأعلى.</td></tr>`; return;
+                tbody.innerHTML = `<tr><td colspan="3" class="empty-state">الجدول فارغ. اختاري الكلمات من البنك في الأعلى.</td></tr>`;
+                document.getElementById('printFab').classList.remove('visible');
+                return;
             }
 
             fullDictionary.forEach(section => {
@@ -836,6 +844,7 @@
                 }
             });
             tbody.innerHTML = htmlContent;
+            document.getElementById('printFab').classList.add('visible');
         }
 
         function printTable() {
