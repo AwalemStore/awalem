@@ -597,8 +597,11 @@
     </div>
     <div id="result-content"></div>
     <div class="print-btn-wrap no-print">
-        <button class="btn-print" onclick="printResult()">🖨️ طباعة الجدول (PDF)</button>
-        <p style="font-size: 13px; color: var(--text-muted); margin-top: 14px;">عند الطباعة، اختاري "حفظ كـ PDF" لتحصلي على ملف جاهز للمشاركة</p>
+        <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
+            <button class="btn-print" onclick="downloadResult()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> تنزيل الملف</button>
+            <button class="btn-print" onclick="printResult()" style="background:linear-gradient(135deg,#5B3F8C,#8A68C8);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg> طباعة مباشرة</button>
+        </div>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 14px;">للحصول على ملف: اضغطي «تنزيل الملف»، أو «طباعة» واختاري «حفظ كـ PDF».</p>
     </div>
 </div>
 
@@ -1136,12 +1139,28 @@
         btn.disabled = false;
     }
 
-    function printResult() {
+    function buildRoutineHTML(autoPrint) {
         var content = document.getElementById('result-content');
-        var html = '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>الروتين الذكي - طباعة</title><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:"IBM Plex Sans Arabic",sans-serif;direction:rtl;padding:20px;color:#1d1d1f}.print-page{background:white;padding:30px;margin-bottom:20px}.print-title{color:#6A4C9C;font-size:1.2rem;border-bottom:2px solid #E8E0F0;padding-bottom:10px;margin-top:24px;margin-bottom:18px;font-weight:800}.rules-ul{list-style:none;padding:0}.rules-ul li{padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13px;line-height:1.6}.rules-ul span{display:block;font-family:"Playfair Display",sans-serif;font-size:0.85rem;color:#555;direction:ltr;text-align:left;margin-top:3px}.tracker-table{width:100%;border-collapse:collapse;margin-top:12px}.tracker-table th{background:#6A4C9C;color:white;padding:10px;font-size:12px;text-align:center}.tracker-table td{border:1px solid #e0e0e0;padding:8px;text-align:center;font-size:13px}.print-footer-note{text-align:center;color:#888;font-size:12px;margin-top:18px}@media print{@page{margin:1cm;size:A4 portrait}}</style></head><body>' + content.innerHTML + '<script>setTimeout(function(){window.print()},500)<\/script></body></html>';
+        var printScript = autoPrint ? '<script>setTimeout(function(){window.print()},500)<\/script>' : '';
+        return '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>الروتين الذكي - طباعة</title><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:"IBM Plex Sans Arabic",sans-serif;direction:rtl;padding:20px;color:#1d1d1f}.no-print{display:none}.print-page{background:white;padding:30px;margin-bottom:20px}.print-title{color:#6A4C9C;font-size:1.2rem;border-bottom:2px solid #E8E0F0;padding-bottom:10px;margin-top:24px;margin-bottom:18px;font-weight:800}.rules-ul{list-style:none;padding:0}.rules-ul li{padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13px;line-height:1.6}.rules-ul span{display:block;font-family:"Playfair Display",sans-serif;font-size:0.85rem;color:#555;direction:ltr;text-align:left;margin-top:3px}.tracker-table{width:100%;border-collapse:collapse;margin-top:12px}.tracker-table th{background:#6A4C9C;color:white;padding:10px;font-size:12px;text-align:center}.tracker-table td{border:1px solid #e0e0e0;padding:8px;text-align:center;font-size:13px}.print-footer-note{text-align:center;color:#888;font-size:12px;margin-top:18px}@media print{@page{margin:1cm;size:A4 portrait}}</style></head><body>' + content.innerHTML + printScript + '</body></html>';
+    }
+    function printResult() {
         var w = window.open('', '_blank');
-        w.document.write(html);
+        if (!w) { alert('الرجاء السماح بالنوافذ المنبثقة للطباعة، أو استخدمي زر «تنزيل الملف».'); return; }
+        w.document.write(buildRoutineHTML(true));
         w.document.close();
+    }
+    function downloadResult() {
+        try {
+            var blob = new Blob([buildRoutineHTML(false)], {type: 'text/html;charset=utf-8'});
+            var url = URL.createObjectURL(blob);
+            var a = document.createElement('a');
+            a.href = url; a.download = 'الروتين-الذكي.html';
+            document.body.appendChild(a); a.click(); document.body.removeChild(a);
+            setTimeout(function(){ URL.revokeObjectURL(url); }, 3000);
+        } catch(e) {
+            alert('تعذّر التنزيل على هذا الجهاز — جرّبي زر «طباعة مباشرة» واختاري «حفظ كـ PDF».');
+        }
     }
 </script>
 
