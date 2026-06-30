@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>عوالم | Awalem — أدوات ذكية لحياة أسهل</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700;800&family=Tajawal:wght@300;400;500;700;800&display=swap" rel="stylesheet">
+    <link rel="icon" type="image/png" href="images/logo.png">
+    <link rel="apple-touch-icon" href="images/logo.png">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     <style>
         :root {
             --primary: #6A4C9C;
@@ -29,7 +31,7 @@
         html { scroll-behavior: smooth; }
 
         body {
-            font-family: 'Tajawal', -apple-system, BlinkMacSystemFont, sans-serif;
+            font-family: 'IBM Plex Sans Arabic', -apple-system, BlinkMacSystemFont, sans-serif;
             background: var(--white);
             color: var(--text);
             -webkit-font-smoothing: antialiased;
@@ -73,6 +75,7 @@
             width: 32px;
             height: 32px;
             border-radius: 8px;
+            background: linear-gradient(135deg,#6A4C9C,#8B6FC0);
         }
 
         .nav-logo span {
@@ -387,12 +390,13 @@
         }
 
         .bundle-wrapper {
-            background: var(--text);
+            background: linear-gradient(135deg, #4A2F7A 0%, #6A4C9C 55%, #8B6FC0 100%);
             border-radius: 32px;
             padding: 56px 48px;
             color: white;
             position: relative;
             overflow: hidden;
+            box-shadow: 0 30px 80px rgba(80, 53, 128, 0.35);
         }
 
         .bundle-glow {
@@ -434,11 +438,15 @@
             align-items: center;
             gap: 6px;
             font-size: 0.78rem;
-            font-weight: 700;
-            color: var(--primary-light);
+            font-weight: 800;
+            color: #FFD60A;
+            background: rgba(255, 214, 10, 0.14);
+            border: 1px solid rgba(255, 214, 10, 0.3);
+            padding: 6px 14px;
+            border-radius: 100px;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            margin-bottom: 16px;
+            margin-bottom: 18px;
         }
 
         .bundle-left .label svg { color: #FFD60A; }
@@ -451,7 +459,7 @@
         }
 
         .bundle-left > p {
-            color: rgba(255,255,255,0.5);
+            color: rgba(255,255,255,0.78);
             font-size: 0.95rem;
             line-height: 1.6;
             margin-bottom: 28px;
@@ -467,9 +475,13 @@
         .include-item {
             display: flex;
             align-items: center;
-            gap: 8px;
-            font-size: 0.9rem;
+            gap: 10px;
+            font-size: 0.92rem;
             font-weight: 600;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.14);
+            padding: 11px 14px;
+            border-radius: 14px;
         }
 
         .include-check {
@@ -516,20 +528,24 @@
 
         .bundle-right .save-tag {
             display: inline-block;
-            background: #34C759;
-            color: white;
-            padding: 5px 16px;
+            background: linear-gradient(135deg, #FFD60A, #FF9F0A);
+            color: #3a2a00;
+            padding: 6px 18px;
             border-radius: 100px;
-            font-size: 0.8rem;
-            font-weight: 700;
+            font-size: 0.82rem;
+            font-weight: 800;
             margin-bottom: 22px;
+            box-shadow: 0 6px 18px rgba(255,159,10,0.35);
         }
 
         .bundle-cta-btn {
-            display: block;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
             padding: 16px;
-            background: var(--white);
-            color: var(--text);
+            background: linear-gradient(135deg, #FFE45C, #FFB300);
+            color: #3a2a00;
             border: none;
             border-radius: 14px;
             font-family: inherit;
@@ -539,11 +555,12 @@
             text-decoration: none;
             text-align: center;
             transition: all 0.25s;
+            box-shadow: 0 10px 28px rgba(255,179,0,0.4);
         }
 
         .bundle-cta-btn:hover {
-            transform: scale(1.03);
-            box-shadow: 0 8px 32px rgba(255,255,255,0.15);
+            transform: translateY(-2px);
+            box-shadow: 0 14px 36px rgba(255,179,0,0.5);
         }
 
         /* ═══════ FEATURES ═══════ */
@@ -661,6 +678,12 @@
             color: var(--text-secondary);
         }
 
+        .footer-brand img.footer-wordmark {
+            width: auto;
+            height: 18px;
+            border-radius: 0;
+        }
+
         .footer-copy {
             font-size: 0.78rem;
             color: var(--text-tertiary);
@@ -763,7 +786,7 @@
     <nav>
         <div class="inner">
             <a href="#" class="nav-logo">
-                <img src="images/logo.png" alt="عوالم">
+                <img src="images/icon-white.svg" alt="عوالم">
                 <span>عوالم</span>
             </a>
             <ul class="nav-links">
@@ -823,7 +846,7 @@
                                 <a href="preview/routine.html" class="action-btn preview-btn" title="معاينة المنتج">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                 </a>
-                                <a href="#MOYASAR_LINK_ROUTINE" class="action-btn buy-btn" title="اشتري الآن">
+                                <a href="https://salla.sa/awaleem/EXPgqOB" target="_blank" rel="noopener" class="action-btn buy-btn" title="اشتري الآن">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                                 </a>
                             </div>
@@ -849,7 +872,7 @@
                                 <a href="preview/dictionary.html" class="action-btn preview-btn" title="معاينة المنتج">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                 </a>
-                                <a href="#MOYASAR_LINK_DICTIONARY" class="action-btn buy-btn" title="اشتري الآن">
+                                <a href="https://salla.sa/awaleem/mZYzZbl" target="_blank" rel="noopener" class="action-btn buy-btn" title="اشتري الآن">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                                 </a>
                             </div>
@@ -875,7 +898,7 @@
                                 <a href="preview/food.html" class="action-btn preview-btn" title="معاينة المنتج">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                 </a>
-                                <a href="#MOYASAR_LINK_FOOD" class="action-btn buy-btn" title="اشتري الآن">
+                                <a href="https://salla.sa/awaleem/vApPnxA" target="_blank" rel="noopener" class="action-btn buy-btn" title="اشتري الآن">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                                 </a>
                             </div>
@@ -900,7 +923,7 @@
                                 <a href="preview/baby.html" class="action-btn preview-btn" title="معاينة المنتج">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
                                 </a>
-                                <a href="#MOYASAR_LINK_BABY" class="action-btn buy-btn" title="اشتري الآن">
+                                <a href="https://salla.sa/awaleem/KRnzovD" target="_blank" rel="noopener" class="action-btn buy-btn" title="اشتري الآن">
                                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                                 </a>
                             </div>
@@ -957,10 +980,25 @@
                         <div class="new-price">43 <span class="cur">ر.س</span></div>
                         <div class="per-label">دفعة واحدة — ملكية دائمة</div>
                         <div class="save-tag">وفّري 34 ريال</div>
-                        <a href="#MOYASAR_LINK_BUNDLE" class="bundle-cta-btn">
+                        <a href="https://salla.sa/awaleem" target="_blank" rel="noopener" class="bundle-cta-btn">
                             اشتري الباقة الشاملة
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14"/><path d="m12 5 7 7-7 7"/></svg>
                         </a>
                     </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- ضمان ذهبي -->
+    <section style="padding:8px 16px 36px;">
+        <div class="container" style="display:flex;justify-content:center;">
+            <div style="display:flex;align-items:center;gap:16px;background:linear-gradient(135deg,#FFFDF6,#FDF6E3);border:1px solid rgba(170,119,28,.22);border-radius:18px;padding:18px 22px;box-shadow:0 8px 24px rgba(120,90,20,.1);max-width:460px;">
+                <div style="width:54px;height:54px;border-radius:50%;background:linear-gradient(135deg,#FDF3D7,#F6E0A8);display:flex;align-items:center;justify-content:center;flex:0 0 auto;color:#B38728;box-shadow:0 4px 12px rgba(170,119,28,.18);"><svg width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"><path d="M12 2l8 3v6c0 5-3.5 8.5-8 10-4.5-1.5-8-5-8-10V5l8-3z"/><path d="M9 12l2 2 4-4"/></svg></div>
+                <div style="min-width:0;">
+                    <div style="font-family:'IBM Plex Sans Arabic',sans-serif;font-weight:900;font-size:2.1rem;line-height:1;background:linear-gradient(135deg,#BF953F 0%,#FCF6BA 45%,#B38728 55%,#FBF5B7 75%,#AA771C 100%);-webkit-background-clip:text;background-clip:text;color:transparent;display:flex;align-items:baseline;gap:7px;">14<span style="font-family:'IBM Plex Sans Arabic',sans-serif;font-size:.92rem;font-weight:600;color:#8a6a1a;-webkit-text-fill-color:#8a6a1a;">يومًا</span></div>
+                    <div style="font-size:.95rem;font-weight:700;margin-top:5px;color:#2b2418;">ضمان ذهبي</div>
+                    <div style="font-size:.76rem;color:#6b5d44;margin-top:3px;line-height:1.5;">جرّبي المنتج — نسترد كامل المبلغ إن لم ترَي فائدة.</div>
                 </div>
             </div>
         </div>
@@ -1012,7 +1050,7 @@
         <div class="footer-inner">
             <div class="footer-brand">
                 <img src="images/logo.png" alt="عوالم">
-                <span>عوالم Awalem</span>
+                <img src="images/logo-footer.svg" alt="عوالم Awalem" class="footer-wordmark">
             </div>
             <a href="https://wa.me/966553388257" target="_blank" class="footer-whatsapp">
                 <svg width="20" height="20" viewBox="0 0 24 24" fill="#25D366"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
