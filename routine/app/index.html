@@ -5,7 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>الروتين الذكي | SmartRoutine</title>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Playfair+Display:wght@700;800&display=swap" rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2pdf.js/0.10.1/html2pdf.bundle.min.js"></script>
     <style>
         :root {
             --primary: #5B3F8C;
@@ -599,10 +599,10 @@
     <div id="result-content"></div>
     <div class="print-btn-wrap no-print">
         <div style="display:flex;gap:12px;justify-content:center;flex-wrap:wrap;">
-            <button class="btn-print" onclick="downloadResult()"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> تنزيل الملف</button>
+            <button class="btn-print" onclick="downloadResult(this)"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><path d="M7 10l5 5 5-5"/><path d="M12 15V3"/></svg> تنزيل PDF</button>
             <button class="btn-print" onclick="printResult()" style="background:linear-gradient(135deg,#5B3F8C,#8A68C8);"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8" rx="1"/></svg> طباعة مباشرة</button>
         </div>
-        <p style="font-size: 13px; color: var(--text-muted); margin-top: 14px;">للحصول على ملف: اضغطي «تنزيل الملف»، أو «طباعة» واختاري «حفظ كـ PDF».</p>
+        <p style="font-size: 13px; color: var(--text-muted); margin-top: 14px;">زر «تنزيل PDF» يحفظ الجدول مباشرة كملف <b>PDF</b> بمقاس A4 جاهز للطباعة. أو استخدمي «طباعة مباشرة».</p>
     </div>
 </div>
 
@@ -1151,16 +1151,31 @@
         w.document.write(buildRoutineHTML(true));
         w.document.close();
     }
-    function downloadResult() {
+    function downloadResult(btn) {
+        var original = btn ? btn.innerHTML : '';
+        if (btn) { btn.innerHTML = '⏳ جاري التحضير...'; btn.disabled = true; }
         try {
-            var blob = new Blob([buildRoutineHTML(false)], {type: 'application/octet-stream'});
-            var url = URL.createObjectURL(blob);
-            var a = document.createElement('a');
-            a.href = url; a.download = 'awalem-routine.html';
-            document.body.appendChild(a); a.click(); document.body.removeChild(a);
-            setTimeout(function(){ URL.revokeObjectURL(url); }, 3000);
+            var src = document.getElementById('result-content');
+            if (!src || !src.innerHTML.trim()) { throw new Error('empty'); }
+            var clone = src.cloneNode(true);
+            clone.id = 'pdf-staging';
+            clone.setAttribute('style', 'position:fixed;left:-99999px;top:0;width:794px;background:#fff;margin:0;padding:0;z-index:-1;');
+            var css = document.createElement('style');
+            css.textContent = '#pdf-staging{font-family:"IBM Plex Sans Arabic",sans-serif;direction:rtl;color:#1d1d1f}#pdf-staging .print-page{width:100%!important;max-width:100%!important;margin:0 0 10px!important;padding:34px 38px!important;background:#fff!important;box-shadow:none!important;border-radius:0!important;page-break-after:always}#pdf-staging .print-page:last-child{page-break-after:auto}#pdf-staging .welcome-banner,#pdf-staging .work-details-banner{border:1px solid #eee;border-radius:12px;padding:18px;margin-bottom:16px;background:#fafafa}#pdf-staging .print-title{color:#6A4C9C;font-size:18px;border-bottom:2px solid #E8E0F0;padding-bottom:10px;margin:20px 0 14px;font-weight:800}#pdf-staging .rules-ul{list-style:none;padding:0}#pdf-staging .rules-ul li{padding:8px 0;border-bottom:1px solid #f0f0f0;font-size:13px;line-height:1.6}#pdf-staging .rules-ul span{display:block;font-family:"Playfair Display",sans-serif;font-size:13px;color:#555;direction:ltr;text-align:left;margin-top:3px}#pdf-staging .table-responsive{overflow:visible;width:100%}#pdf-staging .tracker-table{width:100%!important;min-width:0!important;table-layout:fixed;border-collapse:collapse;margin-top:10px}#pdf-staging .tracker-table th{background:#6A4C9C!important;color:#fff!important;padding:9px;font-size:12px;text-align:center;-webkit-print-color-adjust:exact;print-color-adjust:exact}#pdf-staging .tracker-table td{border:1px solid #e0e0e0;padding:8px;text-align:right;font-size:13px;vertical-align:top;word-wrap:break-word;overflow-wrap:break-word}#pdf-staging .check-boxes{display:flex;gap:3px;direction:ltr;justify-content:center;align-items:center;flex-wrap:nowrap}#pdf-staging .box{width:10px;height:10px;border:1.3px solid #BDB3D8;border-radius:3px;background:#fff;flex-shrink:0;-webkit-print-color-adjust:exact;print-color-adjust:exact}#pdf-staging .print-footer-note{text-align:center;color:#888;font-size:12px;margin-top:14px}';
+            document.body.appendChild(css);
+            document.body.appendChild(clone);
+            var cleanup = function(){ if(clone.parentNode) clone.parentNode.removeChild(clone); if(css.parentNode) css.parentNode.removeChild(css); if(btn){btn.innerHTML=original;btn.disabled=false;} };
+            html2pdf().set({
+                margin: 0,
+                filename: 'الروتين_الذكي_عوالم.pdf',
+                image: { type: 'jpeg', quality: 0.98 },
+                html2canvas: { scale: 2, useCORS: true, logging: false, scrollX: 0, scrollY: 0, windowWidth: 794 },
+                jsPDF: { unit: 'mm', format: 'a4', orientation: 'portrait', compress: true },
+                pagebreak: { mode: ['css', 'legacy'] }
+            }).from(clone).save().then(cleanup).catch(function(e){ cleanup(); alert('تعذّر إنشاء ملف PDF — جرّبي زر «طباعة مباشرة» واختاري «حفظ كـ PDF».'); });
         } catch(e) {
-            alert('تعذّر التنزيل على هذا الجهاز — جرّبي زر «طباعة مباشرة» واختاري «حفظ كـ PDF».');
+            if(btn){btn.innerHTML=original;btn.disabled=false;}
+            alert('تعذّر إنشاء ملف PDF — جرّبي زر «طباعة مباشرة» واختاري «حفظ كـ PDF».');
         }
     }
 </script>
