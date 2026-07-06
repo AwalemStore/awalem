@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>القاموس الذكي للعاملات (كلمات عامة) | عوالم Awalem</title>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -24,7 +24,7 @@
 
         body {
             background-color: var(--bg-color);
-            font-family: 'IBM Plex Sans Arabic', 'Poppins', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'IBM Plex Sans Arabic', sans-serif;
             color: var(--text-dark);
             overflow-x: hidden;
             width: 100vw;
@@ -59,7 +59,7 @@
         #loginView { margin-top: 10vh; max-width: 450px; margin-left: auto; margin-right: auto; }
         .input-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; text-align: right; }
         .input-group label { font-size: 0.9rem; font-weight: 600; color: var(--ruby-petals); }
-        input[type="tel"] { width: 100%; padding: 16px 20px; border-radius: 20px; border: 1px solid rgba(165, 81, 102, 0.3); font-family: 'Poppins', sans-serif; font-size: 1.1rem; color: var(--text-dark); outline: none; transition: 0.3s; text-align: left; direction: ltr; }
+        input[type="tel"] { width: 100%; padding: 16px 20px; border-radius: 20px; border: 1px solid rgba(165, 81, 102, 0.3); font-family: 'IBM Plex Sans Arabic', sans-serif; font-size: 1.1rem; color: var(--text-dark); outline: none; transition: 0.3s; text-align: left; direction: ltr; }
         input[type="tel"]:focus { border-color: var(--ruby-petals); box-shadow: 0 0 0 4px rgba(247, 218, 231, 0.5); }
         .msg-box { margin-top: 15px; font-size: 0.9rem; font-weight: 500; border-radius: 12px; padding: 12px; display: none; }
         .msg-box.error { display: block; background: rgba(255, 59, 48, 0.1); color: var(--error-color); }
@@ -114,34 +114,14 @@
         .category-group h4 { font-size: 0.95rem; color: var(--ruby-petals); margin-bottom: 12px; border-bottom: 1px solid rgba(226, 180, 193, 0.4); padding-bottom: 5px;}
         .tags-container { display: flex; flex-wrap: wrap; gap: 10px; }
         
-        /* ---------------- تحديث الـ CSS الخاص بالجوال ---------------- */
-        .word-tag { 
-            background: white; border: 1px solid var(--bubblegum); padding: 8px 16px; border-radius: 20px; 
-            font-size: 0.9rem; font-weight: 500; cursor: pointer; transition: 0.2s; color: #4a4a4a;
-            /* منع تحديد النص وظهور الخيارات المزعجة في الجوال */
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            -webkit-touch-callout: none;
-        }
+        .word-tag { background: white; border: 1px solid var(--bubblegum); padding: 8px 16px; border-radius: 20px; font-size: 0.9rem; font-weight: 500; cursor: pointer; user-select: none; transition: 0.2s; color: #4a4a4a;}
         .word-tag.active { background: linear-gradient(135deg, var(--pink-mist), var(--bubblegum)); color: var(--ruby-petals); border-color: var(--cherry-soda); box-shadow: 0 4px 12px rgba(165, 81, 102, 0.15); font-weight: 600;}
 
-        /* كلاس الكلمات المحفوظة (الأرشيف) مع منع التحديد */
-        .learned-tag { 
-            background-color: #f0f0f5 !important; border: 1px dashed #c0c0c0 !important; color: #a0a0a0 !important; 
-            user-select: none;
-            -webkit-user-select: none;
-            -moz-user-select: none;
-            -ms-user-select: none;
-            -webkit-touch-callout: none;
-        }
-
-        /* ---------------- تصميم الجدول المعتمد ---------------- */
+        /* ---------------- تصميم الجدول المعتمد (خطوط أفقية فقط) ---------------- */
         table { width: 100%; table-layout: fixed; border-collapse: collapse; margin-top: 10px; border: none; }
         th, td { 
             padding: 14px 10px; 
-            border-bottom: 1px solid rgba(226, 180, 193, 0.5); 
+            border-bottom: 1px solid rgba(226, 180, 193, 0.5); /* خطوط أفقية ناعمة جداً */
             border-left: none; 
             border-right: none;
             border-top: none;
@@ -151,26 +131,28 @@
         }
         th { color: var(--ruby-petals); font-weight: 700; font-size: 0.85rem; padding-bottom: 15px; background: transparent; border-bottom: 2px solid var(--cherry-soda); }
         
+        /* ترتيب محاذاة الأعمدة */
         th:nth-child(1), td:nth-child(1) { text-align: right; width: 30%; }
-        th:nth-child(2), td:nth-child(2) { text-align: center; width: 40%; font-family: 'Poppins', sans-serif;}
-        th:nth-child(3), td:nth-child(3) { text-align: left; width: 30%; font-family: 'Poppins', sans-serif;}
+        th:nth-child(2), td:nth-child(2) { text-align: center; width: 40%; font-family: 'IBM Plex Sans Arabic', sans-serif;}
+        th:nth-child(3), td:nth-child(3) { text-align: left; width: 30%; font-family: 'IBM Plex Sans Arabic', sans-serif;}
         
         .eng-pron { display: block; color: #4a4a4a; direction: ltr;}
         .native-pron { font-family: 'IBM Plex Sans Arabic', sans-serif; display: block; color: var(--ruby-petals); font-weight: 700; font-size: 1.1em; margin-top: 4px;}
         
+        /* شريط الأقسام: لون خلفية خفيف جداً، وخط أصغر */
         .category-row td { 
-            background-color: rgba(247, 218, 231, 0.4) !important; 
+            background-color: rgba(247, 218, 231, 0.4) !important; /* Pink Mist خفيف جداً */
             color: var(--ruby-petals) !important; 
             text-align: center !important; 
             font-weight: 600; 
             padding: 10px; 
-            font-size: 0.85rem !important; 
+            font-size: 0.85rem !important; /* خط أصغر وأرتب */
         }
         
         .empty-state { text-align: center; color: #86868b; padding: 30px; border: none;}
         .footer { text-align: center; font-size: 0.95rem; color: #86868b; margin-top: auto; padding-top: 30px; font-family: 'IBM Plex Sans Arabic', sans-serif; font-weight: 600; width: 100%;}
         
-        /* ---------------- إعدادات الطباعة ---------------- */
+        /* ---------------- إعدادات الطباعة الأنيقة جداً ---------------- */
         @media print {
             a[href*="wa.me"] { display: none !important; }
             @page { margin: 1.2cm; size: A4 portrait; }
@@ -178,7 +160,7 @@
             .bento-container { display: block !important; width: 100% !important; max-width: 100% !important; margin: 0 !important; padding: 0 !important; gap: 0 !important; }
             .bento-card { border: none !important; box-shadow: none !important; padding: 0 !important; margin: 0 !important; background: white !important; backdrop-filter: none !important; -webkit-backdrop-filter: none !important; }
             
-            #loginView, .hero-banner, .intro-section, .controls-header, .word-bank-section, #learnedArchive, .btn-print, .footer, .print-fab { display: none !important; }
+            #loginView, .hero-banner, .intro-section, .controls-header, .word-bank-section, .btn-print, .footer, .print-fab { display: none !important; }
             #dictionaryView { display: block !important; width: 100% !important; }
             
             table { width: 100% !important; border-collapse: collapse !important; border: none !important; }
@@ -189,24 +171,25 @@
                 border-left: none !important; 
                 border-right: none !important;
                 border-top: none !important;
-                border-bottom: 1px solid rgba(211, 140, 157, 0.3) !important; 
+                border-bottom: 1px solid rgba(211, 140, 157, 0.3) !important; /* خط أفقي فاتح للطباعة */
                 padding: 12px 10px !important; 
                 color: #1d1d1f !important; 
                 font-size: 13px !important; 
             }
             th { 
-                color: #A55166 !important; 
+                color: #A55166 !important; /* Ruby Petals */
                 border-bottom: 2px solid #A55166 !important;
             }
             
+            /* شريط الأقسام في الطباعة */
             .category-row td { 
-                background-color: #FDF4F7 !important; 
+                background-color: #FDF4F7 !important; /* أفتح درجة من الوردي للطباعة (موفر للحبر وأنيق) */
                 color: #A55166 !important; 
                 -webkit-print-color-adjust: exact; 
                 print-color-adjust: exact;
                 font-weight: 600 !important; 
                 text-align: center !important; 
-                font-size: 11px !important; 
+                font-size: 11px !important; /* خط صغير جداً وأنيق */
                 padding: 8px !important;
                 border-bottom: 1px solid rgba(211, 140, 157, 0.3) !important;
             }
@@ -215,6 +198,8 @@
     </style>
 </head>
 <body>
+
+    <a href="/awalem/" class="awalem-home-btn no-print" style="position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#E2B4C1,#A55166);color:white;padding:10px 22px;border-radius:28px;font-weight:800;font-size:0.9rem;text-decoration:none;z-index:1000;box-shadow:0 8px 20px rgba(165,81,102,0.3);transition:0.3s;display:flex;align-items:center;gap:8px;"><img src="awalem-logo.png" alt="عوالم" style="width:22px;height:22px;border-radius:7px;object-fit:cover;"> عوالم</a>
 
     <script>
         window.onerror = function(msg, url, line) {
@@ -263,7 +248,7 @@
                     <div class="guide-step">
                         <div class="step-num">٢</div>
                         <div class="step-title">اختاري الكلمات</div>
-                        <div class="step-body">اضغطي على الكلمات من البنك لتضاف للجدول. <span class="step-highlight">اضغطي مطولاً لإخفاء الكلمات المحفوظة</span></div>
+                        <div class="step-body">اضغطي على الكلمات من البنك لتضاف للجدول مباشرة</div>
                     </div>
                     <div class="guide-step">
                         <div class="step-num">٣</div>
@@ -309,22 +294,15 @@
                     <button class="btn-print" style="max-width: 250px;" onclick="printTable()">🖨️ طباعة الجدول</button>
                 </div>
             </div>
-            
-            <div id="learnedArchive" class="bento-card" style="margin-bottom: 15px; display: none;">
-                <h3 style="color: #86868b; text-align: right; margin-bottom: 15px; font-size: 1.1rem;">أرشيف الكلمات المحفوظة ✅</h3>
-                <div id="learnedContainer" class="tags-container" style="justify-content: flex-start; text-align: right;"></div>
-            </div>
         </div>
 
-        <div class="footer">صنع من قبل عوالم Awalem</div>
+        <div class="footer" style="color:#86868b;">صنع من قبل <img src="logo-footer.svg" alt="عوالم" style="height:15px;width:auto;vertical-align:middle;margin-right:3px;"></div>
 
         <button class="print-fab" id="printFab" onclick="printTable()">🖨️</button>
     </div>
 
     <script>
         // ================== [ 1. إعدادات تسجيل الدخول والربط ] ==================
-        const PRODUCT_SKU = "dicgeneral";
-
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzyEsgytaKgTntkhJg53LgaNANEO1J0xuBVvJzFJeXYVUZEudpKyqRPMD9iPyS9U1s7/exec";
         
         function escapeHTML(str) {
@@ -334,32 +312,10 @@
             return div.innerHTML;
         }
 
-        function generateDeviceFingerprint() {
-            var c = [
-                navigator.userAgent || '',
-                navigator.language || '',
-                navigator.platform || '',
-                navigator.hardwareConcurrency || 0,
-                navigator.deviceMemory || 0,
-                screen.width + 'x' + screen.height + 'x' + (window.devicePixelRatio || 1),
-                screen.colorDepth || 0,
-                Intl.DateTimeFormat().resolvedOptions().timeZone || '',
-                new Date().getTimezoneOffset()
-            ];
-            var s = c.join('|');
-            var h = 5381;
-            for (var i = 0; i < s.length; i++) { h = ((h << 5) + h) + s.charCodeAt(i); h = h & h; }
-            return 'AW-FP-' + Math.abs(h).toString(36).toUpperCase();
-        }
-
         function getOrCreateDeviceId() {
-            try {
-                let id = localStorage.getItem('awalem_device_id');
-                if (id) return id;
-                id = generateDeviceFingerprint();
-                localStorage.setItem('awalem_device_id', id);
-                return id;
-            } catch(e) { return generateDeviceFingerprint(); }
+            let id = localStorage.getItem('awalem_device_id');
+            if (!id) { id = 'AW-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now(); localStorage.setItem('awalem_device_id', id); }
+            return id;
         }
 
         window.onload = () => {
@@ -420,7 +376,7 @@
                 }
             };
             var s = document.createElement('script');
-            s.src = SCRIPT_URL + '?phone=' + encodeURIComponent(phone) + '&deviceId=' + encodeURIComponent(getOrCreateDeviceId()) + '&sku=' + PRODUCT_SKU + '&callback=' + cbName;
+            s.src = SCRIPT_URL + '?phone=' + encodeURIComponent(phone) + '&deviceId=' + encodeURIComponent(getOrCreateDeviceId()) + '&sku=dicgeneral&callback=' + cbName;
             s.onerror = function() {
                 clearTimeout(timeout);
                 delete window[cbName];
@@ -441,7 +397,7 @@
                 words: [
                     { id:101, ar:"فوق", pron:"Fog", np:{am:"ፎግ",bn:"ফোগ",hi:"फोग"}, t:{en:"Up",tl:"Taas",id:"Atas",am:"ላይ",om:"Gubbaa",sw:"Juu",lg:"Wagulu",so:"Kor",bn:"উপরে",hi:"ऊपर",fr:"Haut"} },
                     { id:102, ar:"تحت", pron:"Taht", np:{am:"ታህት",bn:"তাহত",hi:"ताहत"}, t:{en:"Down",tl:"Baba",id:"Bawah",am:"ታች",om:"Jala",sw:"Chini",lg:"Wansi",so:"Hoos",bn:"নিچه",hi:"नीचे",fr:"Bas"} },
-                    { id:103, ar:"جنب", pron:"Janb", np:{am:"ጃንب",bn:"জানব",hi:"जंब"}, t:{en:"Beside",tl:"Tabi",id:"Samping",am:"አጠገብ",om:"Cinaa",sw:"Kando",lg:"Kumpi",so:"Agteeda",bn:"পাশে",hi:"बगल में",fr:"À côté"} },
+                    { id:103, ar:"جنب", pron:"Janb", np:{am:"ጃንب",bn:"জানব",hi:"जंब"}, t:{en:"Beside",tl:"Tabi",id:"Samping",am:"አጠገብ",om:"Cinaa",sw:"Kando",lg:"Kumpi",so:"Agteeda",bn:"পাশে",hi:"बगल میں",fr:"À côté"} },
                     { id:104, ar:"قدام", pron:"Giddam", np:{am:"ጊዳም",bn:"গিদ্দام",hi:"गिद्दाम"}, t:{en:"In front",tl:"Harap",id:"Depan",am:"ፊት",om:"Fuuldura",sw:"Mbele",lg:"Mumaaso",so:"Horta",bn:"সামনে",hi:"सामने",fr:"Devant"} },
                     { id:105, ar:"ورا", pron:"Wara", np:{am:"ዋራ",bn:"ওয়ারা",hi:"वरा"}, t:{en:"Behind",tl:"Likod",id:"Belakang",am:"ኋላ",om:"Duuba",sw:"Nyuma",lg:"Mabega",so:"Gadaal",bn:"পেছনে",hi:"पीछे",fr:"Derrière"} },
                     { id:106, ar:"داخل", pron:"Dakhil", np:{am:"ዳኺል",bn:"দাখিল",hi:"दाखिल"}, t:{en:"Inside",tl:"Loob",id:"Dalam",am:"ውስጥ",om:"Keessa",sw:"Ndani",lg:"Munda",so:"Gudaha",bn:"ভেতরে",hi:"अंदर",fr:"Dedans"} },
@@ -536,7 +492,7 @@
                     { id:401, ar:"فرن", pron:"Furun", np:{am:"ፉሩን",bn:"ফুরুন",hi:"फुरुن"}, t:{en:"Oven",tl:"Oven",id:"Oven",am:"ኦቨን",om:"Ovanii",sw:"Oven",lg:"Oveni",so:"Foorno",bn:"ওভেন",hi:"ओवन",fr:"Four"} },
                     { id:402, ar:"ميكروويف", pron:"Microwave", np:{am:"ማይክሮዌቭ",bn:"মাইক্রোওয়েভ",hi:"माइक्रोवेव"}, t:{en:"Microwave",tl:"Microwave",id:"Microwave",am:"ማይክሮዌቭ",om:"Maayikirooweevii",sw:"Microwave",lg:"Microwave",so:"Microwave",bn:"মাইক্রোওয়েভ",hi:"माइक्रोवेव",fr:"Micro-onde"} },
                     { id:403, ar:"خلاط", pron:"Khallat", np:{am:"ኻላጥ",bn:"খাল্লাত",hi:"खल्लात"}, t:{en:"Blender",tl:"Blender",id:"Blender",am:"ብሌንደር",om:"Bilaandarii",sw:"Blenda",lg:"Bbulenda",so:"Makiinad",bn:"블েন্ডার",hi:"मिक्सर",fr:"Mixeur"} },
-                    { id:404, ar:"غسالة", pron:"Ghassalah", np:{am:"ጋሳላ",bn:"গাসসাላ",hi:"गस्साला"}, t:{en:"Washing Machine",tl:"Washing machine",id:"Mesin cuci",am:"ማጠቢያ",om:"Meesha dhiquu",sw:"Mashine",lg:"Yoolya",so:"Mashiinka",bn:"মেশিন",hi:"वाशिंग मशीन",fr:"Lave-linge"} },
+                    { id:404, ar:"غسالة", pron:"Ghassalah", np:{am:"ጋሳላ",bn:"গাসসাላ",hi:"गस्साला"}, t:{en:"Washing Machine",tl:"Washing machine",id:"Mesin cuci",am:"ማጠቢያ",om:"Meesha dhiquu",sw:"Mashine",lg:"Yoolya",so:"Mashiinka",bn:"মেশین",hi:"वाशिंग मशीन",fr:"Lave-linge"} },
                     { id:405, ar:"مكنسة", pron:"Miknasah", np:{am:"ሚክናሳ",bn:"মিকنাসা",hi:"मिकनासा"}, t:{en:"Vacuum",tl:"Vacuum",id:"Penyedot debu",am:"መጥረጊያ",om:"Haruu",sw:"Vuta vumbi",lg:"Ekyuma",so:"Nadiifiye",bn:"ভ্যাকুয়াম",hi:"वैक्यूम",fr:"Aspirateur"} },
                     { id:406, ar:"مكيف", pron:"Mukayyaf", np:{am:"ሙካያف",bn:"মুকায়্যাف",hi:"मुकय्यफ"}, t:{en:"AC",tl:"Aircon",id:"AC",am:"አየር ማቀዝቀዣ",om:"Qabbaneessaa",sw:"Koyozi",lg:"Ekyuma",so:"Qaboojiye",bn:"এসি",hi:"एसी",fr:"Clim"} },
                     { id:407, ar:"ثلاجة", pron:"Thallajah", np:{am:"ታላጃ",bn:"থাল্লাজা",hi:"थल्लाजा"}, t:{en:"Fridge",tl:"Ref",id:"Kulkas",am:"ማቀዝቀዣ",om:"Firijii",sw:"Friji",lg:"Firiigi",so:"Tallaajad",bn:"ফ্রিজ",hi:"फ्रिज",fr:"Réfrigérateur"} },
@@ -563,7 +519,7 @@
                     { id:501, ar:"تعالي", pron:"Ta'ali", np:{am:"ታዓሊ",bn:"তায়ালি",hi:"ताआली"}, t:{en:"Come",tl:"Halika",id:"Sini",am:"ነይ",om:"Kottu",sw:"Njoo",lg:"Jangu",so:"Kaalay",bn:"এসো",hi:"आओ",fr:"Viens"} },
                     { id:502, ar:"روحي", pron:"Roohi", np:{am:"ሩሂ",bn:"রুহি",hi:"रूही"}, t:{en:"Go",tl:"Punta",id:"Pergi",am:"ሂጂ",om:"Deemi",sw:"Nenda",lg:"Genda",so:"Tag",bn:"যাও",hi:"जाओ",fr:"Va"} },
                     { id:503, ar:"جيبي", pron:"Jeebi", np:{am:"ጂቢ",bn:"জিবি",hi:"जीबी"}, t:{en:"Bring",tl:"Dalhin",id:"Bawa",am:"አምጪ",om:"Fidi",sw:"Leta",lg:"Leeta",so:"Keen",bn:"আنو",hi:"लाओ",fr:"Apporte"} },
-                    { id:504, ar:"ودي", pron:"Waddi", np:{am:"ዋዲ",bn:"ওয়াদ্দি",hi:"वद्दी"}, t:{en:"Take it",tl:"Dalhin",id:"Bawa",am:"ውሰጅ",om:"Geesi",sw:"Peleka",lg:"Twaala",so:"Gee",bn:"নিয়ে যাও",hi:"ले जाओ",fr:"Emmène"} },
+                    { id:504, ar:"ودي", pron:"Waddi", np:{am:"ዋዲ",bn:"ওয়াদ্দি",hi:"वद्दी"}, t:{en:"Take it",tl:"Dalhin",id:"Bawa",am:"ውሰጅ",om:"Geesi",sw:"Peleka",lg:"Twaala",so:"Gee",bn:"নিয়ে যাও",hi:"লে जाओ",fr:"Emmène"} },
                     { id:505, ar:"بسرعة", pron:"Bsur'ah", np:{am:"ብሱርዓ",bn:"বসুরা",hi:"बसुरआ"}, t:{en:"Quickly",tl:"Mabilis",id:"Cepat",am:"በፍጥነት",om:"Dafii",sw:"Haraka",lg:"Mangu",so:"Dhaqso",bn:"তাড়াতাড়ি",hi:"जल्दी",fr:"Vite"} },
                     { id:506, ar:"خلاص", pron:"Khalas", np:{am:"ኻላስ",bn:"খালাস",hi:"खलास"}, t:{en:"Finished",tl:"Tapos na",id:"Selesai",am:"አልቋል",om:"Xumure",sw:"Tayari",lg:"Kiwede",so:"Dhamaad",bn:"শেষ",hi:"खत्म",fr:"Fini"} },
                     { id:507, ar:"فهمتي؟", pron:"Fhimti?", np:{am:"ፍሂምቲ",bn:"ফহিমতি",hi:"फहिमटी"}, t:{en:"Understand?",tl:"Naintindihan?",id:"Mengerti?",am:"ገባሽ?",om:"Sii galee?",sw:"Umeelewa?",lg:"Otegedde?",so:"Ma fahamtay?",bn:"বুঝেছো?",hi:"समझी?",fr:"Compris?"} },
@@ -590,9 +546,9 @@
                     { id:528, ar:"سلام", pron:"Salam", np:{am:"ሰላም",bn:"সালাম",hi:"सलाम"}, t:{en:"Hello",tl:"Kamusta",id:"Halo",am:"ሰላም",om:"Akkam",sw:"Jambo",lg:"Otyanno",so:"Salaam",bn:"হ্যালো",hi:"नमस्ते",fr:"Bonjour"} },
                     { id:529, ar:"شكراً", pron:"Shukran", np:{am:"ሹክራን",bn:"শুকরান",hi:"शुक्रान"}, t:{en:"Thank you",tl:"Salamat",id:"Terima kasih",am:"አመሰግናለሁ",om:"Galatoomi",sw:"Asante",lg:"Webale",so:"Mahadsanid",bn:"ধন্যবাদ",hi:"धन्यवाद",fr:"Merci"} },
                     { id:530, ar:"عفواً", pron:"Afwan", np:{am:"አፍዋን",bn:"আফওয়ান",hi:"अफ़वान"}, t:{en:"Welcome/Excuse me",tl:"Walang anuman",id:"Sama-sama",am:"ምንም አይደለም",om:"Homaa miti",sw:"Karibu",lg:"Kale",so:"Adaa mudan",bn:"স্বাগতম",hi:"स्वागत है",fr:"De rien"} },
-                    { id:531, ar:"معليش", pron:"Ma'lesh", np:{am:"ማዕሌሽ",bn:"малهش",hi:"मालिश"}, t:{en:"Sorry",tl:"Pasensya",id:"Maaf",am:"ይቅርታ",om:"Dhiifama",sw:"Samahani",lg:"Nsonyiwa",so:"Waan ka xumahay",bn:"দুঃখিত",hi:"माफ़ करना",fr:"Désolé"} },
+                    { id:531, ar:"معليش", pron:"Ma'lesh", np:{am:"ማዕሌሽ",bn:"малهش",hi:"मालिश"}, t:{en:"Sorry",tl:"Pasensya",id:"Maaf",am:"ይቅርታ",om:"Dhiifama",sw:"Samahani",lg:"Nsonyiwa",so:"Waan ka xumahay",bn:"দুঃখিত",hi:"माफ़ کرنا",fr:"Désolé"} },
                     { id:532, ar:"دكتور", pron:"Doctor", np:{am:"ዶክተር",bn:"ডাক্তার",hi:"डॉक्टर"}, t:{en:"Doctor",tl:"Doktor",id:"Dokter",am:"ዶክተር",om:"Doktora",sw:"Daktari",lg:"Omusawo",so:"Dhaqtar",bn:"ডাক্তার",hi:"डॉक्टर",fr:"Docteur"} },
-                    { id:533, ar:"مريضة", pron:"Mareedhah", np:{am:"መሪዳ",bn:"মারিদা",hi:"मريضا"}, t:{en:"Sick",tl:"May sakit",id:"Sakit",am:"ታምሜአለሁ",om:"Dhukkubsataa",sw:"Mgonjwa",lg:"Ndwadde",so:"Bukaan",bn:"অসুস্থ",hi:"बीमार",fr:"Malade"} },
+                    { id:533, ar:"مريضة", pron:"Mareedhah", np:{am:"መሪዳ",bn:"মারিদা",hi:"मरीधा"}, t:{en:"Sick",tl:"May sakit",id:"Sakit",am:"ታምሜአለሁ",om:"Dhukkubsataa",sw:"Mgonjwa",lg:"Ndwadde",so:"Bukaan",bn:"অসুস্থ",hi:"बीमार",fr:"Malade"} },
                     { id:534, ar:"ألم", pron:"Alam", np:{am:"አલાም",bn:"আلام",hi:"अलम"}, t:{en:"Pain",tl:"Masakit",id:"Sakit",am:"ህመም",om:"Dhukkubbii",sw:"Maumivu",lg:"Obulumi",so:"Xanuun",bn:"ব্যথা",hi:"दर्द",fr:"Douleur"} },
                     { id:535, ar:"لا تنسين", pron:"La Tanseen", np:{am:"ላ ታንሲን",bn:"লা তানসিন",hi:"ला तन्सीन"}, t:{en:"Don't forget",tl:"Huwag kalimutan",id:"Jangan lupa",am:"አትርሺ",om:"Hin irraanfatin",sw:"Usisahau",lg:"Tewerabira",so:"Ha iloobin",bn:"ভুলو না",hi:"मत भूलना",fr:"N'oublie pas"} }
                 ]
@@ -686,7 +642,7 @@
                     { id:808, ar:"حرارة", pron:"Hararah", np:{am:"ሀራራ",bn:"হারারা",hi:"हरारा"}, t:{en:"Fever",tl:"Lagnat",id:"Demام",am:"ትኩሳት",om:"Oo'a",sw:"Homa",lg:"Omusujja",so:"Qandho",bn:"জ্বর",hi:"बुखार",fr:"Fièvre"} },
                     { id:809, ar:"العب", pron:"Il'ab", np:{am:"ኢልዓብ",bn:"ইলআব",hi:"इलअब"}, t:{en:"Play",tl:"Laro",id:"Main",am:"መጫወት",om:"Tapha",sw:"Cheza",lg:"Zannya",so:"Ciyaar",bn:"খেলা",hi:"खेलना",fr:"Jouer"} },
                     { id:810, ar:"روشي", pron:"Rawishi", np:{am:"ራዊሺ",bn:"রাউইশি",hi:"रविशी"}, t:{en:"Bath",tl:"Ligo",id:"Mandi",am:"መታጠብ",om:"Dhiquu",sw:"Kuoga",lg:"Naaba",so:"Qubays",bn:"গোসল",hi:"नहलाना",fr:"Bain"} },
-                    { id:811, ar:"شنطة", pron:"Shantah", np:{am:"ሻንጣ",bn:"شانتا",hi:"شنता"}, t:{en:"Bag",tl:"Bag",id:"Tas",am:"ቦርሳ",om:"Boorsaa",sw:"Mfuko",lg:"Ensawo",so:"Shandad",bn:"ব্যাগ",hi:"बैग",fr:"Sac"} },
+                    { id:811, ar:"شنطة", pron:"Shantah", np:{am:"ሻንጣ",bn:"شانتا",hi:"शनता"}, t:{en:"Bag",tl:"Bag",id:"Tas",am:"ቦርሳ",om:"Boorsaa",sw:"Mfuko",lg:"Ensawo",so:"Shandad",bn:"ব্যাগ",hi:"बैग",fr:"Sac"} },
                     { id:812, ar:"ألعاب", pron:"Al'ab", np:{am:"አልዓብ",bn:"알압",hi:"अलअब"}, t:{en:"Toys",tl:"Laruan",id:"Mainan",am:"አሻንጉሊቶች",om:"Meyshaa",sw:"Vifaa",lg:"Ebyokuzanyisa",so:"Alaabta",bn:"খেলনা",hi:"खिलौने",fr:"Jouets"} },
                     { id:813, ar:"ملابس أطفال", pron:"Malabis Atfal", np:{am:"ማላቢስ አጥፋል",bn:"মালাবিস আতফাল",hi:"मलाबिस अतफाल"}, t:{en:"Kids clothes",tl:"Damit ng bata",id:"Baju anak",am:"የልጆች ልብስ",om:"Uffata daa'immanii",sw:"Nguo za watoto",lg:"Engoye z'abaana",so:"Dharka caruurta",bn:"বাচ্চাদের কাপড়",hi:"बच्चों के कपड़े",fr:"Vêtements enfants"} },
                     { id:814, ar:"بودرة", pron:"Boudrah", np:{am:"ቦድራ",bn:"বৌدراه",hi:"पाउडर"}, t:{en:"Powder",tl:"Pulbos",id:"Bedak",am:"ዱቄት",om:"Paawudarii",sw:"Poda",lg:"Pawuda",so:"Buudo",bn:"পাউডার",hi:"पाउडर",fr:"Poudre"} },
@@ -700,64 +656,35 @@
         ];
 
         let selectedWords = [];
-        let learnedWords = []; 
-        let pressTimer;
-        let isLongPress = false;
-        
         try {
             let data = JSON.parse(localStorage.getItem('awalem_dict_v13_words'));
             if (Array.isArray(data)) {
                 selectedWords = data.map(Number).filter(n => !isNaN(n) && n > 0);
             }
-            let lData = JSON.parse(localStorage.getItem('awalem_dict_learned_v1'));
-            if (Array.isArray(lData)) {
-                learnedWords = lData.map(Number).filter(n => !isNaN(n) && n > 0);
-            }
         } catch(e) {}
         
-        if (selectedWords.length === 0 && learnedWords.length === 0) {
+        if (selectedWords.length === 0) {
             selectedWords = [101, 211, 301, 403, 501, 601, 703, 713, 716, 811];
         }
 
         function initDictionary() { renderWordBank(); renderTable(); }
 
-        // ================== [ 3. التحكم بالضغطة المطولة ] ==================
-        function startPress(e, id) {
-            isLongPress = false;
-            pressTimer = setTimeout(() => {
-                isLongPress = true;
-                if(navigator.vibrate) navigator.vibrate(50); // هزة خفيفة للتأكيد (في حال كان الجهاز يدعمها)
-                toggleLearned(e, id);
-            }, 500); // 500 ملي ثانية للضغطة المطولة
-        }
-
-        function cancelPress() {
-            clearTimeout(pressTimer);
-        }
-
-        function toggleLearned(e, id) {
-            if(e && e.preventDefault) e.preventDefault(); // إيقاف القائمة الافتراضية للكمبيوتر والجوال
-            id = Number(id);
-            const index = learnedWords.indexOf(id);
-            
-            if (index > -1) {
-                learnedWords.splice(index, 1);
-            } else {
-                learnedWords.push(id);
-                const selIndex = selectedWords.indexOf(id);
-                if (selIndex > -1) {
-                    selectedWords.splice(selIndex, 1);
-                    localStorage.setItem('awalem_dict_v13_words', JSON.stringify(selectedWords));
-                }
-            }
-            
-            localStorage.setItem('awalem_dict_learned_v1', JSON.stringify(learnedWords));
-            renderWordBank();
-            renderTable();
+        function renderWordBank() {
+            const container = document.getElementById('wordBankContainer');
+            container.innerHTML = '';
+            fullDictionary.forEach(section => {
+                let sectionHTML = `<div class="category-group"><h4>${section.category}</h4><div class="tags-container">`;
+                section.words.forEach(word => {
+                    const isActive = selectedWords.some(id => Number(id) === Number(word.id));
+                    const activeClass = isActive ? 'active' : '';
+                    sectionHTML += `<div class="word-tag ${activeClass}" onclick="toggleWord(${word.id})">${word.ar}</div>`;
+                });
+                sectionHTML += `</div></div>`;
+                container.innerHTML += sectionHTML;
+            });
         }
 
         function toggleWord(id) {
-            if(isLongPress) return; // منع التحديد إذا كانت الضغطة مطولة
             id = Number(id);
             const index = selectedWords.findIndex(sid => Number(sid) === id);
             if (index > -1) { selectedWords.splice(index, 1); } else { selectedWords.push(id); }
@@ -770,63 +697,13 @@
             renderWordBank(); renderTable();
         }
 
-        // ================== [ 4. تحديث الواجهة ] ==================
-        function renderWordBank() {
-            const container = document.getElementById('wordBankContainer');
-            const learnedArchive = document.getElementById('learnedArchive');
-            const learnedContainer = document.getElementById('learnedContainer');
-            
-            container.innerHTML = '';
-            learnedContainer.innerHTML = '';
-            let hasLearnedWords = false;
-
-            fullDictionary.forEach(section => {
-                let sectionHTML = `<div class="category-group"><h4>${section.category}</h4><div class="tags-container">`;
-                let hasActiveWords = false;
-                
-                section.words.forEach(word => {
-                    const id = Number(word.id);
-                    // ربط أحداث اللمس والماوس لكل كلمة لدعم الضغطة المطولة بشكل مثالي
-                    const eventBindings = `
-                        onmousedown="startPress(event, ${id})" 
-                        onmouseup="cancelPress()" 
-                        onmouseleave="cancelPress()" 
-                        ontouchstart="startPress(event, ${id})" 
-                        ontouchend="cancelPress()" 
-                        ontouchmove="cancelPress()" 
-                        oncontextmenu="toggleLearned(event, ${id})"
-                    `;
-
-                    if (learnedWords.includes(id)) {
-                        learnedContainer.innerHTML += `<div class="word-tag learned-tag" ${eventBindings}>${word.ar}</div>`;
-                        hasLearnedWords = true;
-                    } else {
-                        const isActive = selectedWords.some(sid => Number(sid) === id);
-                        const activeClass = isActive ? 'active' : '';
-                        sectionHTML += `<div class="word-tag ${activeClass}" ${eventBindings} onclick="toggleWord(${id})">${word.ar}</div>`;
-                        hasActiveWords = true;
-                    }
-                });
-                
-                sectionHTML += `</div></div>`;
-                if (hasActiveWords) {
-                    container.innerHTML += sectionHTML;
-                }
-            });
-
-            if (hasLearnedWords) {
-                learnedArchive.style.display = 'block';
-            } else {
-                learnedArchive.style.display = 'none';
-            }
-        }
-
         function renderTable() {
             const lang = document.getElementById('languageSelect').value;
             const langName = document.getElementById('languageSelect').options[document.getElementById('languageSelect').selectedIndex].text.split(' ')[0];
             const tbody = document.getElementById('tableBody');
             const thead = document.getElementById('tableHead');
             
+            // تحديث رأس الجدول بالترتيب الصحيح 
             thead.innerHTML = `
                 <tr>
                     <th style="width: 30%; text-align: right;">الكلمة<br>(${wordT[lang] || 'Word'})</th>
@@ -849,6 +726,7 @@
                     const translatedCategoryName = section.transCat[lang] || section.transCat.en;
                     const cleanCategoryName = section.category.replace(/[^\u0600-\u06FF\s]/g, '').trim(); 
                     
+                    // صف التصنيف بخلفية مخففة جداً وخط صغير
                     htmlContent += `<tr class="category-row"><td colspan="3">${cleanCategoryName} - ${translatedCategoryName}</td></tr>`;
                     
                     visibleWords.forEach(word => {
@@ -874,7 +752,7 @@
             var table = document.getElementById('dictionaryTable');
             var lang = document.getElementById('languageSelect');
             var langName = lang.options[lang.selectedIndex].text;
-            var html = '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>القاموس الذكي - طباعة</title><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:"IBM Plex Sans Arabic",sans-serif;direction:rtl;padding:20px;color:#1d1d1f}h2{text-align:center;color:#A55166;font-size:20px;margin-bottom:15px}table{width:100%;border-collapse:collapse}th{color:#A55166;border-bottom:2px solid #A55166;padding:10px 8px;font-size:13px;text-align:center}td{border-bottom:1px solid rgba(211,140,157,0.3);padding:10px 8px;font-size:13px}.category-row td{background:#FDF4F7;color:#A55166;font-weight:600;text-align:center;font-size:12px}@media print{@page{margin:1cm;size:A4 portrait}}</style></head><body><h2>القاموس الذكي للعاملات - ' + langName + '</h2>' + table.outerHTML + '<script>setTimeout(function(){window.print()},500)<\/script></body></html>';
+            var html = '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>القاموس الذكي - طباعة</title><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:"IBM Plex Sans Arabic",sans-serif;direction:rtl;padding:20px;color:#1d1d1f}h2{text-align:center;color:#A55166;font-size:20px;margin-bottom:15px}table{width:100%;border-collapse:collapse}th{color:#A55166;border-bottom:2px solid #A55166;padding:10px 8px;font-size:13px;text-align:center}td{border-bottom:1px solid rgba(211,140,157,0.3);padding:10px 8px;font-size:13px}.category-row td{background:#FDF4F7;color:#A55166;font-weight:600;text-align:center;font-size:12px}@media print{@page{margin:1cm;size:A4 portrait}}</style></head><body><h2>القاموس الذكي للعاملات - ' + langName + '</h2>' + table.outerHTML + '<script>setTimeout(function(){window.print()},500)<\/script></body></html>';
             var w = window.open('', '_blank');
             w.document.write(html);
             w.document.close();

@@ -4,7 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>القاموس الذكي للعاملات (كلمات عامة) | عوالم Awalem</title>
-    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
     
     <style>
         :root {
@@ -24,7 +24,7 @@
 
         body {
             background-color: var(--bg-color);
-            font-family: 'IBM Plex Sans Arabic', 'Poppins', sans-serif;
+            font-family: 'IBM Plex Sans Arabic', 'IBM Plex Sans Arabic', sans-serif;
             color: var(--text-dark);
             overflow-x: hidden;
             width: 100vw;
@@ -59,7 +59,7 @@
         #loginView { margin-top: 10vh; max-width: 450px; margin-left: auto; margin-right: auto; }
         .input-group { display: flex; flex-direction: column; gap: 10px; margin-bottom: 20px; text-align: right; }
         .input-group label { font-size: 0.9rem; font-weight: 600; color: var(--ruby-petals); }
-        input[type="tel"] { width: 100%; padding: 16px 20px; border-radius: 20px; border: 1px solid rgba(165, 81, 102, 0.3); font-family: 'Poppins', sans-serif; font-size: 1.1rem; color: var(--text-dark); outline: none; transition: 0.3s; text-align: left; direction: ltr; }
+        input[type="tel"] { width: 100%; padding: 16px 20px; border-radius: 20px; border: 1px solid rgba(165, 81, 102, 0.3); font-family: 'IBM Plex Sans Arabic', sans-serif; font-size: 1.1rem; color: var(--text-dark); outline: none; transition: 0.3s; text-align: left; direction: ltr; }
         input[type="tel"]:focus { border-color: var(--ruby-petals); box-shadow: 0 0 0 4px rgba(247, 218, 231, 0.5); }
         .msg-box { margin-top: 15px; font-size: 0.9rem; font-weight: 500; border-radius: 12px; padding: 12px; display: none; }
         .msg-box.error { display: block; background: rgba(255, 59, 48, 0.1); color: var(--error-color); }
@@ -152,8 +152,8 @@
         th { color: var(--ruby-petals); font-weight: 700; font-size: 0.85rem; padding-bottom: 15px; background: transparent; border-bottom: 2px solid var(--cherry-soda); }
         
         th:nth-child(1), td:nth-child(1) { text-align: right; width: 30%; }
-        th:nth-child(2), td:nth-child(2) { text-align: center; width: 40%; font-family: 'Poppins', sans-serif;}
-        th:nth-child(3), td:nth-child(3) { text-align: left; width: 30%; font-family: 'Poppins', sans-serif;}
+        th:nth-child(2), td:nth-child(2) { text-align: center; width: 40%; font-family: 'IBM Plex Sans Arabic', sans-serif;}
+        th:nth-child(3), td:nth-child(3) { text-align: left; width: 30%; font-family: 'IBM Plex Sans Arabic', sans-serif;}
         
         .eng-pron { display: block; color: #4a4a4a; direction: ltr;}
         .native-pron { font-family: 'IBM Plex Sans Arabic', sans-serif; display: block; color: var(--ruby-petals); font-weight: 700; font-size: 1.1em; margin-top: 4px;}
@@ -215,6 +215,8 @@
     </style>
 </head>
 <body>
+
+    <a href="/awalem/" class="awalem-home-btn no-print" style="position:fixed;top:20px;right:20px;background:linear-gradient(135deg,#E2B4C1,#A55166);color:white;padding:10px 22px;border-radius:28px;font-weight:800;font-size:0.9rem;text-decoration:none;z-index:1000;box-shadow:0 8px 20px rgba(165,81,102,0.3);transition:0.3s;display:flex;align-items:center;gap:8px;"><img src="awalem-logo.png" alt="عوالم" style="width:22px;height:22px;border-radius:7px;object-fit:cover;"> عوالم</a>
 
     <script>
         window.onerror = function(msg, url, line) {
@@ -316,7 +318,7 @@
             </div>
         </div>
 
-        <div class="footer">صنع من قبل عوالم Awalem</div>
+        <div class="footer" style="color:#86868b;">صنع من قبل <img src="logo-footer.svg" alt="عوالم" style="height:15px;width:auto;vertical-align:middle;margin-right:3px;"></div>
 
         <button class="print-fab" id="printFab" onclick="printTable()">🖨️</button>
     </div>
@@ -334,32 +336,10 @@
             return div.innerHTML;
         }
 
-        function generateDeviceFingerprint() {
-            var c = [
-                navigator.userAgent || '',
-                navigator.language || '',
-                navigator.platform || '',
-                navigator.hardwareConcurrency || 0,
-                navigator.deviceMemory || 0,
-                screen.width + 'x' + screen.height + 'x' + (window.devicePixelRatio || 1),
-                screen.colorDepth || 0,
-                Intl.DateTimeFormat().resolvedOptions().timeZone || '',
-                new Date().getTimezoneOffset()
-            ];
-            var s = c.join('|');
-            var h = 5381;
-            for (var i = 0; i < s.length; i++) { h = ((h << 5) + h) + s.charCodeAt(i); h = h & h; }
-            return 'AW-FP-' + Math.abs(h).toString(36).toUpperCase();
-        }
-
         function getOrCreateDeviceId() {
-            try {
-                let id = localStorage.getItem('awalem_device_id');
-                if (id) return id;
-                id = generateDeviceFingerprint();
-                localStorage.setItem('awalem_device_id', id);
-                return id;
-            } catch(e) { return generateDeviceFingerprint(); }
+            let id = localStorage.getItem('awalem_device_id');
+            if (!id) { id = 'AW-' + Math.random().toString(36).substr(2, 9) + '-' + Date.now(); localStorage.setItem('awalem_device_id', id); }
+            return id;
         }
 
         window.onload = () => {
@@ -874,7 +854,7 @@
             var table = document.getElementById('dictionaryTable');
             var lang = document.getElementById('languageSelect');
             var langName = lang.options[lang.selectedIndex].text;
-            var html = '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>القاموس الذكي - طباعة</title><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:"IBM Plex Sans Arabic",sans-serif;direction:rtl;padding:20px;color:#1d1d1f}h2{text-align:center;color:#A55166;font-size:20px;margin-bottom:15px}table{width:100%;border-collapse:collapse}th{color:#A55166;border-bottom:2px solid #A55166;padding:10px 8px;font-size:13px;text-align:center}td{border-bottom:1px solid rgba(211,140,157,0.3);padding:10px 8px;font-size:13px}.category-row td{background:#FDF4F7;color:#A55166;font-weight:600;text-align:center;font-size:12px}@media print{@page{margin:1cm;size:A4 portrait}}</style></head><body><h2>القاموس الذكي للعاملات - ' + langName + '</h2>' + table.outerHTML + '<script>setTimeout(function(){window.print()},500)<\/script></body></html>';
+            var html = '<!DOCTYPE html><html lang="ar" dir="rtl"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"><title>القاموس الذكي - طباعة</title><link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet"><style>*{box-sizing:border-box;margin:0;padding:0}body{font-family:"IBM Plex Sans Arabic",sans-serif;direction:rtl;padding:20px;color:#1d1d1f}h2{text-align:center;color:#A55166;font-size:20px;margin-bottom:15px}table{width:100%;border-collapse:collapse}th{color:#A55166;border-bottom:2px solid #A55166;padding:10px 8px;font-size:13px;text-align:center}td{border-bottom:1px solid rgba(211,140,157,0.3);padding:10px 8px;font-size:13px}.category-row td{background:#FDF4F7;color:#A55166;font-weight:600;text-align:center;font-size:12px}@media print{@page{margin:1cm;size:A4 portrait}}</style></head><body><h2>القاموس الذكي للعاملات - ' + langName + '</h2>' + table.outerHTML + '<script>setTimeout(function(){window.print()},500)<\/script></body></html>';
             var w = window.open('', '_blank');
             w.document.write(html);
             w.document.close();
