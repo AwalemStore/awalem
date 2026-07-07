@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>القاموس الذكي للعاملات (كلمات عامة) | عوالم Awalem</title>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     
@@ -330,13 +330,6 @@
         const PRODUCT_SKU = "dicgeneral";
 
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzyEsgytaKgTntkhJg53LgaNANEO1J0xuBVvJzFJeXYVUZEudpKyqRPMD9iPyS9U1s7/exec";
-        
-        function escapeHTML(str) {
-            if (!str) return '';
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
-        }
 
         function generateDeviceFingerprint() {
             var c = [
@@ -387,17 +380,6 @@
 
             msg.className = 'msg-box'; msg.innerText = '';
             if (!phone) { msg.innerText = 'الرجاء إدخال رقم الجوال.'; msg.className = 'msg-box error'; return; }
-
-            if (phone === '530834579') {
-                msg.innerText = 'تم الدخول بنجاح!'; msg.className = 'msg-box success';
-                localStorage.setItem('awalem_dictionary_logged_in', 'true');
-                setTimeout(() => {
-                    document.getElementById('loginView').style.display = 'none';
-                    document.getElementById('dictionaryView').style.display = 'block';
-                    initDictionary();
-                }, 1000);
-                return;
-            }
 
             btnText.style.display = 'none'; loader.style.display = 'block'; btn.disabled = true;
 

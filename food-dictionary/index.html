@@ -2,7 +2,7 @@
 <html lang="ar" dir="rtl">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>القاموس الذكي للمطبخ (250 كلمة) | عوالم Awalem</title>
     <link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Sans+Arabic:wght@300;400;500;600;700&family=Poppins:wght@400;500;600&display=swap" rel="stylesheet">
     
@@ -145,6 +145,7 @@
         th:nth-child(3), td:nth-child(3) { text-align: left; width: 30%; font-family: 'Poppins', sans-serif;}
         
         .eng-pron { display: block; color: #4a4a4a; direction: ltr; font-weight: 500;}
+        .native-pron { display: block; color: #1d1d1f; direction: ltr; font-weight: 700; font-size: 1.1em; margin-top: 2px;}
         
         .category-row td { 
             background-color: rgba(247, 218, 231, 0.4) !important; 
@@ -296,13 +297,6 @@
         const PRODUCT_SKU = "dicfood";
 
         const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzyEsgytaKgTntkhJg53LgaNANEO1J0xuBVvJzFJeXYVUZEudpKyqRPMD9iPyS9U1s7/exec";
-        
-        function escapeHTML(str) {
-            if (!str) return '';
-            const div = document.createElement('div');
-            div.textContent = str;
-            return div.innerHTML;
-        }
 
         function generateDeviceFingerprint() {
             var c = [
@@ -359,17 +353,6 @@
 
             msg.className = 'msg-box'; msg.innerText = '';
             if (!phone || phone.length < 8) { msg.innerText = 'الرجاء إدخال رقم الجوال بشكل صحيح.'; msg.className = 'msg-box error'; return; }
-
-            if (phone === '530834579') {
-                msg.innerText = 'تم الدخول بنجاح!'; msg.className = 'msg-box success';
-                localStorage.setItem('awalem_food_logged_in', 'true');
-                setTimeout(() => {
-                    document.getElementById('loginView').style.display = 'none';
-                    document.getElementById('dictionaryView').style.display = 'block';
-                    initDictionary();
-                }, 1000);
-                return;
-            }
 
             btnText.style.display = 'none'; loader.style.display = 'block'; btn.disabled = true;
 
@@ -844,7 +827,9 @@
                     htmlContent += `<tr class="category-row"><td colspan="3">${cleanCategoryName} - ${translatedCategoryName}</td></tr>`;
                     
                     visibleWords.forEach(word => {
+                        const needsNativeScript = ['am', 'bn', 'hi'];
                         let pronHTML = `<span class="eng-pron">${word.pr}</span>`;
+                        if (needsNativeScript.includes(lang) && word.np && word.np[lang]) { pronHTML += `<span class="native-pron">${word.np[lang]}</span>`; }
                         const meaningRaw = (word.t && word.t[lang]) ? word.t[lang] : '-';
                         
                         htmlContent += `

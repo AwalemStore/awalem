@@ -18,6 +18,7 @@
             --lavender: #D8C8E8;
             --main: #C4889A;
             --main-dark: #A86B7E;
+            --awalem-purple: #A86B7E;
             --accent: #8BAFC4;
             --bg: #FFF8F5;
             --glass: rgba(255, 255, 255, 0.92);
@@ -325,12 +326,9 @@
                             <option value="bn">البنغالية - Bengali (بنغلاديش)</option>
                             <option value="si">السيرلانكية - Sinhala</option>
                             <option value="ne">النيبالية - Nepali</option>
-                            <option value="am">الأمهرية - Amharic (إثيوبيا)</option>
-                            <option value="om">الأورومو - Oromo (إثيوبيا)</option>
-                            <option value="sw">السواحيلية - Swahili (تنزانيا / كينيا)</option>
-                            <option value="lg">اللوغندا - Luganda (أوغندا)</option>
-                            <option value="so">الصومالية - Somali</option>
-                            <option value="fr">الفرنسية - French</option>
+                        <option value="am">الأمهرية - Amharic (إثيوبيا)</option>
+                        <option value="sw">السواحيلية - Swahili (تنزانيا / كينيا)</option>
+                        <option value="fr">الفرنسية - French</option>
                         </select>
                     </div>
                 </div>
@@ -454,13 +452,6 @@
                 return;
             }
 
-            if (phone === atob('NTMwODM0NTc5')) {
-                try { localStorage.setItem('awalem_babyfood_logged_in', 'true'); } catch(e){}
-                document.getElementById('auth-screen').style.display = 'none';
-                bootstrap();
-                return;
-            }
-
             var cbName = 'awalem_cb_' + Date.now();
             var timeout = setTimeout(function() {
                 delete window[cbName];
@@ -510,9 +501,7 @@
                 if (localStorage.getItem('awalem_babyfood_logged_in') === 'true') {
                     document.getElementById('auth-screen').style.display = 'none';
                 }
-            } catch(e) {
-                document.getElementById('auth-screen').style.display = 'none';
-            }
+            } catch(e) {}
             bootstrap();
         })();
 
@@ -943,9 +932,6 @@
             document.getElementById('manualAge').addEventListener('input', function() {
                 ls('manualAge', this.value);
             });
-
-            renderForbidden();
-            renderTips();
         }
 
         if ('serviceWorker' in navigator) {
